@@ -2,6 +2,7 @@ package company.naturalgas.client.ui.main.activity.view;
 
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -13,6 +14,9 @@ import android.content.ComponentName;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import company.naturalgas.client.base.BaseAct;
+
+import com.gyf.barlibrary.BarHide;
+import com.gyf.barlibrary.OnKeyboardListener;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
 import company.naturalgas.client.ui.main.activity.view_v.SignInAct_V;
 import company.naturalgas.client.ui.main.activity.presenter.SignInPresenter;
@@ -24,6 +28,7 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
     private EditText mSigninAccount;
     private EditText mSigninPassword;
     private SignInPresenter mSignInPresenter;
+    private static final String LOG_TAG = SignInAct.class.getSimpleName();
 
     protected int setLayoutResID()
     {
@@ -35,6 +40,19 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
     {
         super.initWidgets(rootView);
         openNotifycationListenerEnable();
+        mImmersionBar.titleBar(mTitleBar).navigationBarColor(R.color.colorPrimary).navigationBarAlpha(0f)
+                .hideBar(BarHide.FLAG_SHOW_BAR).navigationBarEnable(true).navigationBarWithKitkatEnable(true)
+                .statusBarDarkFont(true).flymeOSStatusBarFontColor(R.color.black).fullScreen(false).keyboardEnable(true)
+                .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE).setOnKeyboardListener(new OnKeyboardListener()
+        {
+            public void onKeyboardChange(boolean status,int keyboardHeight)
+            {
+                if(status)
+                    Log.w(LOG_TAG, "SoftKeyBoard：Turn On！");
+                else
+                    Log.w(LOG_TAG, "SoftKeyBoard：Turn On！");
+            }
+        }).init();
         mSigninLogin = (Button)rootView.findViewById(R.id.signin_login);
         mSigninVersion = (TextView)rootView.findViewById(R.id.signin_version);
         mSigninAccount = (EditText)rootView.findViewById(R.id.signin_account);
