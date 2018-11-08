@@ -5,9 +5,13 @@ import android.view.View;
 import android.text.TextUtils;
 import android.content.Intent;
 import android.content.Context;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.provider.Settings;
 import android.view.LayoutInflater;
+
+import cn.bingoogolapple.bgabanner.BGABanner;
+import cn.bingoogolapple.bgabanner.BGALocalImageSize;
 import company.naturalgas.client.R;
 import android.content.ComponentName;
 import android.app.NotificationManager;
@@ -24,8 +28,11 @@ import company.naturalgas.client.ui.main.activity.presenter.SignInPresenter;
 
 public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
 {
+    private BGABanner mBanner;
     private MainPresenter mMainPresenter;
     private SignInPresenter mSignInPresenter;
+    private BGALocalImageSize mBannerLocalImageSize;
+
 
     protected int setLayoutResID()
     {
@@ -37,6 +44,13 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         super.initWidgets(rootView);
         setTitleContent("主页");
         setTitleBack(R.mipmap.usericon);
+        mBanner=(BGABanner)rootView.findViewById(R.id.mainact_banner);
+        mBanner.setAutoPlayAble(true);
+        mBanner.setAutoPlayInterval(6000);
+        mBanner.setAllowUserScrollable(true);
+        mBannerLocalImageSize = new BGALocalImageSize(720, 1280, 320, 640);
+        mBanner.setData(mBannerLocalImageSize,ImageView.ScaleType.CENTER_CROP,R.mipmap.img_banner,R.mipmap.img_banner,R.mipmap.img_banner);
+
     }
 
     protected void initDatas()
@@ -58,6 +72,14 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
             ProtectNotifycationService.sShouldStopService = false;
             startService(new Intent(this,ProtectNotifycationService.class));
         }
+
+        mBanner.setDelegate(new BGABanner.Delegate<ImageView, String>()
+        {
+            public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position)
+            {
+                showToast("点击了第" + position + "张图片！");
+            }
+        });
     }
 
     public void signInSuccess()
