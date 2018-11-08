@@ -1,22 +1,24 @@
 package company.naturalgas.client.ui.main.activity.view;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.provider.Settings;
+import com.gyf.barlibrary.BarHide;
+import android.view.WindowManager;
 import company.naturalgas.client.R;
 import android.content.ComponentName;
 import android.content.pm.PackageInfo;
+import com.gyf.barlibrary.ImmersionBar;
 import android.content.pm.PackageManager;
-import company.naturalgas.client.base.BaseAct;
-
-import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.OnKeyboardListener;
+import company.naturalgas.client.base.BaseAct;
+import android.support.v4.app.NotificationManagerCompat;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
 import company.naturalgas.client.ui.main.activity.view_v.SignInAct_V;
 import company.naturalgas.client.ui.main.activity.presenter.SignInPresenter;
@@ -39,8 +41,7 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
-        openNotifycationListenerEnable();
-        mImmersionBar.titleBar(mTitleBar).navigationBarColor(R.color.colorPrimary).navigationBarAlpha(0f)
+        ImmersionBar.with(this).titleBar(R.id.signin_all).navigationBarColor(R.color.colorPrimary).navigationBarAlpha(0f)
                 .hideBar(BarHide.FLAG_SHOW_BAR).navigationBarEnable(true).navigationBarWithKitkatEnable(true)
                 .statusBarDarkFont(true).flymeOSStatusBarFontColor(R.color.black).fullScreen(false).keyboardEnable(true)
                 .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE).setOnKeyboardListener(new OnKeyboardListener()
@@ -71,7 +72,7 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
         mSigninLogin.setOnClickListener(this);
         mSigninVersion.setText("Version : " + getAppVersionName());
         if(null != SharepreferenceUtils.extractObject(this,"password",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"password",String.class)) &&
-                null != SharepreferenceUtils.extractObject(this,"username",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"username",String.class)))
+              null != SharepreferenceUtils.extractObject(this,"username",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"username",String.class)))
         {
             Intent intent = new Intent(this,MainAct.class);
             intent.putExtra("islogined",false);
@@ -120,6 +121,19 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
             Log.e("VersionInfo", "Exception", e);
         }
         return versionName.trim();
+    }
+
+    private void openNotifycationEnable()
+    {
+        if(!NotificationManagerCompat.from(getApplicationContext()).areNotificationsEnabled())
+        {
+            Intent intent = new Intent();
+            showToast("请选择通知选项并开启通知权限，否则无法接收应急消息！谢谢");
+            Uri uri = Uri.fromParts("package",getPackageName(), null);
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(uri);
+            startActivity(intent);
+        }
     }
 
     private void openNotifycationListenerEnable()

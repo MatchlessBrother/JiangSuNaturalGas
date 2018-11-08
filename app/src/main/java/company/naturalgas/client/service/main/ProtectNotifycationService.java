@@ -100,8 +100,8 @@ public class ProtectNotifycationService extends AbsWorkService
         {
             public void accept(Long aLong) throws Exception
             {
-                executeNotifiesService();
-                executeNotifiesListenerService();
+                /*executeNotifiesService();
+                executeNotifiesListenerService();*/
             }
         });
     }

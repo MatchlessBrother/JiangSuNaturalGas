@@ -2,7 +2,6 @@ package company.naturalgas.client.ui.main.activity.presenter;
 
 import java.util.List;
 import okhttp3.Interceptor;
-import company.naturalgas.client.bean.main.MsgBean;
 import company.naturalgas.client.network.NetClient;
 import company.naturalgas.client.bean.BaseReturnData;
 import company.naturalgas.client.ui.base.BaseMvp_Presenter;
@@ -14,15 +13,6 @@ import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.TokenIntercepto
 
 public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
 {
-    private int currentPageOfIndex;
-    private int currentPageOfMaxSize;
-
-    public MainPresenter()
-    {
-        currentPageOfIndex = 0;
-        currentPageOfMaxSize = 20;
-    }
-
     public void signOut()
     {
         if(isAttachContextAndViewLayer())
@@ -72,21 +62,17 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
         }
     }
 
-    public void refreshDatas()
+    public void getDatas()
     {
         if(isAttachContextAndViewLayer())
         {
-            currentPageOfIndex = 0;
-            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).
-            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").convertForms().executeOfNet(getContext(),MainModel.GetMsg,new BaseMvp_LocalObjCallBack<BaseReturnData<MsgBean>>(this)
+            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).executeOfNet(getContext(),MainModel.GetDatas,new BaseMvp_LocalObjCallBack<BaseReturnData>(this)
             {
-                public void onSuccess(BaseReturnData<MsgBean> msgBeans)
+                public void onSuccess(BaseReturnData baseReturnData)
                 {
                     if(isAttachContextAndViewLayer())
                     {
-                        getViewLayer().finishRefresh();
-                        currentPageOfIndex = currentPageOfMaxSize;
-                        getViewLayer().refreshDatas(msgBeans.getData());
+                        getViewLayer().getSuccessOfDatas();
                     }
                 }
 
@@ -95,7 +81,7 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                     super.onFailure(msg);
                     if(isAttachContextAndViewLayer())
                     {
-                        getViewLayer().finishRefresh();
+                        getViewLayer().getFailOfDatas();
                     }
                 }
 
@@ -104,45 +90,7 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
                     super.onError(msg);
                     if(isAttachContextAndViewLayer())
                     {
-                        getViewLayer().finishRefresh();
-                    }
-                }
-            });
-        }
-    }
-
-    public void loadMoreDatas()
-    {
-        if(isAttachContextAndViewLayer())
-        {
-            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).
-            putForm("pageIndex",currentPageOfIndex + "").putForm("pageSize",currentPageOfMaxSize + "").convertForms().executeOfNet(getContext(),MainModel.GetMsg,new BaseMvp_LocalObjCallBack<BaseReturnData<MsgBean>>(this)
-            {
-                public void onSuccess(BaseReturnData<MsgBean> msgBeans)
-                {
-                    if(isAttachContextAndViewLayer())
-                    {
-                        getViewLayer().finishLoadMore();
-                        currentPageOfIndex += currentPageOfMaxSize;
-                        getViewLayer().loadMoreDatas(msgBeans.getData());
-                    }
-                }
-
-                public void onFailure(String msg)
-                {
-                    super.onFailure(msg);
-                    if(isAttachContextAndViewLayer())
-                    {
-                        getViewLayer().finishLoadMore();
-                    }
-                }
-
-                public void onError(String msg)
-                {
-                    super.onError(msg);
-                    if(isAttachContextAndViewLayer())
-                    {
-                        getViewLayer().finishLoadMore();
+                        getViewLayer().getFailOfDatas();
                     }
                 }
             });

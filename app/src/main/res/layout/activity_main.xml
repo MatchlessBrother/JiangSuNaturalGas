@@ -8,22 +8,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_title" />
-
-    <android.support.v4.widget.SwipeRefreshLayout
+    <include
         android:id="@+id/mainact_swiperefreshlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:requiresFadingEdge="vertical"
-        android:fadingEdgeLength="0mm"
-        android:scrollbars="none">
+        layout="@layout/layout_title" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/mainact_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:requiresFadingEdge="vertical"
-            android:fadingEdgeLength="0mm"
-            android:scrollbars="none"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+
+
 </LinearLayout>

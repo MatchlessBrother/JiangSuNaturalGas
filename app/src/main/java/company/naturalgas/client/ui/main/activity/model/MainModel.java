@@ -11,7 +11,7 @@ import company.naturalgas.client.ui.base.BaseMvp_LocalObjCallBack;
 public class MainModel extends BaseMvp_PVModel
 {
     public static final int SignOut = 0x0001;
-    public static final int GetMsg = 0x0002;
+    public static final int GetDatas = 0x0002;
 
     public void executeOfNet(Context context, int netRequestCode, BaseMvp_LocalObjCallBack localCallBack)
     {
@@ -19,7 +19,7 @@ public class MainModel extends BaseMvp_PVModel
         switch(netRequestCode)
         {
             case SignOut:NetClient.getInstance(context).getNetUrl().signOut().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
-            case GetMsg:NetClient.getInstance(context).getNetUrl().getMsg(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
+            case GetDatas:NetClient.getInstance(context).getNetUrl().getDatas(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
         }
     }
 

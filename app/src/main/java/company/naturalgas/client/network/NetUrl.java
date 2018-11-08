@@ -6,7 +6,6 @@ import retrofit2.http.POST;
 import retrofit2.http.PartMap;
 import io.reactivex.Observable;
 import retrofit2.http.Multipart;
-import company.naturalgas.client.bean.main.MsgBean;
 import company.naturalgas.client.bean.main.UserInfo;
 import company.naturalgas.client.bean.BaseReturnData;
 import company.naturalgas.client.bean.main.MsgDetailBean;
@@ -31,7 +30,7 @@ public interface NetUrl
 
     @POST("/yjfb/notify/list.app")
     @Multipart
-    Observable<BaseReturnData<MsgBean>> getMsg(@PartMap Map<String, RequestBody> params);
+    Observable<BaseReturnData> getDatas(@PartMap Map<String, RequestBody> params);
 
     @POST("/auth/login.app")
     @Multipart
