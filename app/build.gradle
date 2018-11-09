@@ -26,13 +26,13 @@ android {
         /**正式版**/
         publish{
             manifestPlaceholders = [APP_NAME:"@string/app_name"]
-            buildConfigField 'String', "SERVICE_URL",'"http://www.yunfanwulian.com:20001"'
+            buildConfigField 'String', "SERVICE_URL",'"http://47.101.133.144:8033"'
         }
 
         /**测试版**/
         develop{
             manifestPlaceholders =[APP_NAME:"@string/app_name_dev"]
-            buildConfigField 'String', "SERVICE_URL",'"http://www.yunfanwulian.com:20001"'
+            buildConfigField 'String', "SERVICE_URL",'"http://47.101.133.144:8033"'
         }
     }
 

@@ -1,325 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="@color/default_background_gray"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/layout_title" />
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/msgdetail_swiperefreshlayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fadingEdgeLength="0mm"
-        android:overScrollMode="never"
-        android:requiresFadingEdge="vertical">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <android.support.v4.widget.NestedScrollView
+            android:requiresFadingEdge="vertical"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-            <cn.bingoogolapple.bgabanner.BGABanner
-                android:id="@+id/mainact_banner"
-                android:layout_width="match_parent"
-                android:layout_height="330mm"
-                android:scaleType="fitXY"
-                app:banner_contentBottomMargin="0mm"
-                app:banner_indicatorGravity="bottom|center_horizontal"
-                app:banner_pageChangeDuration="2000"
-                app:banner_placeholderDrawable="@mipmap/defaultimage"
-                app:banner_pointAutoPlayAble="false"
-                app:banner_pointContainerBackground="@android:color/transparent"
-                app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
-                app:banner_pointLeftRightMargin="12mm"
-                app:banner_pointTopBottomMargin="12mm"
-                app:banner_transitionEffect="alpha" />
+            android:layout_width="match_parent"
+            android:fadingEdgeLength="0mm"
+            android:overScrollMode="never"
+            android:fillViewport="true">
 
             <LinearLayout
-                android:id="@+id/mainact_yhpc_all"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20mm"
-                android:layout_marginRight="20mm"
+                android:background="@color/white"
                 android:orientation="vertical">
 
+                <cn.bingoogolapple.bgabanner.BGABanner
+                    android:id="@+id/mainact_banner"
+                    android:scaleType="fitXY"
+                    android:layout_height="330mm"
+                    app:banner_transitionEffect="alpha"
+                    android:layout_width="match_parent"
+                    app:banner_contentBottomMargin="0mm"
+                    app:banner_pageChangeDuration="2000"
+                    app:banner_pointAutoPlayAble="false"
+                    app:banner_pointLeftRightMargin="12mm"
+                    app:banner_pointTopBottomMargin="12mm"
+                    app:banner_placeholderDrawable="@mipmap/defaultimage"
+                    app:banner_indicatorGravity="bottom|center_horizontal"
+                    app:banner_pointContainerBackground="@android:color/transparent"
+                    app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"/>
+
                 <TextView
-                    android:id="@+id/mainact_yhpc_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="40mm"
-                    android:layout_marginTop="20mm"
+                    android:layout_marginTop="18mm"
+                    android:layout_marginBottom="33mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
                     android:gravity="left|center_vertical"
                     android:singleLine="true"
                     android:text="隐患排查"
                     android:textColor="@color/default_font_black"
                     android:textSize="33sp" />
 
-                <LinearLayout
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mainact_yhpc_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20mm"
                     android:layout_marginRight="20mm"
-                    android:orientation="horizontal">
+                    android:overScrollMode="never"
+                    android:fadingEdgeLength="0mm"
+                    android:requiresFadingEdge="vertical"
+                    android:scrollbars="none"/>
 
-                    <LinearLayout
-                        android:id="@+id/mainact_yhpc_yhsb_all"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/mainact_yhpc_yhsb_imgbg"
-                                android:layout_width="130mm"
-                                android:layout_height="130mm"
-                                android:layout_centerInParent="true"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/shape_round_green_yhsb" />
-
-                            <ImageView
-                                android:id="@+id/mainact_yhpc_yhsb_imgfg"
-                                android:layout_width="64mm"
-                                android:layout_height="62mm"
-                                android:layout_centerInParent="true"
-                                android:scaleType="fitXY"
-                                android:src="@mipmap/yhsb" />
-                        </RelativeLayout>
-
-                        <TextView
-                            android:id="@+id/mainact_yhpc_yhsb_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6mm"
-                            android:gravity="left|center_vertical"
-                            android:singleLine="true"
-                            android:text="隐患上报"
-                            android:textColor="@color/default_font_black"
-                            android:textSize="28sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/mainact_yhpc_yhzg_all"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/mainact_yhpc_yhzg_imgbg"
-                                android:layout_width="130mm"
-                                android:layout_height="130mm"
-                                android:layout_centerInParent="true"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/shape_round_green_yhzg" />
-
-                            <ImageView
-                                android:id="@+id/mainact_yhpc_yhzg_imgfg"
-                                android:layout_width="64mm"
-                                android:layout_height="64mm"
-                                android:layout_centerInParent="true"
-                                android:scaleType="fitXY"
-                                android:src="@mipmap/yhzg" />
-                        </RelativeLayout>
-
-                        <TextView
-                            android:id="@+id/mainact_yhpc_yhzg_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6mm"
-                            android:gravity="left|center_vertical"
-                            android:singleLine="true"
-                            android:text="隐患整改"
-                            android:textColor="@color/default_font_black"
-                            android:textSize="28sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/mainact_yhpc_zgys_all"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/mainact_yhpc_zgys_imgbg"
-                                android:layout_width="130mm"
-                                android:layout_height="130mm"
-                                android:layout_centerInParent="true"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/shape_round_green_zgys" />
-
-                            <ImageView
-                                android:id="@+id/mainact_yhpc_zgys_imgfg"
-                                android:layout_width="64mm"
-                                android:layout_height="54mm"
-                                android:layout_centerInParent="true"
-                                android:scaleType="fitXY"
-                                android:src="@mipmap/zgys" />
-                        </RelativeLayout>
-
-                        <TextView
-                            android:id="@+id/mainact_yhpc_zgys_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6mm"
-                            android:gravity="left|center_vertical"
-                            android:singleLine="true"
-                            android:text="整改验收"
-                            android:textColor="@color/default_font_black"
-                            android:textSize="28sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="40mm"
-                    android:layout_marginLeft="20mm"
-                    android:layout_marginRight="20mm"
-                    android:layout_marginTop="20mm"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
-
-                    <LinearLayout
-                        android:id="@+id/mainact_yhpc_yhhz_all"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/mainact_yhpc_yhhz_imgbg"
-                                android:layout_width="130mm"
-                                android:layout_height="130mm"
-                                android:layout_centerInParent="true"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/shape_round_green_yhhz" />
-
-                            <ImageView
-                                android:id="@+id/mainact_yhpc_yhhz_imgfg"
-                                android:layout_width="64mm"
-                                android:layout_height="51mm"
-                                android:layout_centerInParent="true"
-                                android:scaleType="fitXY"
-                                android:src="@mipmap/yhhz" />
-                        </RelativeLayout>
-
-                        <TextView
-                            android:id="@+id/mainact_yhpc_yhhz_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6mm"
-                            android:gravity="left|center_vertical"
-                            android:singleLine="true"
-                            android:text="隐患汇总"
-                            android:textColor="@color/default_font_black"
-                            android:textSize="28sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/mainact_qtyw_all"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20mm"
-                android:layout_marginRight="20mm"
-                android:orientation="vertical">
+                    android:layout_height="1mm"
+                    android:layout_marginTop="33mm"
+                    android:layout_marginBottom="15mm"
+                    android:background="@color/default_font_hint"/>
 
                 <TextView
-                    android:id="@+id/mainact_qtyw_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="40mm"
-                    android:layout_marginTop="20mm"
+                    android:layout_marginTop="18mm"
+                    android:layout_marginBottom="33mm"
                     android:gravity="left|center_vertical"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
                     android:singleLine="true"
                     android:text="其它业务"
                     android:textColor="@color/default_font_black"
                     android:textSize="33sp" />
 
-                <LinearLayout
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mainact_qtyw_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20mm"
                     android:layout_marginRight="20mm"
-                    android:layout_marginBottom="40mm"
-                    android:weightSum="3"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/mainact_yhpc_qt_all"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/mainact_yhpc_qt_imgbg"
-                                android:layout_width="130mm"
-                                android:layout_height="130mm"
-                                android:layout_centerInParent="true"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/shape_round_green_yhsb" />
-
-                            <ImageView
-                                android:id="@+id/mainact_yhpc_qt_imgfg"
-                                android:layout_width="64mm"
-                                android:layout_height="62mm"
-                                android:layout_centerInParent="true"
-                                android:scaleType="fitXY"
-                                android:src="@mipmap/yhsb" />
-                        </RelativeLayout>
-
-                        <TextView
-                            android:id="@+id/mainact_yhpc_qt_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6mm"
-                            android:gravity="left|center_vertical"
-                            android:singleLine="true"
-                            android:text="隐患上报"
-                            android:textColor="@color/default_font_black"
-                            android:textSize="28sp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_marginBottom="33mm"
+                    android:overScrollMode="never"
+                    android:fadingEdgeLength="0mm"
+                    android:visibility="visible"
+                    android:requiresFadingEdge="vertical"
+                    android:scrollbars="none"/>
             </LinearLayout>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

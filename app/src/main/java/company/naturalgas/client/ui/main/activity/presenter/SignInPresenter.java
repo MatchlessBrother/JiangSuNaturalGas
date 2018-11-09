@@ -3,7 +3,7 @@ package company.naturalgas.client.ui.main.activity.presenter;
 import java.util.List;
 import okhttp3.Interceptor;
 import company.naturalgas.client.network.NetClient;
-import company.naturalgas.client.bean.main.UserInfo;
+import company.naturalgas.client.bean.main.MainInfo;
 import company.naturalgas.client.bean.BaseReturnData;
 import company.naturalgas.client.ui.base.BaseMvp_Presenter;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
@@ -15,14 +15,14 @@ import com.yuan.devlibrary._9__Network.okhttp.Http3Interceptions.TokenIntercepto
 
 public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
 {
-    public void signIn(final String username,final String password)
+    public void signIn(final String phone,final String password)
     {
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(SignInModel.class).
-            putForm("username",username).putForm("password",password).convertForms().executeOfNet(getContext(),SignInModel.SignIn,new BaseMvp_LocalObjCallBack<BaseReturnData<UserInfo>>(this)
+            putForm("phone",phone).putForm("password",password).convertForms().executeOfNet(getContext(),SignInModel.SignIn,new BaseMvp_LocalObjCallBack<BaseReturnData<MainInfo>>(this)
             {
-                public void onSuccess(BaseReturnData<UserInfo> userInfo)
+                public void onSuccess(BaseReturnData<MainInfo> mainInfo)
                 {
                     if(isAttachContextAndViewLayer())
                     {
@@ -32,13 +32,14 @@ public class SignInPresenter extends BaseMvp_Presenter<SignInAct_V>
                             if(interceptorList.get(index) instanceof TokenInterceptor_PersistentStore)
                             {
                                 TokenInterceptor_PersistentStore interceptor = (TokenInterceptor_PersistentStore) interceptorList.get(index);
-                                interceptor.updateToken(NetClient.getInstance(getContext().getApplicationContext()).getRetrofit().baseUrl().host().trim(), userInfo.getData().getToken().trim());
+                                interceptor.updateToken(NetClient.getInstance(getContext().getApplicationContext()).getRetrofit().baseUrl().host().trim(), mainInfo.getData().getToken().getToken().trim());
                                 SharepreferenceUtils.storageObject(getContext(),"password",password);
-                                SharepreferenceUtils.storageObject(getContext(),"username",username);
-                                getViewLayer().getBaseApp().setUserInfos(userInfo.getData());
+                                SharepreferenceUtils.storageObject(getContext(),"phone",phone);
+                                getViewLayer().getBaseApp().setMainInfo(mainInfo.getData());
                                 getViewLayer().signInSuccess();
                                 return;
                             }
+
                             if(index == interceptorList.size() -1)
                             {
                                 getViewLayer().showToast("登录失败，请稍后再试，谢谢！");

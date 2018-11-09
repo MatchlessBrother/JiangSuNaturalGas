@@ -61,39 +61,4 @@ public class MainPresenter extends BaseMvp_Presenter<MainAct_V>
             });
         }
     }
-
-    public void getDatas()
-    {
-        if(isAttachContextAndViewLayer())
-        {
-            BaseMvp_EntranceOfModel.requestDatas(MainModel.class).executeOfNet(getContext(),MainModel.GetDatas,new BaseMvp_LocalObjCallBack<BaseReturnData>(this)
-            {
-                public void onSuccess(BaseReturnData baseReturnData)
-                {
-                    if(isAttachContextAndViewLayer())
-                    {
-                        getViewLayer().getSuccessOfDatas();
-                    }
-                }
-
-                public void onFailure(String msg)
-                {
-                    super.onFailure(msg);
-                    if(isAttachContextAndViewLayer())
-                    {
-                        getViewLayer().getFailOfDatas();
-                    }
-                }
-
-                public void onError(String msg)
-                {
-                    super.onError(msg);
-                    if(isAttachContextAndViewLayer())
-                    {
-                        getViewLayer().getFailOfDatas();
-                    }
-                }
-            });
-        }
-    }
 }

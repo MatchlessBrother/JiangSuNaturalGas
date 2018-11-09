@@ -64,7 +64,7 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
     {
         mSignInPresenter = new SignInPresenter();
         bindBaseMvpPresenter(mSignInPresenter);
-        mSigninAccount.setText(null != SharepreferenceUtils.extractObject(this,"username",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"username",String.class).trim()) ? SharepreferenceUtils.extractObject(this,"username",String.class).trim() : "");
+        mSigninAccount.setText(null != SharepreferenceUtils.extractObject(this,"phone",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"phone",String.class).trim()) ? SharepreferenceUtils.extractObject(this,"phone",String.class).trim() : "");
     }
 
     protected void initLogic()
@@ -72,7 +72,7 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
         mSigninLogin.setOnClickListener(this);
         mSigninVersion.setText("Version : " + getAppVersionName());
         if(null != SharepreferenceUtils.extractObject(this,"password",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"password",String.class)) &&
-              null != SharepreferenceUtils.extractObject(this,"username",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"username",String.class)))
+              null != SharepreferenceUtils.extractObject(this,"phone",String.class) && !"".equals(SharepreferenceUtils.extractObject(this,"phone",String.class)))
         {
             Intent intent = new Intent(this,MainAct.class);
             intent.putExtra("islogined",false);
@@ -166,7 +166,7 @@ public class SignInAct extends BaseAct implements SignInAct_V,View.OnClickListen
 
     public static void quitCrrentAccount(BaseAct baseAct,String noteStr)
     {
-        SharepreferenceUtils.storageObject(baseAct,"username",SharepreferenceUtils.extractObject(baseAct,"username",String.class));
+        SharepreferenceUtils.storageObject(baseAct,"phone",SharepreferenceUtils.extractObject(baseAct,"phone",String.class));
         SharepreferenceUtils.storageObject(baseAct,"password","");
         Intent intent = new Intent(baseAct,SignInAct.class);
         baseAct.getBaseApp().finishAllActivity();

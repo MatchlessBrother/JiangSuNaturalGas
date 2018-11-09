@@ -6,6 +6,4 @@ public interface MainAct_V extends BaseMvp_View
 {
     void signOutSuccess();
     void signOutFailure();
-    void getFailOfDatas();
-    void getSuccessOfDatas();
 }

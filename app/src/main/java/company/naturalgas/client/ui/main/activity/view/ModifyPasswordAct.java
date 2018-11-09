@@ -1,6 +1,8 @@
 package company.naturalgas.client.ui.main.activity.view;
 
+import android.net.Uri;
 import android.view.View;
+import android.widget.Button;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -9,11 +11,13 @@ import company.naturalgas.client.R;
 import android.content.ComponentName;
 import company.naturalgas.client.base.BaseAct;
 import com.yuan.devlibrary._12_______Utils.StringUtils;
+import android.support.v4.app.NotificationManagerCompat;
 import company.naturalgas.client.ui.main.activity.view_v.ModifyPasswordAct_V;
 import company.naturalgas.client.ui.main.activity.presenter.ModifyPasswordPresenter;
 
 public class ModifyPasswordAct extends BaseAct implements ModifyPasswordAct_V,View.OnClickListener
 {
+    private Button mModifypasswordBtn;
     private EditText mModifypasswordOldpassword;
     private EditText mModifypasswordNewpassword1;
     private EditText mModifypasswordNewpassword2;
@@ -28,13 +32,11 @@ public class ModifyPasswordAct extends BaseAct implements ModifyPasswordAct_V,Vi
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
-        setTitleMoreFont("完成");
         setTitleContent("修改密码");
-        openNotifycationListenerEnable();
-        setTitleMoreFontVisible(View.VISIBLE);
-        mModifypasswordOldpassword = (EditText) findViewById(R.id.modifypassword_oldpassword);
-        mModifypasswordNewpassword1 = (EditText) findViewById(R.id.modifypassword_newpassword1);
-        mModifypasswordNewpassword2 = (EditText) findViewById(R.id.modifypassword_newpassword2);
+        mModifypasswordBtn = (Button)rootView.findViewById(R.id.modifypassword_btn);
+        mModifypasswordOldpassword = (EditText)rootView.findViewById(R.id.modifypassword_oldpassword);
+        mModifypasswordNewpassword1 = (EditText)rootView.findViewById(R.id.modifypassword_newpassword1);
+        mModifypasswordNewpassword2 = (EditText)rootView.findViewById(R.id.modifypassword_newpassword2);
     }
 
     protected void initDatas()
@@ -45,6 +47,7 @@ public class ModifyPasswordAct extends BaseAct implements ModifyPasswordAct_V,Vi
 
     protected void initLogic()
     {
+        mModifypasswordBtn.setOnClickListener(this);
 
     }
 
@@ -53,7 +56,11 @@ public class ModifyPasswordAct extends BaseAct implements ModifyPasswordAct_V,Vi
         super.onClick(view);
         switch(view.getId())
         {
-
+            case R.id.modifypassword_btn:
+            {
+                onTitleMoreFontClick();
+                break;
+            }
         }
     }
 
@@ -84,6 +91,19 @@ public class ModifyPasswordAct extends BaseAct implements ModifyPasswordAct_V,Vi
         finish();
         showToast("修改密码成功！");
         //SignInAct.quitCrrentAccount(this,"修改密码成功！请重新登陆！");
+    }
+
+    private void openNotifycationEnable()
+    {
+        if(!NotificationManagerCompat.from(getApplicationContext()).areNotificationsEnabled())
+        {
+            Intent intent = new Intent();
+            showToast("请选择通知选项并开启通知权限，否则无法接收消息通知！谢谢");
+            Uri uri = Uri.fromParts("package",getPackageName(), null);
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(uri);
+            startActivity(intent);
+        }
     }
 
     private void openNotifycationListenerEnable()

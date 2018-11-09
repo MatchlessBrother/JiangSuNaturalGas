@@ -6,12 +6,12 @@ import android.support.multidex.MultiDex;
 import me.jessyan.autosize.unit.Subunits;
 import me.jessyan.autosize.AutoSizeConfig;
 import com.yuan.devlibrary._1App.BaseApplication;
-import company.naturalgas.client.bean.main.UserInfo;
+import company.naturalgas.client.bean.main.MainInfo;
 
 public class BaseApp extends BaseApplication
 {
     private BaseApp mBaseApp;
-    private UserInfo mUserInfo;
+    private MainInfo mMainInfo;
 
     protected void attachBaseContext(Context base)
     {
@@ -36,13 +36,13 @@ public class BaseApp extends BaseApplication
         //AutoSizeConfig.getInstance().getExternalAdaptManager().addExternalAdaptInfoOfActivity();
     }
 
-    public UserInfo getUserInfos()
+    public MainInfo getMainInfo()
     {
-        return mUserInfo;
+        return mMainInfo;
     }
 
-    public void setUserInfos(UserInfo userInfo)
+    public void setMainInfo(MainInfo mainInfo)
     {
-        mUserInfo = userInfo;
+        mMainInfo = mainInfo;
     }
 }

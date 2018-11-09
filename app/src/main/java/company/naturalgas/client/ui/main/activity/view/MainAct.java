@@ -5,18 +5,20 @@ import android.view.View;
 import android.text.TextUtils;
 import android.content.Intent;
 import android.content.Context;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ImageView;
 import android.provider.Settings;
 import android.view.LayoutInflater;
-
-import cn.bingoogolapple.bgabanner.BGABanner;
-import cn.bingoogolapple.bgabanner.BGALocalImageSize;
 import company.naturalgas.client.R;
 import android.content.ComponentName;
 import android.app.NotificationManager;
 import com.xdandroid.hellodaemon.DaemonEnv;
+import cn.bingoogolapple.bgabanner.BGABanner;
 import company.naturalgas.client.base.BaseAct;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import cn.bingoogolapple.bgabanner.BGALocalImageSize;
 import android.support.v4.app.NotificationManagerCompat;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
@@ -31,8 +33,10 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
     private BGABanner mBanner;
     private MainPresenter mMainPresenter;
     private SignInPresenter mSignInPresenter;
+    private RecyclerView mMainactYhpcRecyclerview;
+    private RecyclerView mMainactQtywRecyclerview;
     private BGALocalImageSize mBannerLocalImageSize;
-
+    private SwipeRefreshLayout mMsgdetailSwiperefreshlayout;
 
     protected int setLayoutResID()
     {
@@ -44,13 +48,28 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         super.initWidgets(rootView);
         setTitleContent("主页");
         setTitleBack(R.mipmap.usericon);
-        mBanner=(BGABanner)rootView.findViewById(R.id.mainact_banner);
+        mBanner = (BGABanner)rootView.findViewById(R.id.mainact_banner);
+        mMainactYhpcRecyclerview = (RecyclerView)rootView.findViewById(R.id.mainact_yhpc_recyclerview);
+        mMainactQtywRecyclerview = (RecyclerView)rootView.findViewById(R.id.mainact_qtyw_recyclerview);
+        mMsgdetailSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.msgdetail_swiperefreshlayout);
+        /**********************************************************************************************************/
+        GridLayoutManager yhpcGridLayoutManager = new GridLayoutManager(this,3);
+        yhpcGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        mMainactYhpcRecyclerview.setLayoutManager(yhpcGridLayoutManager);
+        mMainactYhpcRecyclerview.setNestedScrollingEnabled(false);
+        mMainactYhpcRecyclerview.setFocusableInTouchMode(false);
+        /**********************************************************************************************************/
+        GridLayoutManager qtyeGridLayoutManager = new GridLayoutManager(this,3);
+        qtyeGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        mMainactQtywRecyclerview.setLayoutManager(qtyeGridLayoutManager);
+        mMainactQtywRecyclerview.setNestedScrollingEnabled(false);
+        mMainactQtywRecyclerview.setFocusableInTouchMode(false);
+        /**********************************************************************************************************/
         mBanner.setAutoPlayAble(true);
         mBanner.setAutoPlayInterval(6000);
         mBanner.setAllowUserScrollable(true);
         mBannerLocalImageSize = new BGALocalImageSize(720, 1280, 320, 640);
         mBanner.setData(mBannerLocalImageSize,ImageView.ScaleType.CENTER_CROP,R.mipmap.img_banner,R.mipmap.img_banner,R.mipmap.img_banner);
-
     }
 
     protected void initDatas()
@@ -64,10 +83,9 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
     protected void initLogic()
     {
         if(!getIntent().getBooleanExtra("islogined",false))
-            mSignInPresenter.signIn(SharepreferenceUtils.extractObject(this,"username",String.class).trim(),SharepreferenceUtils.extractObject(this,"password",String.class).trim());
+            mSignInPresenter.signIn(SharepreferenceUtils.extractObject(this,"phone",String.class).trim(),SharepreferenceUtils.extractObject(this,"password",String.class).trim());
         else
         {
-            mMainPresenter.getDatas();
             DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
             ProtectNotifycationService.sShouldStopService = false;
             startService(new Intent(this,ProtectNotifycationService.class));
@@ -77,14 +95,13 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         {
             public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position)
             {
-                showToast("点击了第" + position + "张图片！");
+
             }
         });
     }
 
     public void signInSuccess()
     {
-        mMainPresenter.getDatas();
         DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         ProtectNotifycationService.sShouldStopService = false;
         startService(new Intent(this,ProtectNotifycationService.class));
@@ -113,16 +130,6 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
     }
 
     public void signOutFailure()
-    {
-
-    }
-
-    public void getFailOfDatas()
-    {
-
-    }
-
-    public void getSuccessOfDatas()
     {
 
     }
@@ -195,11 +202,5 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
             }
         }
         return false;
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        mMainPresenter.getDatas();
     }
 }
