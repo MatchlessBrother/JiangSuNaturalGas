@@ -10,98 +10,94 @@
 
     <include layout="@layout/layout_title" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/msgdetail_swiperefreshlayout"
+    <android.support.v4.widget.NestedScrollView
+        android:requiresFadingEdge="vertical"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:fadingEdgeLength="0mm"
+        android:overScrollMode="never"
+        android:fillViewport="true">
 
-        <android.support.v4.widget.NestedScrollView
-            android:requiresFadingEdge="vertical"
-            android:layout_height="wrap_content"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:fadingEdgeLength="0mm"
-            android:overScrollMode="never"
-            android:fillViewport="true">
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <cn.bingoogolapple.bgabanner.BGABanner
+                android:id="@+id/mainact_banner"
+                android:scaleType="fitXY"
+                android:layout_height="330mm"
+                app:banner_transitionEffect="alpha"
+                android:layout_width="match_parent"
+                app:banner_contentBottomMargin="0mm"
+                app:banner_pageChangeDuration="2000"
+                app:banner_pointAutoPlayAble="false"
+                app:banner_pointLeftRightMargin="12mm"
+                app:banner_pointTopBottomMargin="12mm"
+                app:banner_placeholderDrawable="@mipmap/defaultimage"
+                app:banner_indicatorGravity="bottom|center_horizontal"
+                app:banner_pointContainerBackground="@android:color/transparent"
+                app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"/>
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:layout_marginTop="30mm"
+                android:layout_marginLeft="20mm"
+                android:layout_marginRight="20mm"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="隐患排查"
+                android:textColor="@color/default_font_black"
+                android:textSize="33sp" />
 
-                <cn.bingoogolapple.bgabanner.BGABanner
-                    android:id="@+id/mainact_banner"
-                    android:scaleType="fitXY"
-                    android:layout_height="330mm"
-                    app:banner_transitionEffect="alpha"
-                    android:layout_width="match_parent"
-                    app:banner_contentBottomMargin="0mm"
-                    app:banner_pageChangeDuration="2000"
-                    app:banner_pointAutoPlayAble="false"
-                    app:banner_pointLeftRightMargin="12mm"
-                    app:banner_pointTopBottomMargin="12mm"
-                    app:banner_placeholderDrawable="@mipmap/defaultimage"
-                    app:banner_indicatorGravity="bottom|center_horizontal"
-                    app:banner_pointContainerBackground="@android:color/transparent"
-                    app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mainact_yhpc_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20mm"
+                android:layout_marginRight="20mm"
+                android:layout_marginBottom="26mm"
+                android:overScrollMode="never"
+                android:fadingEdgeLength="0mm"
+                android:requiresFadingEdge="vertical"
+                android:scrollbars="none"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18mm"
-                    android:layout_marginBottom="33mm"
-                    android:layout_marginLeft="20mm"
-                    android:layout_marginRight="20mm"
-                    android:gravity="left|center_vertical"
-                    android:singleLine="true"
-                    android:text="隐患排查"
-                    android:textColor="@color/default_font_black"
-                    android:textSize="33sp" />
+            <View
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="1mm"
+                android:layout_marginTop="33mm"
+                android:layout_marginBottom="15mm"
+                android:background="@color/default_font_hint"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/mainact_yhpc_recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20mm"
-                    android:layout_marginRight="20mm"
-                    android:overScrollMode="never"
-                    android:fadingEdgeLength="0mm"
-                    android:requiresFadingEdge="vertical"
-                    android:scrollbars="none"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18mm"
+                android:layout_marginBottom="33mm"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="20mm"
+                android:layout_marginRight="20mm"
+                android:singleLine="true"
+                android:text="其它业务"
+                android:visibility="gone"
+                android:textColor="@color/default_font_black"
+                android:textSize="33sp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1mm"
-                    android:layout_marginTop="33mm"
-                    android:layout_marginBottom="15mm"
-                    android:background="@color/default_font_hint"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18mm"
-                    android:layout_marginBottom="33mm"
-                    android:gravity="left|center_vertical"
-                    android:layout_marginLeft="20mm"
-                    android:layout_marginRight="20mm"
-                    android:singleLine="true"
-                    android:text="其它业务"
-                    android:textColor="@color/default_font_black"
-                    android:textSize="33sp" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/mainact_qtyw_recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20mm"
-                    android:layout_marginRight="20mm"
-                    android:layout_marginBottom="33mm"
-                    android:overScrollMode="never"
-                    android:fadingEdgeLength="0mm"
-                    android:visibility="visible"
-                    android:requiresFadingEdge="vertical"
-                    android:scrollbars="none"/>
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mainact_qtyw_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20mm"
+                android:layout_marginRight="20mm"
+                android:layout_marginBottom="33mm"
+                android:overScrollMode="never"
+                android:fadingEdgeLength="0mm"
+                android:visibility="gone"
+                android:requiresFadingEdge="vertical"
+                android:scrollbars="none"/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

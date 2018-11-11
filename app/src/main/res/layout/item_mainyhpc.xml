@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_mainyhpc_all"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="26mm"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/item_mainyhpc_imgbg"
+            android:layout_width="124mm"
+            android:layout_height="124mm"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            tools:src="@drawable/shape_round_green_yhzg" />
+
+        <ImageView
+            android:id="@+id/item_mainyhpc_imgfg"
+            android:layout_width="63mm"
+            android:layout_height="60mm"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            tools:src="@mipmap/yhzg" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/item_mainyhpc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12mm"
+        android:gravity="left|center_vertical"
+        android:singleLine="true"
+        android:text="隐患整改"
+        android:textColor="@color/default_font_black"
+        android:textSize="28sp" />
+</LinearLayout>

@@ -2,6 +2,10 @@ package company.naturalgas.client.ui.main.activity.view;
 
 import android.net.Uri;
 import android.view.View;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import android.text.TextUtils;
 import android.content.Intent;
 import android.content.Context;
@@ -17,9 +21,10 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import company.naturalgas.client.base.BaseAct;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v4.widget.SwipeRefreshLayout;
+import company.naturalgas.client.bean.main.MainInfo;
 import cn.bingoogolapple.bgabanner.BGALocalImageSize;
 import android.support.v4.app.NotificationManagerCompat;
+import company.naturalgas.client.adapter.main.MainYhpcAdapter;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
 import com.yuan.devlibrary._11___Widget.promptBox.BasePopupWindow;
 import company.naturalgas.client.ui.main.activity.view_v.MainAct_V;
@@ -33,10 +38,9 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
     private BGABanner mBanner;
     private MainPresenter mMainPresenter;
     private SignInPresenter mSignInPresenter;
+    private MainYhpcAdapter mMainYhpcAdapter;
     private RecyclerView mMainactYhpcRecyclerview;
-    private RecyclerView mMainactQtywRecyclerview;
     private BGALocalImageSize mBannerLocalImageSize;
-    private SwipeRefreshLayout mMsgdetailSwiperefreshlayout;
 
     protected int setLayoutResID()
     {
@@ -50,20 +54,13 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         setTitleBack(R.mipmap.usericon);
         mBanner = (BGABanner)rootView.findViewById(R.id.mainact_banner);
         mMainactYhpcRecyclerview = (RecyclerView)rootView.findViewById(R.id.mainact_yhpc_recyclerview);
-        mMainactQtywRecyclerview = (RecyclerView)rootView.findViewById(R.id.mainact_qtyw_recyclerview);
-        mMsgdetailSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.msgdetail_swiperefreshlayout);
         /**********************************************************************************************************/
+        mMainYhpcAdapter = new MainYhpcAdapter(this,new ArrayList<MainInfo.MenuBean.YhpcBean>());
         GridLayoutManager yhpcGridLayoutManager = new GridLayoutManager(this,3);
         yhpcGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mMainactYhpcRecyclerview.setLayoutManager(yhpcGridLayoutManager);
-        mMainactYhpcRecyclerview.setNestedScrollingEnabled(false);
-        mMainactYhpcRecyclerview.setFocusableInTouchMode(false);
-        /**********************************************************************************************************/
-        GridLayoutManager qtyeGridLayoutManager = new GridLayoutManager(this,3);
-        qtyeGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-        mMainactQtywRecyclerview.setLayoutManager(qtyeGridLayoutManager);
-        mMainactQtywRecyclerview.setNestedScrollingEnabled(false);
-        mMainactQtywRecyclerview.setFocusableInTouchMode(false);
+        mMainactYhpcRecyclerview.setAdapter(mMainYhpcAdapter);
+        mMainYhpcAdapter.setEnableLoadMore(false);
         /**********************************************************************************************************/
         mBanner.setAutoPlayAble(true);
         mBanner.setAutoPlayInterval(6000);
@@ -86,6 +83,8 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
             mSignInPresenter.signIn(SharepreferenceUtils.extractObject(this,"phone",String.class).trim(),SharepreferenceUtils.extractObject(this,"password",String.class).trim());
         else
         {
+            Collections.sort(getBaseApp().getMainInfo().getMenu().getYhpc());
+            mMainYhpcAdapter.setNewData(getBaseApp().getMainInfo().getMenu().getYhpc());
             DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
             ProtectNotifycationService.sShouldStopService = false;
             startService(new Intent(this,ProtectNotifycationService.class));
@@ -102,6 +101,8 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
 
     public void signInSuccess()
     {
+        Collections.sort(getBaseApp().getMainInfo().getMenu().getYhpc());
+        mMainYhpcAdapter.setNewData(getBaseApp().getMainInfo().getMenu().getYhpc());
         DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         ProtectNotifycationService.sShouldStopService = false;
         startService(new Intent(this,ProtectNotifycationService.class));

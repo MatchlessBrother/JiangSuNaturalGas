@@ -126,7 +126,7 @@ public class TokenInterceptor_PersistentStore implements Interceptor
         Request request = chain.request();
         /**************************************添加Token到请求头中，以便通过服务器验证**************************************/
         if(mDataMap.containsKey(request.url().host()) && !getToken(request.url().host()).equals(""))
-            response = chain.proceed(request.newBuilder().header("auth_token",getToken(request.url().host())).build());
+            response = chain.proceed(request.newBuilder().header("userToken",getToken(request.url().host())).build());
         else
             response = chain.proceed(request);
         /****************************************保存Token到运行缓存中，以便下次使用****************************************/
@@ -146,7 +146,7 @@ public class TokenInterceptor_PersistentStore implements Interceptor
                 if(null == newestToken || newestToken.trim().equals(""))
                     return response;
                 setToken(response.request().url().host(),newestToken);
-                response = chain.proceed(request.newBuilder().header("auth_token",newestToken.trim()).build());
+                response = chain.proceed(request.newBuilder().header("userToken",newestToken.trim()).build());
                 /****************使用递归的方式在请求头里添加Token并重新发起网络请求***************/
                 response = updateTokenProcess(chain,request,response,--tryOnMaxNum);
             }

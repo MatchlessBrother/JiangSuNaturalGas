@@ -3,6 +3,7 @@ package company.naturalgas.client.bean.main;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -123,7 +124,7 @@ public class MainInfo implements Parcelable
             this.yhpc = yhpc;
         }
 
-        public static class YhpcBean implements Parcelable{
+        public static class YhpcBean implements Parcelable,Comparable<YhpcBean>{
             /**
              * id :
              * authName : 隐患整改
@@ -238,6 +239,11 @@ public class MainInfo implements Parcelable
                     return new YhpcBean[size];
                 }
             };
+
+            public int compareTo(@NonNull YhpcBean yhpcBean)
+            {
+                return this.getAuthSort() - yhpcBean.getAuthSort();
+            }
         }
 
         @Override
