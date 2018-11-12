@@ -2,6 +2,7 @@ package company.naturalgas.client.ui.main.activity.view;
 
 import android.view.View;
 import java.util.ArrayList;
+import android.content.Intent;
 import company.naturalgas.client.R;
 import company.naturalgas.client.base.BaseAct;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,21 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
+        switch(getIntent().getStringExtra("code"))
+        {
+            case "1":
+            {
+                setTitleMoreFont("添加");
+                setTitleContent("检查列表");
+                setTitleMoreFontVisible(View.VISIBLE);
+                break;
+            }
+            case "2":setTitleContent("任务列表");break;
+            case "3":setTitleContent("任务列表");break;
+            case "4":setTitleContent("验收列表");break;
+            case "5":setTitleContent("验收列表");break;
+            default:setTitleContent("验收列表");break;
+        }
         mListOfDangersSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.listofdangers_swiperefreshlayout);
         mListOfDangersAdapter = new ListOfDangersAdapter(mActivity,new ArrayList<DangerBean.RecordsBean>());
         mListOfDangersRecycler = (RecyclerView)rootView.findViewById(R.id.listofdangers_recycler);
@@ -68,9 +84,21 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                /*Intent intent = new Intent(ListOfDangersAct.this, DangerDetailAct.class);
-                intent.putExtra("code",String.valueOf(mListOfDangersAdapter.getData().get(position).getId()));
-                startActivity(intent);*/
+                switch(getIntent().getStringExtra("code"))
+                {
+                    case "1":
+                    {
+                        setTitleMoreFont("添加");
+                        setTitleContent("检查列表");
+                        setTitleMoreFontVisible(View.VISIBLE);
+                        break;
+                    }
+                    case "2":setTitleContent("任务列表");break;
+                    case "3":setTitleContent("任务列表");break;
+                    case "4":setTitleContent("验收列表");break;
+                    case "5":setTitleContent("验收列表");break;
+                    default:setTitleContent("验收列表");break;
+                }
                 showToast("position : " + position);
             }
         });
@@ -114,5 +142,15 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
             mListOfDangersAdapter.setEnableLoadMore(false);
         else
             mListOfDangersAdapter.setEnableLoadMore(true);
+    }
+
+    protected void onTitleMoreFontClick()
+    {
+        super.onTitleMoreFontClick();
+        if(null != getIntent() && null != getIntent().getStringExtra("code") && "1".equals(getIntent().getStringExtra("code").trim()))
+        {
+            Intent intent = new Intent(this,AddProblemAct.class);
+            startActivity(intent);
+        }
     }
 }

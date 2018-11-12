@@ -31,9 +31,10 @@ public class ListOfDangersAdapter extends BaseQuickAdapter<DangerBean.RecordsBea
             case "0": helper.setTextColor(R.id.itemdanger_status,mContext.getResources().getColor(R.color.default_font_gray));break;
             default:break;
         }
-        mDate.setTime(Long.valueOf(recordsBean.getCreateTime().trim()));
-        helper.setText(R.id.itemdanger_time,"时间 : " + mSimpleDateFormat.format(mDate));
+        /**mDate.setTime(Long.valueOf(recordsBean.getCreateTime().trim()));
+        helper.setText(R.id.itemdanger_time,"时间 : " + mSimpleDateFormat.format(mDate));*/
         helper.setText(R.id.itemdanger_status,null != recordsBean.getStatusName() ? recordsBean.getStatusName().trim() : "");
+        helper.setText(R.id.itemdanger_time,"时间 : " + (null != recordsBean.getCreateTime() ? recordsBean.getCreateTime().trim() : ""));
         helper.setText(R.id.itemdanger_content,"问题描述 : " + (null != recordsBean.getDescription() ? recordsBean.getDescription().trim() : ""));
     }
 }

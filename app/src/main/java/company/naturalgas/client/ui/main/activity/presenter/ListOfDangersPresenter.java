@@ -23,7 +23,7 @@ public class ListOfDangersPresenter extends BaseMvp_Presenter<ListOfDangersAct_V
         {
             currentPageOfIndex = 1;
             BaseMvp_EntranceOfModel.requestDatas(ListOfDangersModel.class).
-            putForm("index",currentPageOfIndex + "").convertForms().executeOfNet(getContext(),ListOfDangersModel.GetDangerDatas,new BaseMvp_LocalObjCallBack<BaseReturnData<DangerBean>>(this)
+            putForm("page",currentPageOfIndex + "").convertForms().executeOfNet(getContext(),ListOfDangersModel.GetDangerDatas,new BaseMvp_LocalObjCallBack<BaseReturnData<DangerBean>>(this)
             {
                 public void onSuccess(BaseReturnData<DangerBean> dangerBeans)
                 {
@@ -61,7 +61,7 @@ public class ListOfDangersPresenter extends BaseMvp_Presenter<ListOfDangersAct_V
         if(isAttachContextAndViewLayer())
         {
             BaseMvp_EntranceOfModel.requestDatas(ListOfDangersModel.class).
-            putForm("index",currentPageOfIndex + "").convertForms().executeOfNet(getContext(),ListOfDangersModel.GetDangerDatas,new BaseMvp_LocalObjCallBack<BaseReturnData<DangerBean>>(this)
+            putForm("page",currentPageOfIndex + "").convertForms().executeOfNet(getContext(),ListOfDangersModel.GetDangerDatas,new BaseMvp_LocalObjCallBack<BaseReturnData<DangerBean>>(this)
             {
                 public void onSuccess(BaseReturnData<DangerBean> dangerBeans)
                 {

@@ -14,8 +14,6 @@ import android.view.LayoutInflater;
 import company.naturalgas.client.R;
 import android.content.ComponentName;
 import android.app.NotificationManager;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xdandroid.hellodaemon.DaemonEnv;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import company.naturalgas.client.base.BaseAct;
@@ -23,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.GridLayoutManager;
 import company.naturalgas.client.bean.main.MainInfo;
 import cn.bingoogolapple.bgabanner.BGALocalImageSize;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import android.support.v4.app.NotificationManagerCompat;
 import company.naturalgas.client.adapter.main.MainYhpcAdapter;
 import com.yuan.devlibrary._12_______Utils.SharepreferenceUtils;
@@ -102,8 +101,18 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                Intent intent = new Intent(MainAct.this,ListOfDangersAct.class);
-                startActivity(intent);
+                if(null != mMainYhpcAdapter.getData().get(position) && null != mMainYhpcAdapter.getData().get(position).getAuthUrl() && "yhtj".equals(mMainYhpcAdapter.getData().get(position).getAuthUrl().trim()))
+                {
+                    Intent intent = new Intent(MainAct.this,YhtjAct.class);
+                    intent.putExtra("code",getBaseApp().getMainInfo().getRole().getCode());
+                    startActivity(intent);
+                }
+                else
+                {
+                    Intent intent = new Intent(MainAct.this,ListOfDangersAct.class);
+                    intent.putExtra("code",getBaseApp().getMainInfo().getRole().getCode());
+                    startActivity(intent);
+                }
             }
         });
     }

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background_gray"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <Button
+        android:id="@+id/addproblem_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:paddingBottom="20mm"
+        android:paddingTop="20mm"
+        android:singleLine="true"
+        android:text="确认"
+        android:textColor="@color/white"
+        android:textSize="38sp" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/addproblem_btn"
+        android:layout_below="@id/titlebar"
+        android:fadingEdgeLength="0mm"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/default_background_gray"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginTop="30mm"
+                    android:gravity="center_vertical|left"
+                    android:singleLine="true"
+                    android:text="问题描述 : "
+                    android:textColor="@color/default_font_gray"
+                    android:textSize="30sp" />
+
+                <EditText
+                    android:id="@+id/addproblem_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="350mm"
+                    android:layout_marginBottom="30mm"
+                    android:layout_marginLeft="40mm"
+                    android:layout_marginRight="40mm"
+                    android:background="@drawable/shape_rect_round_gray"
+                    android:gravity="top|left"
+                    android:hint="请输入内容文字"
+                    android:paddingBottom="20mm"
+                    android:paddingLeft="20mm"
+                    android:paddingRight="20mm"
+                    android:paddingTop="20mm"
+                    android:textColor="@color/default_font_black"
+                    android:textColorHint="@color/default_font_hint"
+                    android:textSize="28sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18mm"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginTop="30mm"
+                    android:gravity="center_vertical|left"
+                    android:singleLine="true"
+                    android:text="上传照片/视频"
+                    android:textColor="@color/default_font_gray"
+                    android:textSize="30sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/addproblem_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:fadingEdgeLength="0mm"
+                    android:requiresFadingEdge="vertical"
+                    android:scrollbars="none" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/addproblem_fzr_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18mm"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="30mm"
+                android:paddingLeft="20mm"
+                android:paddingRight="20mm"
+                android:paddingTop="30mm">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+                    android:singleLine="true"
+                    android:text="负责人"
+                    android:textColor="@color/default_font_gray"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/addproblem_fzr"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20mm"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择"
+                    android:singleLine="true"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="30sp" />
+
+                <ImageView
+                    android:layout_width="40mm"
+                    android:layout_height="40mm"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/icon_arrowright_gray" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>
