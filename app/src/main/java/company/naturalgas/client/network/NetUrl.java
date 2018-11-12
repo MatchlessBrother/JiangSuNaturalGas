@@ -1,6 +1,8 @@
 package company.naturalgas.client.network;
 
 import java.util.Map;
+
+import company.naturalgas.client.bean.main.DangerBean;
 import okhttp3.RequestBody;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
@@ -24,6 +26,10 @@ public interface NetUrl
     @POST("/sUser/login")
     @Multipart
     Observable<BaseReturnData<MainInfo>> signIn(@PartMap Map<String, RequestBody> params);
+
+    @POST("/cUpDanger/getDangerList")
+    @Multipart
+    Observable<BaseReturnData<DangerBean>> getDangerDatas(@PartMap Map<String, RequestBody> params);
 
 
 

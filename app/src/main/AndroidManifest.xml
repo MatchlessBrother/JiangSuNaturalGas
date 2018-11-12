@@ -69,6 +69,16 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"/>
 
+        <activity
+            android:name="company.naturalgas.client.ui.main.activity.view.ListOfDangersAct"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+
+        <activity
+            android:name="company.naturalgas.client.ui.main.activity.view.DangerDetailAct"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+
         <service android:name="company.naturalgas.client.service.main.RefreshMsgService"/>
 
         <service

@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-
 import android.text.TextUtils;
 import android.content.Intent;
 import android.content.Context;
@@ -16,6 +14,8 @@ import android.view.LayoutInflater;
 import company.naturalgas.client.R;
 import android.content.ComponentName;
 import android.app.NotificationManager;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xdandroid.hellodaemon.DaemonEnv;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import company.naturalgas.client.base.BaseAct;
@@ -95,6 +95,15 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
             public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position)
             {
 
+            }
+        });
+
+        mMainYhpcAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
+        {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position)
+            {
+                Intent intent = new Intent(MainAct.this,ListOfDangersAct.class);
+                startActivity(intent);
             }
         });
     }
