@@ -24,8 +24,8 @@ public class AddProblemAdapter extends BaseQuickAdapter<String,BaseViewHolder>
     {
         if("".equals(imgPath))
         {
-            helper.setGone(R.id.item_addproblem_bigimg,false);
             helper.setGone(R.id.item_addproblem_smallimg,true);
+            helper.setGone(R.id.item_addproblem_bigimg_all,false);
         }
         else
         {
@@ -33,9 +33,13 @@ public class AddProblemAdapter extends BaseQuickAdapter<String,BaseViewHolder>
             options.error(R.mipmap.defaultimage);
             options.placeholder(R.mipmap.defaultimage);
             options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-            helper.setGone(R.id.item_addproblem_bigimg,true);
             helper.setGone(R.id.item_addproblem_smallimg,false);
-            Glide.with(mContext).load(imgPath).apply(options).into((ImageView) helper.getView(R.id.item_addproblem_bigimg));
+            helper.setGone(R.id.item_addproblem_bigimg_all,true);
+            Glide.with(mContext).load(imgPath).apply(options).into((ImageView) helper.getView(R.id.item_addproblem_bigimg_img));
+            if(imgPath.toLowerCase().trim().contains("jpeg") || imgPath.toLowerCase().trim().contains("jpg") || imgPath.toLowerCase().trim().contains("png"))
+                helper.setGone(R.id.item_addproblem_bitimg_play,false);
+            else
+                helper.setGone(R.id.item_addproblem_bitimg_play,true);
         }
     }
 }

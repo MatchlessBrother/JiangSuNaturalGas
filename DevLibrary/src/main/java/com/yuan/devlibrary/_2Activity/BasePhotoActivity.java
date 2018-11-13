@@ -27,6 +27,7 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.tools.PictureFileUtils;
 import com.yuan.devlibrary._12_______Utils.MemoryUtils;
 import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
+import com.yuan.devlibrary._12_______Utils.SingleMediaUpdateUtils;
 
 public abstract class BasePhotoActivity extends BaseActivity
 {
@@ -97,7 +98,7 @@ public abstract class BasePhotoActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
         mIsShowGif = false;
-        mEnableCrop = true;
+        mEnableCrop = false;
         mEnableSound = false;
         mSelectedMedias = null;
         mIsDragCropBox = false;
@@ -111,7 +112,7 @@ public abstract class BasePhotoActivity extends BaseActivity
         mChoosePicturesMaxSize = Integer.MAX_VALUE;
         mCropShapeStyle = CROP_PICTURES_SHAPE_SQUARE;
         mPicturesSelector = PictureSelector.create(this);
-        mChoosePicturesMode = CHOOSE_PICTURES_MODE_SINGLE;
+        mChoosePicturesMode = CHOOSE_PICTURES_MODE_MULTIPLE;
         mPictureSelectorTheme = R.style.pictureSelector_default_style;
         mPicturesCachePath = MemoryUtils.getBestFilesPath(this) + File.separator + "pictures";
         File cachePathFile = new File(mPicturesCachePath);if(!cachePathFile.exists()) cachePathFile.mkdirs();
@@ -181,43 +182,9 @@ public abstract class BasePhotoActivity extends BaseActivity
     /**************************************正式启动照相机获取图片**********************************/
     protected void startVideo()
     {
-        mPicturesSelector.openGallery(PictureMimeType.ofVideo())
-                .theme(mPictureSelectorTheme)
-                .maxSelectNum(mChoosePicturesMaxSize)
-                .minSelectNum(mChoosePicturesMinSize)
-                .imageSpanCount(4)
-                .selectionMode(PictureConfig.MULTIPLE)
-                .previewImage(false)
-                .previewVideo(true)
-                .enablePreviewAudio(false)
-                .isCamera(true)
-                .imageFormat(PictureMimeType.JPEG)
-                .isZoomAnim(true)
-                .sizeMultiplier(0.5f)
-                .setOutputCameraPath(mPicturesCachePath)
-                .enableCrop(false)
-                .compress(true)
-                .hideBottomControls(!mIsShowCropControls)
-                .isGif(false)
-                .compressSavePath(mPicturesCachePath)//压缩图片保存地址
-                .freeStyleCropEnabled(mIsDragCropBox)
-                .circleDimmedLayer(mCropShapeStyle == CROP_PICTURES_SHAPE_CIRCULAR ? true : false)
-                .showCropFrame(mIsShowCropFrame)
-                .showCropGrid(mIsShowCropGrid)
-                .openClickSound(false)
-                .selectionMedia(mSelectedMedias)
-                .previewEggs(true)
-                .cropCompressQuality(88)
-                .minimumCompressSize(100)
-                .synOrAsy(!mIsCropActionAsy)
-                .rotateEnabled(true)
-                .scaleEnabled(true)
-                .videoQuality(1)
-                .videoMaxSecond(Integer.MAX_VALUE)
-                .videoMinSecond(1)
-                .recordVideoSecond(10)
-                .isDragFrame(false)
-                .forResult(REQUEST_CODE_PICTURES_PATH);
+        mPicturesSelector.openGallery(PictureMimeType.ofVideo()).theme(mPictureSelectorTheme).maxSelectNum(mChoosePicturesMaxSize)
+                .minSelectNum(mChoosePicturesMinSize).imageSpanCount(4).selectionMode(PictureConfig.MULTIPLE).isCamera(true).videoQuality(1)
+                .videoMinSecond(1).recordVideoSecond(Integer.MAX_VALUE).setOutputCameraPath(mPicturesCachePath).forResult(REQUEST_CODE_PICTURES_PATH);
     }
 
     /***************************************准备启动图库获取图片***********************************/
@@ -301,6 +268,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                     selectedMediasPath.add(media.getCutPath().trim());
                 else
                     selectedMediasPath.add(media.getPath().trim());
+                new SingleMediaUpdateUtils(this,new File(selectedMediasPath.get(selectedMediasPath.size() - 1)));
             }
             setOnNewImgPathListener(selectedMediasPath);
         }
@@ -332,6 +300,7 @@ public abstract class BasePhotoActivity extends BaseActivity
         {
             public void onClick(View v)
             {
+                mChoosePicturesMaxSize = maxSizePicturesOfGallery;
                 mIsUserOperateCamera = true;
                 alertDialog.dismiss();
                 readyStartVideo();
