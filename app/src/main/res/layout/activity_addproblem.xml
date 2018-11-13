@@ -60,7 +60,7 @@
                     android:textColor="@color/default_font_gray"
                     android:textSize="30sp" />
 
-                <EditText
+                <company.naturalgas.client.widget.ScrollEditText
                     android:id="@+id/addproblem_et"
                     android:layout_width="match_parent"
                     android:layout_height="350mm"

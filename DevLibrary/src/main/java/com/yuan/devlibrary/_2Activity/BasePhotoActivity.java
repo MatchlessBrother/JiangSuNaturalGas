@@ -118,7 +118,7 @@ public abstract class BasePhotoActivity extends BaseActivity
     }
 
     /**************************************准备启动照相机获取图片**********************************/
-    protected void readyStartCamera()
+    protected void readyStartVideo()
     {
         PackageManager packageManager = getPackageManager();
         /*******************判定手机是否含有可用的摄像头**********************/
@@ -152,7 +152,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                     if(mIsGetStoragePermissions)
                     {
                         /*********************启动照相机**********************/
-                        /*******************/startCamera();/******************/
+                        /*******************/startVideo();/******************/
                         /*********************启动照相机**********************/
                     }
                     else
@@ -179,21 +179,45 @@ public abstract class BasePhotoActivity extends BaseActivity
     }
 
     /**************************************正式启动照相机获取图片**********************************/
-    protected void startCamera()
+    protected void startVideo()
     {
-        mPicturesSelector.openCamera(PictureMimeType.ofImage())
-                .isCamera(true).compress(true).videoQuality(0)
-                .isZoomAnim(true).previewEggs(true).videoMaxSecond(0)
-                .imageSpanCount(4).isGif(mIsShowGif).isDragFrame(false)
-                .scaleEnabled(true).previewImage(true).previewVideo(false)
-                .rotateEnabled(true).sizeMultiplier(0.5f).recordVideoSecond(0)
-                .enableCrop(mEnableCrop).cropCompressQuality(88).minimumCompressSize(100)
-                .enablePreviewAudio(false).synOrAsy(!mIsCropActionAsy).theme(mPictureSelectorTheme)
-                .openClickSound(mEnableSound).showCropGrid(mIsShowCropGrid).selectionMedia(mSelectedMedias)
-                .showCropFrame(mIsShowCropFrame).videoMinSecond(Integer.MAX_VALUE).imageFormat(PictureMimeType.JPEG)
-                .selectionMode(mChoosePicturesMode).maxSelectNum(mChoosePicturesMaxSize).minSelectNum(mChoosePicturesMinSize)
-                .compressSavePath(mPicturesCachePath).freeStyleCropEnabled(mIsDragCropBox).setOutputCameraPath(mPicturesCachePath)
-                .hideBottomControls(!mIsShowCropControls).circleDimmedLayer(mCropShapeStyle == CROP_PICTURES_SHAPE_CIRCULAR ? true : false).forResult(REQUEST_CODE_PICTURES_PATH);
+        mPicturesSelector.openGallery(PictureMimeType.ofVideo())
+                .theme(mPictureSelectorTheme)
+                .maxSelectNum(mChoosePicturesMaxSize)
+                .minSelectNum(mChoosePicturesMinSize)
+                .imageSpanCount(4)
+                .selectionMode(PictureConfig.MULTIPLE)
+                .previewImage(false)
+                .previewVideo(true)
+                .enablePreviewAudio(false)
+                .isCamera(true)
+                .imageFormat(PictureMimeType.JPEG)
+                .isZoomAnim(true)
+                .sizeMultiplier(0.5f)
+                .setOutputCameraPath(mPicturesCachePath)
+                .enableCrop(false)
+                .compress(true)
+                .hideBottomControls(!mIsShowCropControls)
+                .isGif(false)
+                .compressSavePath(mPicturesCachePath)//压缩图片保存地址
+                .freeStyleCropEnabled(mIsDragCropBox)
+                .circleDimmedLayer(mCropShapeStyle == CROP_PICTURES_SHAPE_CIRCULAR ? true : false)
+                .showCropFrame(mIsShowCropFrame)
+                .showCropGrid(mIsShowCropGrid)
+                .openClickSound(false)
+                .selectionMedia(mSelectedMedias)
+                .previewEggs(true)
+                .cropCompressQuality(88)
+                .minimumCompressSize(100)
+                .synOrAsy(!mIsCropActionAsy)
+                .rotateEnabled(true)
+                .scaleEnabled(true)
+                .videoQuality(1)
+                .videoMaxSecond(Integer.MAX_VALUE)
+                .videoMinSecond(1)
+                .recordVideoSecond(10)
+                .isDragFrame(false)
+                .forResult(REQUEST_CODE_PICTURES_PATH);
     }
 
     /***************************************准备启动图库获取图片***********************************/
@@ -289,7 +313,7 @@ public abstract class BasePhotoActivity extends BaseActivity
      ****************************fontTextSize：描述获取图片方式文字的大小***************************
      **************************fontTextSizeType：描述获取图片方式文字的类型*************************
      *************************fontTextColorRes：描述获取图片方式文字的颜色值***********************/
-    protected void showSelectPicturesDialog(Float fontTextSize,Integer fontTextSizeType,Integer fontTextColorRes)
+    protected void showSelectPicturesDialog(Float fontTextSize,Integer fontTextSizeType,Integer fontTextColorRes,final int maxSizePicturesOfGallery)
     {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.show();
@@ -310,7 +334,7 @@ public abstract class BasePhotoActivity extends BaseActivity
             {
                 mIsUserOperateCamera = true;
                 alertDialog.dismiss();
-                readyStartCamera();
+                readyStartVideo();
 
             }
         });
@@ -318,6 +342,7 @@ public abstract class BasePhotoActivity extends BaseActivity
         {
             public void onClick(View v)
             {
+                mChoosePicturesMaxSize = maxSizePicturesOfGallery;
                 mIsUserOperateCamera = false;
                 alertDialog.dismiss();
                 readyStartGallery();
@@ -369,7 +394,7 @@ public abstract class BasePhotoActivity extends BaseActivity
             if(mIsGetStoragePermissions)
             {
                 /*********************启动照相机**********************/
-                /*******************/startCamera();/******************/
+                /*******************/startVideo();/******************/
                 /*********************启动照相机**********************/
             }
             else
@@ -400,7 +425,7 @@ public abstract class BasePhotoActivity extends BaseActivity
                 if(mIsUserOperateCamera)
                 {
                     /********************启动照相机********************/
-                    /******************/startCamera();/****************/
+                    /******************/startVideo();/****************/
                     /********************启动照相机********************/
                 }
                 else

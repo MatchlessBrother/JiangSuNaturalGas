@@ -14,7 +14,7 @@
         android:gravity="center"
         android:paddingBottom="4dp"
         android:paddingTop="8dp"
-        android:text="拍&#160;&#160;&#160;&#160;照"
+        android:text="拍 摄 视 频"
         android:textSize="16sp"
         android:textColor="@android:color/darker_gray"
         android:background="@drawable/bg_whiteupbtn"/>
@@ -31,7 +31,7 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:paddingTop="4dp"
-        android:text="从相册选取"
+        android:text="拍 摄 图 片"
         android:textSize="16sp"
         android:textColor="@android:color/darker_gray"
         android:background="@drawable/bg_whitedownbtn"/>
