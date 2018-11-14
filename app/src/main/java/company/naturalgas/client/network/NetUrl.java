@@ -1,24 +1,23 @@
 package company.naturalgas.client.network;
 
-import java.util.List;
 import java.util.Map;
-
-import company.naturalgas.client.bean.main.DangerBean;
-import company.naturalgas.client.bean.main.FzrBean;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.http.Field;
-import retrofit2.http.POST;
+import java.util.List;
 import retrofit2.http.Part;
+import retrofit2.http.POST;
+import okhttp3.RequestBody;
+import retrofit2.http.Query;
+import okhttp3.MultipartBody;
 import retrofit2.http.PartMap;
 import io.reactivex.Observable;
 import retrofit2.http.Multipart;
+import company.naturalgas.client.bean.main.FzrBean;
+import company.naturalgas.client.bean.main.SjlxBean;
 import company.naturalgas.client.bean.main.MainInfo;
 import company.naturalgas.client.bean.BaseReturnData;
+import company.naturalgas.client.bean.main.DangerBean;
 import company.naturalgas.client.bean.main.MsgDetailBean;
 import company.naturalgas.client.bean.BaseReturnListData;
 import company.naturalgas.client.bean.main.RefreshMsgBean;
-import retrofit2.http.Query;
 
 public interface NetUrl
 {
@@ -27,6 +26,9 @@ public interface NetUrl
 
     @POST("/sUser/findSgfzr")
     Observable<BaseReturnListData<FzrBean>> getFzrDatas();
+
+    @POST("/dDangerType/getDDangerTypeList")
+    Observable<BaseReturnListData<SjlxBean>> getSjlxDatas();
 
     @POST("/yjfb/notify/newMessage.app")
     Observable<BaseReturnListData<RefreshMsgBean>> refreshMsg();

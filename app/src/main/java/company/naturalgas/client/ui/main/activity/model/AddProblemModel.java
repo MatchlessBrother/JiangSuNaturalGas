@@ -15,7 +15,7 @@ public class AddProblemModel extends BaseMvp_PVModel
     public static final int GetFzrDatas = 0x0001;
     public static final int UploadFile = 0x0002;
     public static final int UpLoadDanger = 0x0003;
-
+    public static final int GetSjlxDatas = 0x0004;
 
     public void executeOfNet(Context context, int netRequestCode,BaseMvp_LocalObjCallBack localCallBack)
     {
@@ -40,6 +40,7 @@ public class AddProblemModel extends BaseMvp_PVModel
         switch(netRequestCode)
         {
             case GetFzrDatas:NetClient.getInstance(context).getNetUrl().getFzrDatas().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetListCallBack(context,localCallBack));break;
+            case GetSjlxDatas:NetClient.getInstance(context).getNetUrl().getSjlxDatas().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetListCallBack(context,localCallBack));break;
         }
     }
 

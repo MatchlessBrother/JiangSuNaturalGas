@@ -12,20 +12,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 import company.naturalgas.client.R;
-
-import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
-import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
-import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.luck.picture.lib.PictureSelector;
 import android.support.v7.widget.RecyclerView;
 import android.graphics.drawable.ColorDrawable;
+import company.naturalgas.client.bean.main.FzrBean;
 import company.naturalgas.client.base.BasePhotoAct;
 import android.support.v7.widget.GridLayoutManager;
+import company.naturalgas.client.bean.main.SjlxBean;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import company.naturalgas.client.adapter.main.AddProblemAdapter;
-import company.naturalgas.client.bean.main.FzrBean;
 import company.naturalgas.client.ui.main.activity.view_v.AddProblemAct_V;
 import company.naturalgas.client.ui.main.activity.presenter.AddProblemPresenter;
 
@@ -33,17 +33,24 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
 {
     private Button mAddproblemBtn;
     private EditText mAddproblemEt;
-    private TextView mAddproblemFzr;
     private int mTotalUploadedFiles;
-    private List<FzrBean> mFzrOptionBeans;
-    private LinearLayout mAddproblemFzrAll;
     private List<String> mUploadedFilesList;
     private PictureSelector mPicturesSelector;
     private AddProblemAdapter mAddProblemAdapter;
     private RecyclerView mAddproblemRecyclerview;
+    private AddProblemPresenter mAddProblemPresenter;
+
+    private TextView mAddproblemFzr;
+    private List<FzrBean> mFzrOptionBeans;
+    private LinearLayout mAddproblemFzrAll;
     private OptionsPickerView mFzrOptionsPickerView;
     private int mCurrentSelectedFzrOptionItemOfIndex;
-    private AddProblemPresenter mAddProblemPresenter;
+
+    private TextView mAddproblemSjlx;
+    private List<SjlxBean> mSjlxOptionBeans;
+    private LinearLayout mAddproblemSjlxAll;
+    private OptionsPickerView mSjlxOptionsPickerView;
+    private int mCurrentSelectedSjlxOptionItemOfIndex;
 
     protected int setLayoutResID()
     {
@@ -53,12 +60,16 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
+        setTitleContent("添加问题");
         mPicturesSelector = PictureSelector.create(this);
         mAddproblemBtn = (Button)rootView.findViewById(R.id.addproblem_btn);
         mAddproblemEt = (EditText)rootView.findViewById(R.id.addproblem_et);
+        mAddproblemRecyclerview =(RecyclerView)rootView.findViewById(R.id.addproblem_recyclerview);
+        /******************************************************************************************/
         mAddproblemFzr = (TextView)rootView.findViewById(R.id.addproblem_fzr);
         mAddproblemFzrAll = (LinearLayout)rootView.findViewById(R.id.addproblem_fzr_all);
-        mAddproblemRecyclerview =(RecyclerView)rootView.findViewById(R.id.addproblem_recyclerview);
+        mAddproblemSjlx = (TextView)rootView.findViewById(R.id.addproblem_sjlx);
+        mAddproblemSjlxAll = (LinearLayout)rootView.findViewById(R.id.addproblem_sjlx_all);
         /******************************************************************************************/
         List dataList = new ArrayList<String>();dataList.add("");
         mAddProblemAdapter =  new AddProblemAdapter(mActivity,dataList);
@@ -89,6 +100,27 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                 .setDividerColor(getResources().getColor(R.color.default_font_gray))
                 .setOutSideCancelable(true).isRestoreItem(false).isCenterLabel(false)
                 .setCyclic(false,false,false).setSelectOptions(0, 0, 0).build();
+        /******************************************************************************************/
+        mSjlxOptionsPickerView = new OptionsPickerBuilder(this, new OnOptionsSelectListener()
+        {
+            public void onOptionsSelect(int options1Index, int options2Index, int options3Index, View view)
+            {
+                mCurrentSelectedSjlxOptionItemOfIndex = options1Index;
+                mSjlxOptionsPickerView.setSelectOptions(mCurrentSelectedSjlxOptionItemOfIndex);
+                mAddproblemSjlx.setText(mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ? mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getPickerViewText().trim() : "");
+            }
+        }) .setTitleText("选择事件类型").setLabels("","","").setTitleSize(33)
+                .setSubmitText("确定") .setCancelText("取消")
+                .setSubCalSize(28).setContentTextSize(18)
+                .setBgColor(getResources().getColor(R.color.white))
+                .setTitleColor(getResources().getColor(R.color.white))
+                .setSubmitColor(getResources().getColor(R.color.white))
+                .setCancelColor(getResources().getColor(R.color.white))
+                .setBackgroundId(getResources().getColor(R.color.white))
+                .setTitleBgColor(getResources().getColor(R.color.colorPrimary))
+                .setDividerColor(getResources().getColor(R.color.default_font_gray))
+                .setOutSideCancelable(true).isRestoreItem(false).isCenterLabel(false)
+                .setCyclic(false,false,false).setSelectOptions(0, 0, 0).build();
     }
 
     protected void initDatas()
@@ -96,6 +128,7 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         mAddProblemPresenter = new AddProblemPresenter();
         bindBaseMvpPresenter(mAddProblemPresenter);
         mUploadedFilesList = new ArrayList<>();
+        mSjlxOptionBeans = new ArrayList<>();
         mFzrOptionBeans = new ArrayList<>();
         mTotalUploadedFiles = 0;
     }
@@ -103,8 +136,10 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
     protected void initLogic()
     {
         mAddProblemPresenter.getFzrDatas();
+        mAddProblemPresenter.getSjlxDatas();
         mAddproblemBtn.setOnClickListener(this);
         mAddproblemFzrAll.setOnClickListener(this);
+        mAddproblemSjlxAll.setOnClickListener(this);
         mAddProblemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
@@ -206,6 +241,18 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                 break;
             }
 
+            case R.id.addproblem_sjlx_all:
+            {
+                if(null != mSjlxOptionBeans && mSjlxOptionBeans.size() > 0)
+                {
+                    mSjlxOptionsPickerView.setSelectOptions(mCurrentSelectedSjlxOptionItemOfIndex);
+                    mSjlxOptionsPickerView.show();
+                }
+                else
+                    showToast("没有可以选择的事件类型");
+                break;
+            }
+
             case R.id.addproblem_btn:
             {
                 boolean isContainEmptyView = false;
@@ -225,8 +272,9 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                 else
                 {
                     mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
-                                    mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getPickerViewText().trim() : "",
-                            mAddproblemEt.getText().toString().trim(),mUploadedFilesList);
+                              mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getPickerViewText().trim() : "", mAddproblemEt.getText().toString().trim(),
+                                                     mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
+                                                              mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
                 }
                 break;
             }
@@ -238,9 +286,25 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
 
     }
 
+    public void getFailOfSjlxDatas()
+    {
+
+    }
+
     public void getFailOfUploadFile()
     {
         showToast("上传图片/视频失败，请重新上传");
+
+    }
+
+    public void getFailOfUploadDanger()
+    {
+
+    }
+
+    public void getSuccessOfUploadDanger()
+    {
+        finish();
 
     }
 
@@ -263,19 +327,10 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         else
         {
             mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
-                            mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "",
-                            mAddproblemEt.getText().toString().trim(),mUploadedFilesList);
+                      mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getPickerViewText().trim() : "", mAddproblemEt.getText().toString().trim(),
+                                            mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
+                                                     mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
         }
-    }
-
-    public void getFailOfUploadDanger()
-    {
-
-    }
-
-    public void getSuccessOfUploadDanger()
-    {
-        finish();
     }
 
     public void getSuccessOfFzrDatas(List<FzrBean> fzrBeans)
@@ -285,6 +340,15 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         mFzrOptionsPickerView.setNPicker(mFzrOptionBeans,null,null);
         if(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size())mFzrOptionsPickerView.setSelectOptions(mCurrentSelectedFzrOptionItemOfIndex);
         mAddproblemFzr.setText(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ? mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getPickerViewText().trim() : "");
+    }
+
+    public void getSuccessOfSjlxDatas(List<SjlxBean> sjlxBeans)
+    {
+        mSjlxOptionBeans = sjlxBeans;
+        mCurrentSelectedSjlxOptionItemOfIndex = mSjlxOptionBeans.size() > 0 ? -1 : -1;
+        mSjlxOptionsPickerView.setNPicker(mSjlxOptionBeans,null,null);
+        if(mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size())mSjlxOptionsPickerView.setSelectOptions(mCurrentSelectedSjlxOptionItemOfIndex);
+        mAddproblemSjlx.setText(mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ? mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getPickerViewText().trim() : "");
     }
 
     protected void setOnNewImgPathListener(LinkedList<String> bitmapPaths)
