@@ -84,22 +84,12 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                switch(getIntent().getStringExtra("code"))
+                if(null != getIntent() && null != getIntent().getStringExtra("code") && !"".equals(getIntent().getStringExtra("code").trim()) && !"1".equals(getIntent().getStringExtra("code").trim()))
                 {
-                    case "1":
-                    {
-                        setTitleMoreFont("添加");
-                        setTitleContent("检查列表");
-                        setTitleMoreFontVisible(View.VISIBLE);
-                        break;
-                    }
-                    case "2":setTitleContent("任务列表");break;
-                    case "3":setTitleContent("任务列表");break;
-                    case "4":setTitleContent("验收列表");break;
-                    case "5":setTitleContent("验收列表");break;
-                    default:setTitleContent("验收列表");break;
+                    Intent intent = new Intent(ListOfDangersAct.this,DangerDetailAct.class);
+                    intent.putExtra("code",getBaseApp().getMainInfo().getRole().getCode());
+                    startActivity(intent);
                 }
-                showToast("position : " + position);
             }
         });
     }
@@ -125,6 +115,16 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
         }
     }
 
+    protected void onTitleMoreFontClick()
+    {
+        super.onTitleMoreFontClick();
+        if(null != getIntent() && null != getIntent().getStringExtra("code") && "1".equals(getIntent().getStringExtra("code").trim()))
+        {
+            Intent intent = new Intent(this,AddProblemAct.class);
+            startActivity(intent);
+        }
+    }
+
     public void refreshDatas(DangerBean dangerBeans)
     {
         mListOfDangersAdapter.setNewData(dangerBeans.getRecords());
@@ -142,15 +142,5 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
             mListOfDangersAdapter.setEnableLoadMore(false);
         else
             mListOfDangersAdapter.setEnableLoadMore(true);
-    }
-
-    protected void onTitleMoreFontClick()
-    {
-        super.onTitleMoreFontClick();
-        if(null != getIntent() && null != getIntent().getStringExtra("code") && "1".equals(getIntent().getStringExtra("code").trim()))
-        {
-            Intent intent = new Intent(this,AddProblemAct.class);
-            startActivity(intent);
-        }
     }
 }

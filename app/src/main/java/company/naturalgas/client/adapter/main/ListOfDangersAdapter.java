@@ -33,8 +33,9 @@ public class ListOfDangersAdapter extends BaseQuickAdapter<DangerBean.RecordsBea
         }
         /**mDate.setTime(Long.valueOf(recordsBean.getCreateTime().trim()));
         helper.setText(R.id.itemdanger_time,"时间 : " + mSimpleDateFormat.format(mDate));*/
+        helper.setText(R.id.itemdanger_type,null != recordsBean.getType() ? recordsBean.getType().trim() : "");
         helper.setText(R.id.itemdanger_status,null != recordsBean.getStatusName() ? recordsBean.getStatusName().trim() : "");
+        helper.setText(R.id.itemdanger_content,null != recordsBean.getDescription() ? recordsBean.getDescription().trim() : "");
         helper.setText(R.id.itemdanger_time,"时间 : " + (null != recordsBean.getCreateTime() ? recordsBean.getCreateTime().trim() : ""));
-        helper.setText(R.id.itemdanger_content,"问题描述 : " + (null != recordsBean.getDescription() ? recordsBean.getDescription().trim() : ""));
     }
 }

@@ -73,6 +73,15 @@ public class DangerBean implements Parcelable
         private String statusName;
         private String description;
         private String id;
+        private String type;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
         public String getCode() {
             return code;
@@ -126,6 +135,7 @@ public class DangerBean implements Parcelable
             dest.writeString(this.statusName);
             dest.writeString(this.description);
             dest.writeString(this.id);
+            dest.writeString(this.type);
         }
 
         public RecordsBean() {
@@ -137,6 +147,7 @@ public class DangerBean implements Parcelable
             this.statusName = in.readString();
             this.description = in.readString();
             this.id = in.readString();
+            this.type = in.readString();
         }
 
         public static final Creator<RecordsBean> CREATOR = new Creator<RecordsBean>() {

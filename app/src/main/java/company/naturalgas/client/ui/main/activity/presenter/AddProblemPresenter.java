@@ -3,9 +3,9 @@ package company.naturalgas.client.ui.main.activity.presenter;
 import java.util.List;
 import java.util.Arrays;
 import company.naturalgas.client.bean.main.FzrBean;
+import company.naturalgas.client.bean.main.SjlxBean;
 import company.naturalgas.client.bean.BaseReturnData;
 import company.naturalgas.client.bean.BaseReturnListData;
-import company.naturalgas.client.bean.main.SjlxBean;
 import company.naturalgas.client.ui.base.BaseMvp_Presenter;
 import company.naturalgas.client.ui.base.BaseMvp_EntranceOfModel;
 import company.naturalgas.client.ui.base.BaseMvp_LocalObjCallBack;
@@ -125,7 +125,7 @@ public class AddProblemPresenter extends BaseMvp_Presenter<AddProblemAct_V>
     {
         if(isAttachContextAndViewLayer())
         {
-            BaseMvp_EntranceOfModel.requestDatas(AddProblemModel.class).putForm("transmitDealId",transmitDealId).putForm("description",description).putForm("code",sjlx).
+            BaseMvp_EntranceOfModel.requestDatas(AddProblemModel.class).putForm("transmitDealId",transmitDealId).putForm("description",description).putForm("dangerType",sjlx).
             convertForms().putImagesPath(filesPath).executeOfNet(getContext(),AddProblemModel.UpLoadDanger,new BaseMvp_LocalObjCallBack<BaseReturnData>(this)
                     {
                         public void onSuccess(BaseReturnData baseReturnData)

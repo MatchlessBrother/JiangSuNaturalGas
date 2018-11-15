@@ -272,7 +272,7 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                 else
                 {
                     mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
-                              mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getPickerViewText().trim() : "", mAddproblemEt.getText().toString().trim(),
+                              mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "", mAddproblemEt.getText().toString().trim(),
                                                      mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
                                                               mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
                 }
@@ -327,7 +327,7 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         else
         {
             mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
-                      mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getPickerViewText().trim() : "", mAddproblemEt.getText().toString().trim(),
+                      mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "", mAddproblemEt.getText().toString().trim(),
                                             mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
                                                      mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
         }
