@@ -2,6 +2,10 @@ package company.naturalgas.client.network;
 
 import java.util.Map;
 import java.util.List;
+
+import company.naturalgas.client.bean.main.DangerDetailBean;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Part;
 import retrofit2.http.POST;
 import okhttp3.RequestBody;
@@ -53,9 +57,13 @@ public interface NetUrl
     @Multipart
     Observable<BaseReturnData<MsgDetailBean>> getMsgOfDetailDats(@PartMap Map<String, RequestBody> params);
 
+    @POST("/cUpDanger/getDetail")
+    @Multipart
+    Observable<BaseReturnData<DangerDetailBean>> getDangerDetailDatas(@PartMap Map<String, RequestBody> params);
+
     @POST("/cUpDanger/upLoadDanger")
     @Multipart
-    Observable<BaseReturnData> upLoadDanger(@PartMap Map<String, RequestBody> params,@Query("files[]") String[] filesParams);
+    Observable<BaseReturnData> upLoadDanger(@PartMap Map<String, RequestBody> params,@Part List<MultipartBody.Part> filesParams);
 
     @POST("/cDangerFile/uploadFile")
     @Multipart

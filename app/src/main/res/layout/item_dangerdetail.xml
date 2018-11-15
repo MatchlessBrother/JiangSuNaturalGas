@@ -5,117 +5,155 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20mm"
+    android:layout_marginBottom="20mm"
     android:background="@color/white"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1mm"
+        android:background="@color/default_font_hint" />
+
     <LinearLayout
+        android:id="@+id/itemdangerdetail_one_all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="6mm"
+        android:orientation="horizontal"
+        android:paddingBottom="6mm"
         android:paddingLeft="20mm"
         android:paddingRight="20mm"
-        android:paddingBottom="6mm"
-        android:orientation="horizontal">
+        android:paddingTop="6mm">
 
         <TextView
             android:id="@+id/itemdangerdetail_one_left"
-            android:textColor="@color/default_font_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8mm"
+            android:gravity="left"
             android:singleLine="true"
+            android:textColor="@color/default_font_gray"
             android:textSize="26sp"
-            android:gravity="left"/>
+            tools:text="上报时间 : " />
 
         <TextView
             android:id="@+id/itemdangerdetail_one_right"
-            android:textColor="@color/default_font_gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="26sp"
-            android:gravity="right"/>
+            android:gravity="right"
+            tools:text="1992-10-12 18:00:00"
+            android:textColor="@color/default_font_gray"
+            android:textSize="26sp" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/itemdangerdetail_two_all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="6mm"
+        android:orientation="horizontal"
+        android:paddingBottom="6mm"
         android:paddingLeft="20mm"
         android:paddingRight="20mm"
-        android:paddingBottom="6mm"
-        android:orientation="horizontal">
+        android:paddingTop="6mm">
 
         <TextView
             android:id="@+id/itemdangerdetail_two_left"
-            android:textColor="@color/default_font_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8mm"
+            android:gravity="left"
             android:singleLine="true"
+            android:textColor="@color/default_font_gray"
             android:textSize="26sp"
-            android:gravity="left"/>
+            tools:text="事件类型 : " />
 
         <TextView
             android:id="@+id/itemdangerdetail_two_right"
-            android:textColor="@color/default_font_gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/default_font_gray"
             android:textSize="26sp"
-            android:gravity="left"/>
+            tools:text="物" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/itemdangerdetail_three"
-        android:textColor="@color/default_font_gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20mm"
-        android:layout_marginLeft="20mm"
         android:layout_marginBottom="6mm"
+        android:layout_marginLeft="20mm"
+        android:layout_marginRight="20mm"
         android:layout_marginTop="6mm"
+        android:gravity="left"
+        android:textColor="@color/default_font_gray"
         android:textSize="26sp"
-        android:gravity="left"/>
+        tools:text="问题描述" />
 
     <TextView
         android:id="@+id/itemdangerdetail_four"
-        android:textColor="@color/default_font_gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20mm"
-        android:layout_marginLeft="20mm"
         android:layout_marginBottom="6mm"
+        android:layout_marginLeft="20mm"
+        android:layout_marginRight="20mm"
         android:layout_marginTop="6mm"
+        android:gravity="left"
+        android:textColor="@color/default_font_black"
         android:textSize="26sp"
-        android:gravity="left"/>
+        tools:text="测试的内容" />
 
     <View
+        android:layout_width="match_parent"
         android:layout_height="1mm"
         android:layout_marginTop="8mm"
-        android:layout_marginBottom="8mm"
-        android:layout_width="match_parent"
-        android:background="@color/default_divide_line"/>
+        android:background="@color/default_font_hint" />
 
-    <android.support.v4.widget.NestedScrollView
+    <LinearLayout
+        android:id="@+id/itemdangerdetail_zpsh_all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:requiresFadingEdge="vertical"
-        android:layout_marginRight="20mm"
-        android:layout_marginLeft="20mm"
-        android:fadingEdgeLength="0mm"
-        android:overScrollMode="never"
-        android:scrollbars="none">
+        android:layout_marginTop="8mm"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/itemdangerdetail_recyclerview"
+        <TextView
+            android:id="@+id/itemdangerdetail_zpsh_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:requiresFadingEdge="vertical"
-            android:overScrollMode="never"
+            android:layout_marginBottom="6mm"
+            android:layout_marginLeft="20mm"
+            android:layout_marginRight="20mm"
+            android:layout_marginTop="6mm"
+            android:gravity="left"
+            android:textColor="@color/default_font_gray"
+            android:textSize="26sp"
+            android:text="照片/视频" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12mm"
+            android:layout_marginLeft="20mm"
+            android:layout_marginRight="20mm"
+            android:layout_marginTop="12mm"
             android:fadingEdgeLength="0mm"
-            android:scrollbars="none" />
+            android:overScrollMode="never"
+            android:requiresFadingEdge="vertical"
+            android:scrollbars="none">
 
-    </android.support.v4.widget.NestedScrollView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/itemdangerdetail_zpsh_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fadingEdgeLength="0mm"
+                android:overScrollMode="never"
+                android:requiresFadingEdge="vertical"
+                android:scrollbars="none" />
+        </android.support.v4.widget.NestedScrollView>
 
-
+        <View
+            android:layout_height="1mm"
+            android:layout_width="match_parent"
+            android:background="@color/default_font_hint" />
+    </LinearLayout>
 </LinearLayout>

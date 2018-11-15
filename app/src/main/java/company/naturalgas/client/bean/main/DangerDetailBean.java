@@ -1,9 +1,8 @@
 package company.naturalgas.client.bean.main;
 
+import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.List;
 
 public class DangerDetailBean implements Parcelable
 {
@@ -42,7 +41,7 @@ public class DangerDetailBean implements Parcelable
         private String createTime;
         private String description;
         private String type;
-        private List<FileListBean> fileList;
+        private List<RecordBean.FileListBeanX> fileList;
 
         public String getCreateTime() {
             return createTime;
@@ -68,11 +67,11 @@ public class DangerDetailBean implements Parcelable
             this.type = type;
         }
 
-        public List<FileListBean> getFileList() {
+        public List<RecordBean.FileListBeanX> getFileList() {
             return fileList;
         }
 
-        public void setFileList(List<FileListBean> fileList) {
+        public void setFileList(List<RecordBean.FileListBeanX> fileList) {
             this.fileList = fileList;
         }
 
@@ -177,7 +176,7 @@ public class DangerDetailBean implements Parcelable
             this.createTime = in.readString();
             this.description = in.readString();
             this.type = in.readString();
-            this.fileList = in.createTypedArrayList(FileListBean.CREATOR);
+            this.fileList = in.createTypedArrayList(RecordBean.FileListBeanX.CREATOR);
         }
 
         public static final Creator<SgmsBean> CREATOR = new Creator<SgmsBean>() {
@@ -216,7 +215,25 @@ public class DangerDetailBean implements Parcelable
         private String rPhone;
         private String dealType;
         private String sPhone;
+        private String description;
+        private String type;
         private List<FileListBeanX> fileList;
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
         public String getDealContent() {
             return dealContent;
@@ -395,6 +412,8 @@ public class DangerDetailBean implements Parcelable
             dest.writeString(this.rPhone);
             dest.writeString(this.dealType);
             dest.writeString(this.sPhone);
+            dest.writeString(this.description);
+            dest.writeString(this.type);
             dest.writeTypedList(this.fileList);
         }
 
@@ -411,6 +430,8 @@ public class DangerDetailBean implements Parcelable
             this.rPhone = in.readString();
             this.dealType = in.readString();
             this.sPhone = in.readString();
+            this.description = in.readString();
+            this.type = in.readString();
             this.fileList = in.createTypedArrayList(FileListBeanX.CREATOR);
         }
 

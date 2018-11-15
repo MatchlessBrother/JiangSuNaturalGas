@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import company.naturalgas.client.bean.main.DangerBean;
 import company.naturalgas.client.adapter.main.ListOfDangersAdapter;
+import company.naturalgas.client.bean.main.MainInfo;
 import company.naturalgas.client.ui.main.activity.view_v.ListOfDangersAct_V;
 import company.naturalgas.client.ui.main.activity.presenter.ListOfDangersPresenter;
 
@@ -29,21 +30,13 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
-        switch(getIntent().getStringExtra("code"))
+        setTitleContent("隐患列表");
+        /*MainInfo mainInfo = getBaseApp().getMainInfo();
+        for(int index = 0;index < mainInfo.getMenu().getYhpc().size();index++)
         {
-            case "1":
-            {
-                setTitleMoreFont("添加");
-                setTitleContent("检查列表");
-                setTitleMoreFontVisible(View.VISIBLE);
-                break;
-            }
-            case "2":setTitleContent("任务列表");break;
-            case "3":setTitleContent("任务列表");break;
-            case "4":setTitleContent("验收列表");break;
-            case "5":setTitleContent("验收列表");break;
-            default:setTitleContent("验收列表");break;
-        }
+            mainInfo.getMenu().getYhpc().get(index).getAuthUrl().equals("sgsb")
+        }*/
+
         mListOfDangersSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.listofdangers_swiperefreshlayout);
         mListOfDangersAdapter = new ListOfDangersAdapter(mActivity,new ArrayList<DangerBean.RecordsBean>());
         mListOfDangersRecycler = (RecyclerView)rootView.findViewById(R.id.listofdangers_recycler);
@@ -84,12 +77,10 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
             {
-                if(null != getIntent() && null != getIntent().getStringExtra("code") && !"".equals(getIntent().getStringExtra("code").trim()) && !"1".equals(getIntent().getStringExtra("code").trim()))
-                {
-                    Intent intent = new Intent(ListOfDangersAct.this,DangerDetailAct.class);
-                    intent.putExtra("code",getBaseApp().getMainInfo().getRole().getCode());
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(ListOfDangersAct.this,DangerDetailAct.class);
+                intent.putExtra("code",getBaseApp().getMainInfo().getRole().getCode());
+                intent.putExtra("id",mListOfDangersAdapter.getData().get(position).getId());
+                startActivity(intent);
             }
         });
     }

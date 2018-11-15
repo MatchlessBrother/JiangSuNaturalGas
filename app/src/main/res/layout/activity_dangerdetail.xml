@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:focusable="true">
 
     <include layout="@layout/layout_title" />
 
@@ -28,7 +28,7 @@
             android:singleLine="true"
             android:text="拒绝"
             android:textColor="@color/white"
-            android:textSize="38sp" />
+            android:textSize="38sp"/>
 
         <Button
             android:id="@+id/dangerdetail_btn_true"
@@ -41,7 +41,7 @@
             android:singleLine="true"
             android:text="验收"
             android:textColor="@color/white"
-            android:textSize="38sp" />
+            android:textSize="38sp"/>
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -54,100 +54,13 @@
         android:fadingEdgeLength="0mm"
         android:overScrollMode="never"
         android:scrollbars="none">
-
-        <android.support.v4.widget.NestedScrollView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dangerdetail_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fadingEdgeLength="0mm"
             android:overScrollMode="never"
             android:requiresFadingEdge="vertical"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:background="@color/default_background_gray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/dangerdetail_recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fadingEdgeLength="0mm"
-                    android:overScrollMode="never"
-                    android:requiresFadingEdge="vertical"
-                    android:scrollbars="none" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20mm"
-                        android:layout_marginLeft="20mm"
-                        android:layout_marginRight="20mm"
-                        android:layout_marginTop="20mm"
-                        android:gravity="center_vertical|left"
-                        android:singleLine="true"
-                        android:text="问题描述 : "
-                        android:textColor="@color/default_font_gray"
-                        android:textSize="30sp" />
-
-                    <company.naturalgas.client.widget.ScrollEditText
-                        android:id="@+id/dangerdetail_et"
-                        android:layout_width="match_parent"
-                        android:layout_height="350mm"
-                        android:layout_marginBottom="20mm"
-                        android:layout_marginLeft="40mm"
-                        android:layout_marginRight="40mm"
-                        android:background="@drawable/shape_rect_round_gray"
-                        android:gravity="top|left"
-                        android:hint="请输入内容文字"
-                        android:paddingBottom="20mm"
-                        android:paddingLeft="20mm"
-                        android:paddingRight="20mm"
-                        android:paddingTop="20mm"
-                        android:textColor="@color/default_font_black"
-                        android:textColorHint="@color/default_font_hint"
-                        android:textSize="28sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:layout_marginTop="20mm"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20mm"
-                        android:layout_marginLeft="20mm"
-                        android:layout_marginRight="20mm"
-                        android:layout_marginTop="20mm"
-                        android:gravity="center_vertical|left"
-                        android:singleLine="true"
-                        android:text="上传照片/视频"
-                        android:textColor="@color/default_font_gray"
-                        android:textSize="30sp" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/dangerdetail_iv_recyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="30mm"
-                        android:layout_marginLeft="20mm"
-                        android:layout_marginRight="20mm"
-                        android:fadingEdgeLength="0mm"
-                        android:requiresFadingEdge="vertical"
-                        android:scrollbars="none" />
-                </LinearLayout>
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+            android:scrollbars="none" />
     </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

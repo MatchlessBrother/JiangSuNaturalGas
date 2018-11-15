@@ -2,6 +2,7 @@ package company.naturalgas.client.bean.main;
 
 import java.util.List;
 import android.os.Parcel;
+import java.util.ArrayList;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
@@ -10,10 +11,11 @@ import com.google.gson.annotations.SerializedName;
 public class MainInfo implements Parcelable
 {
     /**
-     * role : {"id":"","roleName":"施工安全员","code":""}
-     * menu : {"yhpc":[{"id":"","authName":"隐患整改","authPic":"","authSort":3,"authLevel":2,"authUrl":"yhzg","parentId":""},{"id":5,"authName":"隐患统计","authPic":null,"authSort":5,"authLevel":2,"authUrl":"yhtj","parentId":1}]}
-     * token : {"token":"c6d6b993eb4d45d2aa047618e7a97d61","expireTimestamp":"","userId":""}
+     * role : {"id":"","roleName":"施工负责人","code":""}
+     * menu : {"隐患排查":[{"authUrl":"yhzg","functionAuth":[{"id":"","authName":"施工处理","authPic":"","authSort":7,"authLevel":3,"authUrl":"sgcl","parentId":""},{"id":10,"authName":"施工派发","authPic":null,"authSort":8,"authLevel":3,"authUrl":"sgpf","parentId":3}],"functionAuths":"functionAuths:sgcl,sgpf","serialVersionUID":"1","authName":"隐患整改","authSort":"3","id":"3","authLevel":"2","parentId":"1"},{"authUrl":"yhtj","functionAuth":[],"functionAuths":"functionAuths:","serialVersionUID":"1","authName":"隐患统计","authSort":"5","id":"5","authLevel":"2","parentId":"1"}],"其他":[{"authUrl":"zlgl","functionAuth":[],"functionAuths":"functionAuths:","serialVersionUID":"1","authName":"资料管理","authSort":"13","id":"15","authLevel":"2","parentId":"14"}]}
+     * token : {"token":"cab49f3b67b54393a1af3dde7c950c38","expireTimestamp":"","userId":""}
      */
+
     private RoleBean role;
     private MenuBean menu;
     private TokenBean token;
@@ -45,10 +47,9 @@ public class MainInfo implements Parcelable
     public static class RoleBean implements Parcelable{
         /**
          * id :
-         * roleName : 施工安全员
+         * roleName : 施工负责人
          * code :
          */
-
         private String id;
         private String roleName;
         private String code;
@@ -111,10 +112,12 @@ public class MainInfo implements Parcelable
         };
     }
 
-    public static class MenuBean implements Parcelable{
-
+    public static class MenuBean implements Parcelable
+    {
         @SerializedName("隐患排查")
         private List<YhpcBean> yhpc;
+        @SerializedName("其他")
+        private List<YhpcBean> qtyw;
 
         public List<YhpcBean> getYhpc() {
             return yhpc;
@@ -124,31 +127,59 @@ public class MainInfo implements Parcelable
             this.yhpc = yhpc;
         }
 
+        public List<YhpcBean> getQtyw() {
+            return qtyw;
+        }
+
+        public void setQtyw(List<YhpcBean> qtyw) {
+            this.qtyw = qtyw;
+        }
+
         public static class YhpcBean implements Parcelable,Comparable<YhpcBean>{
             /**
-             * id :
-             * authName : 隐患整改
-             * authPic :
-             * authSort : 3
-             * authLevel : 2
              * authUrl : yhzg
-             * parentId :
+             * functionAuth : [{"id":"","authName":"施工处理","authPic":"","authSort":7,"authLevel":3,"authUrl":"sgcl","parentId":""},{"id":10,"authName":"施工派发","authPic":null,"authSort":8,"authLevel":3,"authUrl":"sgpf","parentId":3}]
+             * functionAuths : functionAuths:sgcl,sgpf
+             * serialVersionUID : 1
+             * authName : 隐患整改
+             * authSort : 3
+             * id : 3
+             * authLevel : 2
+             * parentId : 1
              */
 
-            private String id;
-            private String authName;
-            private String authPic;
-            private int authSort;
-            private int authLevel;
             private String authUrl;
+            private String functionAuths;
+            private String serialVersionUID;
+            private String authName;
+            private int authSort;
+            private String id;
+            private int authLevel;
             private String parentId;
+            private List<FunctionAuthBean> functionAuth;
 
-            public String getId() {
-                return id;
+            public String getAuthUrl() {
+                return authUrl;
             }
 
-            public void setId(String id) {
-                this.id = id;
+            public void setAuthUrl(String authUrl) {
+                this.authUrl = authUrl;
+            }
+
+            public String getFunctionAuths() {
+                return functionAuths;
+            }
+
+            public void setFunctionAuths(String functionAuths) {
+                this.functionAuths = functionAuths;
+            }
+
+            public String getSerialVersionUID() {
+                return serialVersionUID;
+            }
+
+            public void setSerialVersionUID(String serialVersionUID) {
+                this.serialVersionUID = serialVersionUID;
             }
 
             public String getAuthName() {
@@ -159,20 +190,20 @@ public class MainInfo implements Parcelable
                 this.authName = authName;
             }
 
-            public String getAuthPic() {
-                return authPic;
-            }
-
-            public void setAuthPic(String authPic) {
-                this.authPic = authPic;
-            }
-
             public int getAuthSort() {
                 return authSort;
             }
 
             public void setAuthSort(int authSort) {
                 this.authSort = authSort;
+            }
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
             }
 
             public int getAuthLevel() {
@@ -183,20 +214,20 @@ public class MainInfo implements Parcelable
                 this.authLevel = authLevel;
             }
 
-            public String getAuthUrl() {
-                return authUrl;
-            }
-
-            public void setAuthUrl(String authUrl) {
-                this.authUrl = authUrl;
-            }
-
             public String getParentId() {
                 return parentId;
             }
 
             public void setParentId(String parentId) {
                 this.parentId = parentId;
+            }
+
+            public List<FunctionAuthBean> getFunctionAuth() {
+                return functionAuth;
+            }
+
+            public void setFunctionAuth(List<FunctionAuthBean> functionAuth) {
+                this.functionAuth = functionAuth;
             }
 
             @Override
@@ -206,26 +237,30 @@ public class MainInfo implements Parcelable
 
             @Override
             public void writeToParcel(Parcel dest, int flags) {
-                dest.writeString(this.id);
-                dest.writeString(this.authName);
-                dest.writeString(this.authPic);
-                dest.writeInt(this.authSort);
-                dest.writeInt(this.authLevel);
                 dest.writeString(this.authUrl);
+                dest.writeString(this.functionAuths);
+                dest.writeString(this.serialVersionUID);
+                dest.writeString(this.authName);
+                dest.writeInt(this.authSort);
+                dest.writeString(this.id);
+                dest.writeInt(this.authLevel);
                 dest.writeString(this.parentId);
+                dest.writeTypedList(this.functionAuth);
             }
 
             public YhpcBean() {
             }
 
             protected YhpcBean(Parcel in) {
-                this.id = in.readString();
-                this.authName = in.readString();
-                this.authPic = in.readString();
-                this.authSort = in.readInt();
-                this.authLevel = in.readInt();
                 this.authUrl = in.readString();
+                this.functionAuths = in.readString();
+                this.serialVersionUID = in.readString();
+                this.authName = in.readString();
+                this.authSort = in.readInt();
+                this.id = in.readString();
+                this.authLevel = in.readInt();
                 this.parentId = in.readString();
+                this.functionAuth = in.createTypedArrayList(FunctionAuthBean.CREATOR);
             }
 
             public static final Creator<YhpcBean> CREATOR = new Creator<YhpcBean>() {
@@ -254,6 +289,7 @@ public class MainInfo implements Parcelable
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeTypedList(this.yhpc);
+            dest.writeTypedList(this.qtyw);
         }
 
         public MenuBean() {
@@ -261,6 +297,7 @@ public class MainInfo implements Parcelable
 
         protected MenuBean(Parcel in) {
             this.yhpc = in.createTypedArrayList(YhpcBean.CREATOR);
+            this.qtyw = in.createTypedArrayList(YhpcBean.CREATOR);
         }
 
         public static final Creator<MenuBean> CREATOR = new Creator<MenuBean>() {
@@ -278,7 +315,7 @@ public class MainInfo implements Parcelable
 
     public static class TokenBean implements Parcelable{
         /**
-         * token : c6d6b993eb4d45d2aa047618e7a97d61
+         * token : cab49f3b67b54393a1af3dde7c950c38
          * expireTimestamp :
          * userId :
          */
@@ -341,6 +378,123 @@ public class MainInfo implements Parcelable
             @Override
             public TokenBean[] newArray(int size) {
                 return new TokenBean[size];
+            }
+        };
+    }
+
+    public static class FunctionAuthBean implements Parcelable{
+        /**
+         * id :
+         * authName : 施工处理
+         * authPic :
+         * authSort : 7
+         * authLevel : 3
+         * authUrl : sgcl
+         * parentId :
+         */
+
+        private String id;
+        private String authName;
+        private String authPic;
+        private int authSort;
+        private int authLevel;
+        private String authUrl;
+        private String parentId;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getAuthName() {
+            return authName;
+        }
+
+        public void setAuthName(String authName) {
+            this.authName = authName;
+        }
+
+        public String getAuthPic() {
+            return authPic;
+        }
+
+        public void setAuthPic(String authPic) {
+            this.authPic = authPic;
+        }
+
+        public int getAuthSort() {
+            return authSort;
+        }
+
+        public void setAuthSort(int authSort) {
+            this.authSort = authSort;
+        }
+
+        public int getAuthLevel() {
+            return authLevel;
+        }
+
+        public void setAuthLevel(int authLevel) {
+            this.authLevel = authLevel;
+        }
+
+        public String getAuthUrl() {
+            return authUrl;
+        }
+
+        public void setAuthUrl(String authUrl) {
+            this.authUrl = authUrl;
+        }
+
+        public String getParentId() {
+            return parentId;
+        }
+
+        public void setParentId(String parentId) {
+            this.parentId = parentId;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.id);
+            dest.writeString(this.authName);
+            dest.writeString(this.authPic);
+            dest.writeInt(this.authSort);
+            dest.writeInt(this.authLevel);
+            dest.writeString(this.authUrl);
+            dest.writeString(this.parentId);
+        }
+
+        public FunctionAuthBean() {
+        }
+
+        protected FunctionAuthBean(Parcel in) {
+            this.id = in.readString();
+            this.authName = in.readString();
+            this.authPic = in.readString();
+            this.authSort = in.readInt();
+            this.authLevel = in.readInt();
+            this.authUrl = in.readString();
+            this.parentId = in.readString();
+        }
+
+        public static final Creator<FunctionAuthBean> CREATOR = new Creator<FunctionAuthBean>() {
+            @Override
+            public FunctionAuthBean createFromParcel(Parcel source) {
+                return new FunctionAuthBean(source);
+            }
+
+            @Override
+            public FunctionAuthBean[] newArray(int size) {
+                return new FunctionAuthBean[size];
             }
         };
     }

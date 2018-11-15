@@ -58,6 +58,22 @@ public class MainYhpcAdapter extends BaseQuickAdapter<MainInfo.MenuBean.YhpcBean
                 ((ImageView)helper.getView(R.id.item_mainyhpc_imgfg)).setImageBitmap(fgBitmap);
                 break;
             }
+            case "qhse":
+            {
+                Drawable bgDrawable = mContext.getResources().getDrawable(R.drawable.shape_round_red_yhgb);
+                helper.getView(R.id.item_mainyhpc_imgbg).setBackgroundDrawable(bgDrawable);
+                Bitmap fgBitmap = BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.yhgb);
+                ((ImageView)helper.getView(R.id.item_mainyhpc_imgfg)).setImageBitmap(fgBitmap);
+                break;
+            }
+            case "zlgl":
+            {
+                Drawable bgDrawable = mContext.getResources().getDrawable(R.drawable.shape_round_yellow_zlgl);
+                helper.getView(R.id.item_mainyhpc_imgbg).setBackgroundDrawable(bgDrawable);
+                Bitmap fgBitmap = BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.zlgl);
+                ((ImageView)helper.getView(R.id.item_mainyhpc_imgfg)).setImageBitmap(fgBitmap);
+                break;
+            }
             default:
             {
                 Drawable bgDrawable = mContext.getResources().getDrawable(R.drawable.shape_round_green_yhzg);

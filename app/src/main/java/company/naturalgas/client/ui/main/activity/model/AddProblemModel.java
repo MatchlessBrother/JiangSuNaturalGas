@@ -1,5 +1,8 @@
 package company.naturalgas.client.ui.main.activity.model;
 
+import java.util.List;
+import java.util.ArrayList;
+import okhttp3.MultipartBody;
 import android.content.Context;
 import io.reactivex.schedulers.Schedulers;
 import company.naturalgas.client.network.NetClient;
@@ -25,11 +28,11 @@ public class AddProblemModel extends BaseMvp_PVModel
             case UploadFile:NetClient.getInstance(context).getNetUrl().uploadFile(getMultipartFiles(),getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
             case UpLoadDanger:
             {
-                String[] imagesPath = new String[getImagesPath().size()];
-                for(int index = 0;index < imagesPath.length;index++)
-                    imagesPath[index] = (String)getImagesPath().get(index);
-                NetClient.getInstance(context).getNetUrl().upLoadDanger(getMultipartForms(),imagesPath).subscribeOn(Schedulers.io()).
-                        observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
+                List<MultipartBody.Part> requestBodies = new ArrayList<>();
+                for(int index = 0;index < getImagesPath().size();index++)
+                    requestBodies.add(MultipartBody.Part.createFormData("files",(String)getImagesPath().get(index)));
+                NetClient.getInstance(context).getNetUrl().upLoadDanger(getMultipartForms(),requestBodies).subscribeOn(Schedulers.io()).
+                           observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
             }
         }
     }

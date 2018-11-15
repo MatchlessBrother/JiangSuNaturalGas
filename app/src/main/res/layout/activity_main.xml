@@ -50,7 +50,7 @@
                 android:singleLine="true"
                 android:text="隐患排查"
                 android:textColor="@color/default_font_black"
-                android:textSize="33sp" />
+                android:textSize="30sp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/mainact_yhpc_recyclerview"
@@ -58,33 +58,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20mm"
                 android:layout_marginRight="20mm"
-                android:layout_marginBottom="26mm"
+                android:layout_marginBottom="20mm"
                 android:overScrollMode="never"
                 android:fadingEdgeLength="0mm"
                 android:requiresFadingEdge="vertical"
                 android:scrollbars="none"/>
 
             <View
-                android:visibility="gone"
-                android:layout_width="match_parent"
+                android:visibility="visible"
                 android:layout_height="1mm"
-                android:layout_marginTop="33mm"
-                android:layout_marginBottom="15mm"
+                android:layout_width="match_parent"
                 android:background="@color/default_font_hint"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18mm"
-                android:layout_marginBottom="33mm"
+                android:layout_marginTop="20mm"
                 android:gravity="left|center_vertical"
                 android:layout_marginLeft="20mm"
                 android:layout_marginRight="20mm"
                 android:singleLine="true"
-                android:text="其它业务"
-                android:visibility="gone"
+                android:text="其它"
+                android:visibility="visible"
                 android:textColor="@color/default_font_black"
-                android:textSize="33sp" />
+                android:textSize="30sp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/mainact_qtyw_recyclerview"
@@ -92,10 +89,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20mm"
                 android:layout_marginRight="20mm"
-                android:layout_marginBottom="33mm"
+                android:layout_marginBottom="20mm"
                 android:overScrollMode="never"
                 android:fadingEdgeLength="0mm"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:requiresFadingEdge="vertical"
                 android:scrollbars="none"/>
         </LinearLayout>

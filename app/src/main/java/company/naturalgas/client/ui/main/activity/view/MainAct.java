@@ -39,6 +39,8 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
     private SignInPresenter mSignInPresenter;
     private MainYhpcAdapter mMainYhpcAdapter;
     private RecyclerView mMainactYhpcRecyclerview;
+    private MainYhpcAdapter mMainQtywAdapter;
+    private RecyclerView mMainactQtywRecyclerview;
     private BGALocalImageSize mBannerLocalImageSize;
 
     protected int setLayoutResID()
@@ -53,13 +55,21 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         setTitleBack(R.mipmap.usericon);
         mBanner = (BGABanner)rootView.findViewById(R.id.mainact_banner);
         mMainactYhpcRecyclerview = (RecyclerView)rootView.findViewById(R.id.mainact_yhpc_recyclerview);
-        /**********************************************************************************************************/
+        mMainactQtywRecyclerview = (RecyclerView)rootView.findViewById(R.id.mainact_qtyw_recyclerview);
+        /*******************************************************************************************/
         mMainYhpcAdapter = new MainYhpcAdapter(this,new ArrayList<MainInfo.MenuBean.YhpcBean>());
         GridLayoutManager yhpcGridLayoutManager = new GridLayoutManager(this,3);
         yhpcGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mMainactYhpcRecyclerview.setLayoutManager(yhpcGridLayoutManager);
         mMainactYhpcRecyclerview.setAdapter(mMainYhpcAdapter);
         mMainYhpcAdapter.setEnableLoadMore(false);
+        /*******************************************************************************************/
+        mMainQtywAdapter = new MainYhpcAdapter(this,new ArrayList<MainInfo.MenuBean.YhpcBean>());
+        GridLayoutManager qtyeGridLayoutManager = new GridLayoutManager(this,3);
+        qtyeGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        mMainactQtywRecyclerview.setLayoutManager(qtyeGridLayoutManager);
+        mMainactQtywRecyclerview.setAdapter(mMainQtywAdapter);
+        mMainQtywAdapter.setEnableLoadMore(false);
         /**********************************************************************************************************/
         mBanner.setAutoPlayAble(true);
         mBanner.setAutoPlayInterval(6000);
@@ -83,7 +93,9 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         else
         {
             Collections.sort(getBaseApp().getMainInfo().getMenu().getYhpc());
+            Collections.sort(getBaseApp().getMainInfo().getMenu().getQtyw());
             mMainYhpcAdapter.setNewData(getBaseApp().getMainInfo().getMenu().getYhpc());
+            mMainQtywAdapter.setNewData(getBaseApp().getMainInfo().getMenu().getQtyw());
             DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
             ProtectNotifycationService.sShouldStopService = false;
             startService(new Intent(this,ProtectNotifycationService.class));
@@ -104,13 +116,23 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
                 if(null != mMainYhpcAdapter.getData().get(position) && null != mMainYhpcAdapter.getData().get(position).getAuthUrl() && "yhtj".equals(mMainYhpcAdapter.getData().get(position).getAuthUrl().trim()))
                 {
                     Intent intent = new Intent(MainAct.this,YhtjAct.class);
-                    intent.putExtra("code",getBaseApp().getMainInfo().getRole().getCode());
                     startActivity(intent);
                 }
                 else
                 {
                     Intent intent = new Intent(MainAct.this,ListOfDangersAct.class);
-                    intent.putExtra("code",getBaseApp().getMainInfo().getRole().getCode());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        mMainQtywAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
+        {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position)
+            {
+                if(null != mMainQtywAdapter.getData().get(position) && null != mMainQtywAdapter.getData().get(position).getAuthUrl() && "zlgl".equals(mMainQtywAdapter.getData().get(position).getAuthUrl().trim()))
+                {
+                    Intent intent = new Intent(MainAct.this,YhtjAct.class);
                     startActivity(intent);
                 }
             }
@@ -120,7 +142,9 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
     public void signInSuccess()
     {
         Collections.sort(getBaseApp().getMainInfo().getMenu().getYhpc());
+        Collections.sort(getBaseApp().getMainInfo().getMenu().getQtyw());
         mMainYhpcAdapter.setNewData(getBaseApp().getMainInfo().getMenu().getYhpc());
+        mMainQtywAdapter.setNewData(getBaseApp().getMainInfo().getMenu().getQtyw());
         DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         ProtectNotifycationService.sShouldStopService = false;
         startService(new Intent(this,ProtectNotifycationService.class));
