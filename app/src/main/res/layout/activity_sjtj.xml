@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sjtj_swiperefreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:requiresFadingEdge="vertical"
+        android:fadingEdgeLength="0mm"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <android.support.v4.widget.NestedScrollView
+            android:requiresFadingEdge="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadingEdgeLength="0mm"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginBottom="20mm">
+
+                    <LinearLayout
+                        android:layout_width="0mm"
+                        android:layout_weight="1"
+                        android:paddingLeft="20mm"
+                        android:paddingRight="20mm"
+                        android:layout_height="66mm"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/shape_rect_round_gray"
+                        android:id="@+id/sjtj_kssj_all">
+
+                        <TextView
+                            android:id="@+id/sjtj_kssj_tv"
+                            android:hint="开始日期"
+                            android:textSize="30sp"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/default_font_black"/>
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="30mm"
+                            android:layout_height="30mm"
+                            android:contentDescription=""
+                            android:layout_marginLeft="6mm"
+                            app:srcCompat="@drawable/icon_arrowbuttom_black"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0mm"
+                        android:layout_weight="1"
+                        android:paddingLeft="20mm"
+                        android:paddingRight="20mm"
+                        android:layout_height="66mm"
+                        android:layout_marginLeft="12mm"
+                        android:layout_marginRight="12mm"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:id="@+id/sjtj_jssj_all"
+                        android:background="@drawable/shape_rect_round_gray">
+
+                        <TextView
+                            android:hint="结束日期"
+                            android:textSize="30sp"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/default_font_black"
+                            android:id="@+id/sjtj_jssj_tv"/>
+
+                        <ImageView
+                            android:scaleType="fitXY"
+                            android:layout_width="30mm"
+                            android:layout_height="30mm"
+                            android:contentDescription=""
+                            android:layout_marginLeft="6mm"
+                            app:srcCompat="@drawable/icon_arrowbuttom_black" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sjtj_search_btn"
+                        android:gravity="center"
+                        android:layout_width="76mm"
+                        android:layout_height="66mm"
+                        android:background="@color/colorPrimary">
+
+                        <ImageView
+                            android:layout_width="40mm"
+                            android:layout_height="40mm"
+                            android:scaleType="fitCenter"
+                            android:contentDescription=""
+                            app:srcCompat="@drawable/icon_search_white"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_height="12mm"
+                    android:layout_width="match_parent"
+                    android:background="@color/default_background_gray"/>
+
+                <TextView
+                    android:textColor="@color/default_font_black"
+                    android:gravity="center_vertical|left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginBottom="20mm"
+                    android:text="隐患排查"
+                    android:singleLine="true"
+                    android:textSize="30sp"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/sjtj_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginBottom="20mm"
+                    android:requiresFadingEdge="vertical"
+                    android:fadingEdgeLength="0mm"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"/>
+
+                <View
+                    android:layout_height="12mm"
+                    android:layout_width="match_parent"
+                    android:background="@color/default_background_gray"/>
+
+                <TextView
+                    android:id="@+id/sjtj_webview_ts"
+                    android:textColor="@color/default_font_black"
+                    android:gravity="center_vertical|left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginBottom="20mm"
+                    android:text="近6月隐患整改分析图"
+                    android:singleLine="true"
+                    android:textSize="30sp"/>
+
+                <WebView
+                    android:id="@+id/sjtj_webview"
+                    android:scrollbars="none"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginBottom="20mm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>
