@@ -2,14 +2,9 @@ package company.naturalgas.client.network;
 
 import java.util.Map;
 import java.util.List;
-
-import company.naturalgas.client.bean.main.DangerDetailBean;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Part;
 import retrofit2.http.POST;
 import okhttp3.RequestBody;
-import retrofit2.http.Query;
 import okhttp3.MultipartBody;
 import retrofit2.http.PartMap;
 import io.reactivex.Observable;
@@ -18,10 +13,13 @@ import company.naturalgas.client.bean.main.FzrBean;
 import company.naturalgas.client.bean.main.SjlxBean;
 import company.naturalgas.client.bean.main.MainInfo;
 import company.naturalgas.client.bean.BaseReturnData;
+import company.naturalgas.client.bean.main.SgaqyBean;
+import company.naturalgas.client.bean.main.SgjlyBean;
 import company.naturalgas.client.bean.main.DangerBean;
 import company.naturalgas.client.bean.main.MsgDetailBean;
 import company.naturalgas.client.bean.BaseReturnListData;
 import company.naturalgas.client.bean.main.RefreshMsgBean;
+import company.naturalgas.client.bean.main.DangerDetailBean;
 
 public interface NetUrl
 {
@@ -33,6 +31,12 @@ public interface NetUrl
 
     @POST("/dDangerType/getDDangerTypeList")
     Observable<BaseReturnListData<SjlxBean>> getSjlxDatas();
+
+    @POST("/sUser/findSgaqy")
+    Observable<BaseReturnListData<SgaqyBean>> getSgaqyDatas();
+
+    @POST("/sUser/findSgJly")
+    Observable<BaseReturnListData<SgjlyBean>> getSgjlyDatas();
 
     @POST("/yjfb/notify/newMessage.app")
     Observable<BaseReturnListData<RefreshMsgBean>> refreshMsg();
@@ -60,6 +64,14 @@ public interface NetUrl
     @POST("/cUpDanger/getDetail")
     @Multipart
     Observable<BaseReturnData<DangerDetailBean>> getDangerDetailDatas(@PartMap Map<String, RequestBody> params);
+
+    @POST("/cSgDeal/sgzgpf")
+    @Multipart
+    Observable<BaseReturnData> chooseSgaqy(@PartMap Map<String, RequestBody> params);
+
+    @POST("/cSgDeal/sgyspf")
+    @Multipart
+    Observable<BaseReturnData> chooseSgjlr(@PartMap Map<String, RequestBody> params);
 
     @POST("/cUpDanger/upLoadDanger")
     @Multipart

@@ -121,6 +121,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
                 else
                 {
                     Intent intent = new Intent(MainAct.this,ListOfDangersAct.class);
+                    intent.putExtra("authurl",mMainYhpcAdapter.getData().get(position).getAuthUrl().trim());
                     startActivity(intent);
                 }
             }

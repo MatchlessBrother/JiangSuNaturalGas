@@ -1,20 +1,15 @@
 package company.naturalgas.client.adapter.main;
 
 import java.util.List;
-import android.view.View;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.Context;
 import company.naturalgas.client.R;
 import android.support.annotation.Nullable;
-import com.luck.picture.lib.PictureSelector;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.GridLayoutManager;
 import com.chad.library.adapter.base.BaseViewHolder;
 import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import company.naturalgas.client.bean.main.DangerDetailBean;
-import company.naturalgas.client.ui.main.activity.view.PreviewPhotoAct;
 
 public class DangerDetailAdapter extends BaseQuickAdapter<DangerDetailBean.RecordBean,BaseViewHolder>
 {

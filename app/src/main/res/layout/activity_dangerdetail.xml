@@ -18,6 +18,19 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/dangerdetail_btn_sgcl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20mm"
+            android:paddingBottom="20mm"
+            android:singleLine="true"
+            android:text="处理"
+            android:textSize="38sp"
+            android:visibility="visible"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"/>
+
+        <Button
             android:id="@+id/dangerdetail_btn_false"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -27,6 +40,7 @@
             android:paddingBottom="20mm"
             android:singleLine="true"
             android:text="拒绝"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:textSize="38sp"/>
 
@@ -40,6 +54,7 @@
             android:paddingBottom="20mm"
             android:singleLine="true"
             android:text="验收"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:textSize="38sp"/>
     </LinearLayout>

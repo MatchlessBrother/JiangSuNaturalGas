@@ -38,10 +38,28 @@ public class DangerDetailBean implements Parcelable
          * fileList : [{"id":"","dataId":"","dealType":"","filePath":"http://47.101.133.144:8033/file//test/key"}]
          */
 
+        private String id;
+        private String status;
         private String createTime;
         private String description;
         private String type;
         private List<RecordBean.FileListBeanX> fileList;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
 
         public String getCreateTime() {
             return createTime;
@@ -163,6 +181,8 @@ public class DangerDetailBean implements Parcelable
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.id);
+            dest.writeString(this.status);
             dest.writeString(this.createTime);
             dest.writeString(this.description);
             dest.writeString(this.type);
@@ -173,6 +193,8 @@ public class DangerDetailBean implements Parcelable
         }
 
         protected SgmsBean(Parcel in) {
+            this.id = in.readString();
+            this.status = in.readString();
             this.createTime = in.readString();
             this.description = in.readString();
             this.type = in.readString();

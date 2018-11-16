@@ -31,12 +31,11 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
     {
         super.initWidgets(rootView);
         setTitleContent("隐患列表");
-        /*MainInfo mainInfo = getBaseApp().getMainInfo();
-        for(int index = 0;index < mainInfo.getMenu().getYhpc().size();index++)
+        if(getIntent().getStringExtra("authurl").equals("yhsb"))
         {
-            mainInfo.getMenu().getYhpc().get(index).getAuthUrl().equals("sgsb")
-        }*/
-
+            setTitleMoreFont("添加");
+            setTitleMoreFontVisible(View.VISIBLE);
+        }
         mListOfDangersSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.listofdangers_swiperefreshlayout);
         mListOfDangersAdapter = new ListOfDangersAdapter(mActivity,new ArrayList<DangerBean.RecordsBean>());
         mListOfDangersRecycler = (RecyclerView)rootView.findViewById(R.id.listofdangers_recycler);
