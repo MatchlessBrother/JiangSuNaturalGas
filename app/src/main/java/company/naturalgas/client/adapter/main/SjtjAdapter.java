@@ -18,6 +18,6 @@ public class SjtjAdapter extends BaseQuickAdapter<SjtjBean,BaseViewHolder>
 
     protected void convert(BaseViewHolder helper,SjtjBean sjtjBean)
     {
-
+        /**暂时不用*/
     }
 }

@@ -19,6 +19,10 @@ public class AddProblemModel extends BaseMvp_PVModel
     public static final int UploadFile = 0x0002;
     public static final int UpLoadDanger = 0x0003;
     public static final int GetSjlxDatas = 0x0004;
+    public static final int GetJlfzrDatas = 0x0005;
+    public static final int ProcessDanger = 0x0006;
+    public static final int AcceptDanger = 0x0007;
+    public static final int RefuseDanger = 0x0008;
 
     public void executeOfNet(Context context, int netRequestCode,BaseMvp_LocalObjCallBack localCallBack)
     {
@@ -34,6 +38,30 @@ public class AddProblemModel extends BaseMvp_PVModel
                 NetClient.getInstance(context).getNetUrl().upLoadDanger(getMultipartForms(),requestBodies).subscribeOn(Schedulers.io()).
                            observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
             }
+            case ProcessDanger:
+            {
+                List<MultipartBody.Part> requestBodies = new ArrayList<>();
+                for(int index = 0;index < getImagesPath().size();index++)
+                    requestBodies.add(MultipartBody.Part.createFormData("files",(String)getImagesPath().get(index)));
+                NetClient.getInstance(context).getNetUrl().processDanger(getMultipartForms(),requestBodies).subscribeOn(Schedulers.io()).
+                        observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
+            }
+            case AcceptDanger:
+            {
+                List<MultipartBody.Part> requestBodies = new ArrayList<>();
+                for(int index = 0;index < getImagesPath().size();index++)
+                    requestBodies.add(MultipartBody.Part.createFormData("files",(String)getImagesPath().get(index)));
+                NetClient.getInstance(context).getNetUrl().acceptDanger(getMultipartForms(),requestBodies).subscribeOn(Schedulers.io()).
+                        observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
+            }
+            case RefuseDanger:
+            {
+                List<MultipartBody.Part> requestBodies = new ArrayList<>();
+                for(int index = 0;index < getImagesPath().size();index++)
+                    requestBodies.add(MultipartBody.Part.createFormData("files",(String)getImagesPath().get(index)));
+                NetClient.getInstance(context).getNetUrl().refuseDanger(getMultipartForms(),requestBodies).subscribeOn(Schedulers.io()).
+                        observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
+            }
         }
     }
 
@@ -44,6 +72,7 @@ public class AddProblemModel extends BaseMvp_PVModel
         {
             case GetFzrDatas:NetClient.getInstance(context).getNetUrl().getFzrDatas().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetListCallBack(context,localCallBack));break;
             case GetSjlxDatas:NetClient.getInstance(context).getNetUrl().getSjlxDatas().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetListCallBack(context,localCallBack));break;
+            case GetJlfzrDatas:NetClient.getInstance(context).getNetUrl().getJlfzrDatas().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetListCallBack(context,localCallBack));break;
         }
     }
 

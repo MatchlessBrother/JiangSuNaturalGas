@@ -44,7 +44,8 @@
         <activity
             android:name="company.naturalgas.client.ui.main.activity.view.SignInAct"
             android:theme="@style/AppTheme.FirstPage"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -66,28 +67,31 @@
 
         <activity
             android:name="company.naturalgas.client.ui.main.activity.view.MsgDetailAct"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="company.naturalgas.client.ui.main.activity.view.ListOfDangersAct"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="company.naturalgas.client.ui.main.activity.view.DangerDetailAct"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:screenOrientation="portrait" />
 
         <activity
-            android:name="company.naturalgas.client.ui.main.activity.view.YhtjAct"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:name="company.naturalgas.client.ui.main.activity.view.ZlglAct"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="company.naturalgas.client.ui.main.activity.view.AddProblemAct"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="company.naturalgas.client.ui.main.activity.view.SjtjActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="company.naturalgas.client.ui.main.activity.view.FileDisplayActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name="company.naturalgas.client.service.main.RefreshMsgService"/>
 

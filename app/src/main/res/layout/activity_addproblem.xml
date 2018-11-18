@@ -123,7 +123,8 @@
                 android:paddingBottom="30mm"
                 android:paddingLeft="20mm"
                 android:paddingRight="20mm"
-                android:paddingTop="30mm">
+                android:paddingTop="30mm"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -159,13 +160,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18mm"
+                android:layout_marginBottom="20mm"
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingBottom="30mm"
                 android:paddingLeft="20mm"
                 android:paddingRight="20mm"
-                android:paddingTop="30mm">
+                android:paddingTop="30mm"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -178,6 +181,50 @@
 
                 <TextView
                     android:id="@+id/addproblem_sjlx"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20mm"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:hint="请选择"
+                    android:singleLine="true"
+                    android:textColor="@color/default_font_black"
+                    android:textSize="30sp" />
+
+                <ImageView
+                    android:layout_width="40mm"
+                    android:layout_height="40mm"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/icon_arrowright_gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/addproblem_jlfzr_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18mm"
+                android:layout_marginBottom="20mm"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:paddingBottom="30mm"
+                android:paddingLeft="20mm"
+                android:paddingRight="20mm"
+                android:paddingTop="30mm">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+                    android:singleLine="true"
+                    android:text="监理负责人"
+                    android:textColor="@color/default_font_gray"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/addproblem_jlfzr"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20mm"

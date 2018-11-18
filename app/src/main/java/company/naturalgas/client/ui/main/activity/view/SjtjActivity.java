@@ -1,36 +1,58 @@
 package company.naturalgas.client.ui.main.activity.view;
 
+import java.util.Date;
 import android.view.View;
-import java.util.ArrayList;
-/**setTitleContent("汇总统计");*/
-import android.content.Intent;
+import java.util.Calendar;
+import com.google.gson.Gson;
+import android.webkit.WebView;
+import android.widget.TextView;
+import android.content.Context;
+import android.util.AttributeSet;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import company.naturalgas.client.R;
+import android.widget.LinearLayout;
+import me.jessyan.autosize.AutoSize;
+import android.webkit.WebViewClient;
 import company.naturalgas.client.base.BaseAct;
 import android.support.v7.widget.RecyclerView;
+import com.bigkoo.pickerview.view.TimePickerView;
+import company.naturalgas.client.widget.EchartView;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.webkit.WebView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import company.naturalgas.client.bean.main.SjtjBean;
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import company.naturalgas.client.ui.main.activity.view_v.SjtjActivity_V;
+import company.naturalgas.client.ui.main.activity.presenter.SjtjPresenter;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import company.naturalgas.client.bean.main.DangerBean;
-import company.naturalgas.client.adapter.main.ListOfDangersAdapter;
-import company.naturalgas.client.ui.main.activity.view_v.ListOfDangersAct_V;
-import company.naturalgas.client.ui.main.activity.presenter.ListOfDangersPresenter;
-
-public class SjtjActivity extends BaseAct implements ListOfDangersAct_V
+public class SjtjActivity extends BaseAct implements SjtjActivity_V,View.OnClickListener
 {
-    private LinearLayout mSjtjKssjAll;
+    private Date mEndTimeDate;
+    private Date mStartTimeDate;
     private TextView mSjtjKssjTv;
-    private LinearLayout mSjtjJssjAll;
     private TextView mSjtjJssjTv;
-    private LinearLayout mSjtjSearchBtn;
-    private RecyclerView mSjtjRecyclerview;
+    private EchartView mSjtjWebview;
     private TextView mSjtjWebviewTs;
-    private WebView mSjtjWebview;
-    private
+    private TextView mSjtjYhpcYhNum;
+    private LinearLayout mSjtjYhpcAll;
+    private TextView mSjtjYhpcYhzgNum;
+    private TextView mSjtjYhpcYhysNum;
+    private LinearLayout mSjtjKssjAll;
+    private LinearLayout mSjtjJssjAll;
+    private LinearLayout mSjtjSearchBtn;
+    private SjtjPresenter mSjtjPresenter;
+    private RecyclerView mSjtjRecyclerview;
+    private TimePickerView mEndTimePickerView;
+    private SimpleDateFormat mSimpleDateFormat;
+    private TimePickerView mStartTimePickerView;
     private SwipeRefreshLayout mSjtjSwiperefreshlayout;
+
+    public View onCreateView(String name, Context context, AttributeSet attrs)
+    {
+        AutoSize.autoConvertDensityOfGlobal(this);
+        return super.onCreateView(name, context, attrs);
+    }
 
     protected int setLayoutResID()
     {
@@ -40,77 +62,124 @@ public class SjtjActivity extends BaseAct implements ListOfDangersAct_V
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
+        setTitleContent("隐患统计");
         mSjtjSwiperefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.sjtj_swiperefreshlayout);
+        mSjtjRecyclerview = (RecyclerView)rootView.findViewById(R.id.sjtj_recyclerview);
         mSjtjKssjAll = (LinearLayout)rootView.findViewById(R.id.sjtj_kssj_all);
         mSjtjKssjTv = (TextView)rootView.findViewById(R.id.sjtj_kssj_tv);
         mSjtjJssjAll = (LinearLayout)rootView.findViewById(R.id.sjtj_jssj_all);
         mSjtjJssjTv = (TextView)rootView.findViewById(R.id.sjtj_jssj_tv);
         mSjtjSearchBtn = (LinearLayout)rootView.findViewById(R.id.sjtj_search_btn);
-        mSjtjRecyclerview = (RecyclerView)rootView.findViewById(R.id.sjtj_recyclerview);
-        mSjtjWebviewTs = (TextView)rootView.findViewById(R.id.sjtj_webview_ts);
-        mSjtjWebview = (WebView)rootView.findViewById(R.id.sjtj_webview);
-
+        mSjtjYhpcAll = (LinearLayout)rootView.findViewById(R.id.sjtj_yhpc_all);
+        mSjtjYhpcYhNum = (TextView)rootView.findViewById(R.id.sjtj_yhpc_yh_num);
+        mSjtjYhpcYhzgNum = (TextView)rootView.findViewById(R.id.sjtj_yhpc_yhzg_num);
+        mSjtjYhpcYhysNum = (TextView)rootView.findViewById(R.id.sjtj_yhpc_yhys_num);
+        mSjtjWebviewTs = (TextView)rootView.findViewById(R.id.sjtj_echartview_ts);
+        mSjtjWebview = (EchartView)rootView.findViewById(R.id.sjtj_echartview);
         mSjtjSwiperefreshlayout.setEnabled(true);
+        mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        /******************************************************************************************/
+        Calendar startDateRange = Calendar.getInstance();
+        startDateRange.set(2000,0,1);
+        Calendar endDateRange = Calendar.getInstance();
+        endDateRange.setTime(new Date());
+        Calendar endTimeCalendar = Calendar.getInstance();
+        endTimeCalendar.setTime(new Date());
+        Calendar startTimeCalendar = Calendar.getInstance();
+        startTimeCalendar.setTime(new Date());
+        /******************************************************************************************/
+        mEndTimePickerView = new TimePickerBuilder(mActivity,new OnTimeSelectListener()
+        {
+            public void onTimeSelect(Date date, View view)
+            {
+                mEndTimeDate = date;
+                mSjtjJssjTv.setText(mSimpleDateFormat.format(mEndTimeDate));
+            }
+        }).setTitleText("结束日期").setTitleSize(33)
+                .setSubmitText("确定") .setCancelText("取消")
+                .setSubCalSize(28).setContentTextSize(18)
+                .setBgColor(getResources().getColor(R.color.white))
+                .setTitleColor(getResources().getColor(R.color.white))
+                .setSubmitColor(getResources().getColor(R.color.white))
+                .setCancelColor(getResources().getColor(R.color.white))
+                .setBackgroundId(getResources().getColor(R.color.white))
+                .setTitleBgColor(getResources().getColor(R.color.colorPrimary))
+                .setDividerColor(getResources().getColor(R.color.default_font_gray))
+                .setType(new boolean[]{ true , true , true , false , false , false })
+                .setOutSideCancelable(true).isCenterLabel(false).setLabel("年","月","日","时","分","秒")
+                .setRangDate(startDateRange,endDateRange).setDate(endTimeCalendar).isCyclic(true).build();
 
-
-
-        mListOfDangersAdapter = new ListOfDangersAdapter(mActivity,new ArrayList<DangerBean.RecordsBean>());
-        mListOfDangersRecycler = (RecyclerView)rootView.findViewById(R.id.listofdangers_recycler);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mListOfDangersRecycler.setLayoutManager(linearLayoutManager);
-        mListOfDangersRecycler.setAdapter(mListOfDangersAdapter);
-        mListOfDangersSwiperefreshlayout.setEnabled(true);
-        mListOfDangersAdapter.setEnableLoadMore(true);
+        mStartTimePickerView = new TimePickerBuilder(mActivity,new OnTimeSelectListener()
+        {
+            public void onTimeSelect(Date date, View view)
+            {
+                mStartTimeDate = date;
+                mSjtjKssjTv.setText(mSimpleDateFormat.format(mStartTimeDate));
+            }
+        }).setTitleText("开始日期").setTitleSize(33)
+                .setSubmitText("确定") .setCancelText("取消")
+                .setSubCalSize(28).setContentTextSize(18)
+                .setBgColor(getResources().getColor(R.color.white))
+                .setTitleColor(getResources().getColor(R.color.white))
+                .setSubmitColor(getResources().getColor(R.color.white))
+                .setCancelColor(getResources().getColor(R.color.white))
+                .setBackgroundId(getResources().getColor(R.color.white))
+                .setTitleBgColor(getResources().getColor(R.color.colorPrimary))
+                .setDividerColor(getResources().getColor(R.color.default_font_gray))
+                .setType(new boolean[]{ true , true , true , false , false , false })
+                .setOutSideCancelable(true).isCenterLabel(false).setLabel("年","月","日","时","分","秒")
+                .setRangDate(startDateRange,endDateRange).setDate(startTimeCalendar).isCyclic(true).build();
     }
 
     protected void initDatas()
     {
-        mListOfDangersPresenter = new ListOfDangersPresenter();
-        bindBaseMvpPresenter(mListOfDangersPresenter);
+        mSjtjPresenter = new SjtjPresenter();
+        bindBaseMvpPresenter(mSjtjPresenter);
     }
 
     protected void initLogic()
     {
-        mListOfDangersPresenter.refreshDatas();
-        mListOfDangersSwiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        mEndTimeDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, -5);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        mStartTimeDate = calendar.getTime();
+        mSjtjJssjTv.setText(mSimpleDateFormat.format(mEndTimeDate));
+        mSjtjKssjTv.setText(mSimpleDateFormat.format(mStartTimeDate));
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.setTime(mEndTimeDate);
+        mEndTimePickerView.setDate(endCalendar);
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.setTime(mStartTimeDate);
+        mStartTimePickerView.setDate(startCalendar);
+        mSjtjWebviewTs.setText("隐患整改分析图");
+
+        mSjtjKssjAll.setOnClickListener(this);
+        mSjtjJssjAll.setOnClickListener(this);
+        mSjtjSearchBtn.setOnClickListener(this);
+        mSjtjSwiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
             public void onRefresh()
             {
-                mListOfDangersPresenter.refreshDatas();
+                mEndTimeDate = new Date();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new Date());
+                calendar.add(Calendar.MONTH, -5);
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+                mStartTimeDate = calendar.getTime();
+                mSjtjJssjTv.setText(mSimpleDateFormat.format(mEndTimeDate));
+                mSjtjKssjTv.setText(mSimpleDateFormat.format(mStartTimeDate));
+                Calendar endCalendar = Calendar.getInstance();
+                endCalendar.setTime(mEndTimeDate);
+                mEndTimePickerView.setDate(endCalendar);
+                Calendar startCalendar = Calendar.getInstance();
+                startCalendar.setTime(mStartTimeDate);
+                mStartTimePickerView.setDate(startCalendar);
+                mSjtjPresenter.getHztjDatas(mSimpleDateFormat.format(mStartTimeDate),mSimpleDateFormat.format(mEndTimeDate));
             }
         });
-
-        mListOfDangersAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener()
-        {
-            public void onLoadMoreRequested()
-            {
-                mListOfDangersPresenter.loadMoreDatas();
-            }
-        },mListOfDangersRecycler);
-
-        mListOfDangersAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
-        {
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position)
-            {
-                Intent intent = new Intent(ListOfDangersAct.this,DangerDetailAct.class);
-                intent.putExtra("code",getBaseApp().getMainInfo().getRole().getCode());
-                intent.putExtra("id",mListOfDangersAdapter.getData().get(position).getId());
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void finishRefresh()
-    {
-        mListOfDangersSwiperefreshlayout.setRefreshing(false);
-
-    }
-
-    public void finishLoadMore()
-    {
-        mListOfDangersAdapter.loadMoreComplete();
-
+        mSjtjPresenter.getHztjDatas(mSimpleDateFormat.format(mStartTimeDate),mSimpleDateFormat.format(mEndTimeDate));
     }
 
     public void onClick(View view)
@@ -118,37 +187,65 @@ public class SjtjActivity extends BaseAct implements ListOfDangersAct_V
         super.onClick(view);
         switch(view.getId())
         {
-
+            case R.id.sjtj_kssj_all:
+            {
+                Calendar calendar = Calendar.getInstance();
+                if(null != mStartTimeDate)
+                    calendar.setTime(mStartTimeDate);
+                else
+                    calendar.setTime(new Date(  ));
+                mStartTimePickerView.setDate(calendar);
+                mStartTimePickerView.show();
+                break;
+            }
+            case R.id.sjtj_jssj_all:
+            {
+                Calendar calendar = Calendar.getInstance();
+                if(null != mEndTimeDate)
+                    calendar.setTime(mEndTimeDate);
+                else
+                    calendar.setTime(new Date(  ));
+                mEndTimePickerView.setDate(calendar);
+                mEndTimePickerView.show();
+                break;
+            }
+            case R.id.sjtj_search_btn:
+            {
+                mSjtjPresenter.getHztjDatas(mSimpleDateFormat.format(mStartTimeDate),mSimpleDateFormat.format(mEndTimeDate));
+                break;
+            }
         }
     }
 
-    protected void onTitleMoreFontClick()
+    public void getFailOfSjtjDatas()
     {
-        super.onTitleMoreFontClick();
-        if(null != getIntent() && null != getIntent().getStringExtra("code") && "1".equals(getIntent().getStringExtra("code").trim()))
+        mSjtjSwiperefreshlayout.setRefreshing(false);
+
+    }
+
+    public void initBarGraph(final List<SjtjBean.FxtBean> fxtBeans)
+    {
+        mSjtjWebview.loadUrl("file:///android_asset/stat.html");
+        if(null != mSjtjWebview)
         {
-            Intent intent = new Intent(this,AddProblemAct.class);
-            startActivity(intent);
+            mSjtjWebview.setWebViewClient(new WebViewClient()
+            {
+                public void onPageFinished(WebView view, String url)
+                {
+                    super.onPageFinished(view, url);
+                    mSjtjWebview.refreshEchartsViewWithDataJson(new Gson().toJson(fxtBeans));
+                }
+            });
         }
     }
 
-    public void refreshDatas(DangerBean dangerBeans)
+    public void getSuccessOfSjtjDatas(SjtjBean sjtjBean)
     {
-        mListOfDangersAdapter.setNewData(dangerBeans.getRecords());
-        if(dangerBeans.getRecords().size() < dangerBeans.getSize())
-            mListOfDangersAdapter.setEnableLoadMore(false);
-        else
-            mListOfDangersAdapter.setEnableLoadMore(true);
+        mSjtjWebviewTs.setText(null != sjtjBean && null != sjtjBean.getFxt() && sjtjBean.getFxt().size() > 0 ? "近" + sjtjBean.getFxt().size() + "月隐患整改分析图" : "隐患整改分析图");
+        mSjtjYhpcYhNum.setText(null != sjtjBean && null != sjtjBean.getYh() && !"".equals(sjtjBean.getYh().trim()) ? sjtjBean.getYh().trim() : "0");
+        mSjtjYhpcYhzgNum.setText(null != sjtjBean && null != sjtjBean.getYzg() && !"".equals(sjtjBean.getYzg().trim()) ? sjtjBean.getYzg().trim() : "0");
+        mSjtjYhpcYhysNum.setText(null != sjtjBean && null != sjtjBean.getYys() && !"".equals(sjtjBean.getYys().trim()) ? sjtjBean.getYys().trim() : "0");
+        mSjtjSwiperefreshlayout.setRefreshing(false);
+        initBarGraph(sjtjBean.getFxt());
     }
-
-    public void loadMoreDatas(DangerBean dangerBeans)
-    {
-        mListOfDangersAdapter.addData(dangerBeans.getRecords());
-        mListOfDangersAdapter.notifyDataSetChanged();
-        if(dangerBeans.getRecords().size() < dangerBeans.getSize())
-            mListOfDangersAdapter.setEnableLoadMore(false);
-        else
-            mListOfDangersAdapter.setEnableLoadMore(true);
-    }*/
-}
 }

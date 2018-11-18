@@ -8,24 +8,16 @@
         <div id="myChart" style="height: 100%; width: 100%; margin: 0; padding: 0;"></div>
         <script type="text/javascript">
         	var fs = 28;
+        	alert('xxxx');
 	        function loadEcharts(json){
-	        	json = JSON.parse(json);
+	        	var fxt = JSON.parse(json);
 				var yearAndMonths = new Array();
-				var alarmLevelNames = new Array();
-				var colors = new Array();
-				var datas = new Array();
-				for (var i = 0 ; i < json.monthAlramRecordStat.length, ym = json.monthAlramRecordStat[i] ; i++) {
-					yearAndMonths.push(ym.yearAndMonth);
-					for (var j = 0 ; i < ym.alramLevelAndQuantity.length, alarmLevels = ym.alramLevelAndQuantity[j] ; j++) {
-						var index = $.inArray(alarmLevels.alarmLevelName, alarmLevelNames);
-						if (index == -1) {
-							alarmLevelNames.push(alarmLevels.alarmLevelName);
-							colors.push('#'+alarmLevels.alarmLevelColorCode);
-							datas.push({name:alarmLevels.alarmLevelName, type:'bar', barWidth:30, data:[alarmLevels.quantity], itemStyle:{normal:{label:{show:true, position:'top', textStyle:{color:'#FF3300', fontSize:fs}}}}});
-						} else {
-							datas_ = datas[index].data.push(alarmLevels.quantity);
-						}
-					}
+				var yh = new Array();
+				var yzg  = new Array();
+				for( var j = 0 ; j < fxt.length ; j++){
+						 yearAndMonths.push(fxt[j].time)
+						 yh.push(fxt[j].count[0])
+						 yzg.push(fxt[j].count[1])
 				}
 				
 				var option = {
@@ -39,7 +31,7 @@
 				    	y: 15,
 				    	itemWidth:40,
 				    	itemHeight:30,
-				        data: alarmLevelNames,
+				        data: ['隐患','已整改'],
 				        textStyle: {
 							fontSize: fs,
 						}
@@ -53,7 +45,7 @@
 				    },
 				    barGap: 0.5,
 				    barCategoryGap: 30,
-				    color : colors,
+				    color :['#FF4500','#FFA500'],
 				    xAxis : [
 				        {
 				            type : 'category',
@@ -73,10 +65,27 @@
 				                    fontSize: fs,
 				                }
 				            },
-				            minInterval: 1
+				            minInterval: 0
 				        }
 				    ],
-				    series : datas
+				    series : [
+						{
+							name:'隐患',
+							type:'bar',
+							barWidth:30,
+							itemStyle:{normal:{label:{show:true, position:'top', textStyle:{color:'#FF4500', fontSize:fs}}}},
+							data:yh,
+						},
+						{
+							name:'已整改',
+							type:'bar',
+							barWidth:30,
+							itemStyle:{normal:{label:{show:true, position:'top', textStyle:{color:'#FFA500', fontSize:fs}}}},
+							data:yzg,
+						  
+						}
+					]
+					
 				};
 				echarts.init($("#myChart")[0]).setOption(option, false);
 	        }

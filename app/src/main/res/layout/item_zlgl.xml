@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="12mm"
+    android:paddingLeft="20mm"
+    android:paddingRight="20mm"
+    android:paddingTop="12mm"
+    android:layout_marginBottom="8mm"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/item_zlgl_img"
+        android:layout_width="120mm"
+        android:layout_height="120mm"
+        android:layout_centerVertical="true"
+        android:background="@mipmap/defaultimage"
+        android:scaleType="fitXY"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:scaleType="fitXY"
+        android:layout_width="60mm"
+        android:layout_height="60mm"
+        android:id="@+id/item_zlgl_icon"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@drawable/icon_arrowright_black"/>
+
+    <LinearLayout
+        android:layout_toLeftOf="@id/item_zlgl_icon"
+        android:layout_toRightOf="@id/item_zlgl_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20mm"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_zlgl_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:singleLine="true"
+            android:textColor="@color/default_font_black"
+            android:textSize="30sp"
+            tools:text="code" />
+
+        <TextView
+            android:id="@+id/item_zlgl_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12mm"
+            android:ellipsize="end"
+            android:gravity="center_vertical|left"
+            android:maxLines="2"
+            android:minLines="1"
+            android:textColor="@color/default_font_black"
+            android:textSize="30sp"
+            tools:text="文件的名字文件的名的名字文件的名字文件的名字文件的名的名字文件的名字" />
+    </LinearLayout>
+</RelativeLayout>

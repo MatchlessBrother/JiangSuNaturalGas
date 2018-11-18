@@ -8,12 +8,14 @@ import company.naturalgas.client.bean.main.DangerDetailBean;
 
 public interface DangerDetailAct_V extends BaseMvp_View
 {
+    void closeFailOfDanger();
     void chooseFailOfSgjlr();
     void chooseFailOfSgaqy();
     void getFailOfSgjlrDatas();
     void getFailOfSgaqyDatas();
     void chooseSuccessOfSgaqy();
     void chooseSuccessOfSgjlr();
+    void closeSuccessOfDanger();
     void getFailOfDangerDetailDatas();
     void getSuccessOfSgjlrDatas(List<SgjlyBean> sgjlyBeans);
     void getSuccessOfSgaqyDatas(List<SgaqyBean> sgaqyBeans);

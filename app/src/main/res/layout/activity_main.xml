@@ -28,7 +28,7 @@
                 android:id="@+id/mainact_banner"
                 android:scaleType="fitXY"
                 android:layout_height="330mm"
-                app:banner_transitionEffect="alpha"
+                app:banner_transitionEffect="cube"
                 android:layout_width="match_parent"
                 app:banner_contentBottomMargin="0mm"
                 app:banner_pageChangeDuration="2000"

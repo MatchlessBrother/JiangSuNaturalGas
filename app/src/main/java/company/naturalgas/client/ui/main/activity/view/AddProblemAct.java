@@ -21,6 +21,7 @@ import android.support.v7.widget.GridLayoutManager;
 import company.naturalgas.client.bean.main.SjlxBean;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import android.support.v7.widget.LinearLayoutManager;
+import company.naturalgas.client.bean.main.JlfzrBean;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -31,7 +32,10 @@ import company.naturalgas.client.ui.main.activity.presenter.AddProblemPresenter;
 
 public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View.OnClickListener
 {
+    private String mDangerid;
+    private String mProcesstype;
     private Button mAddproblemBtn;
+    private int mProcessTypeValue;
     private EditText mAddproblemEt;
     private int mTotalUploadedFiles;
     private List<String> mUploadedFilesList;
@@ -52,6 +56,12 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
     private OptionsPickerView mSjlxOptionsPickerView;
     private int mCurrentSelectedSjlxOptionItemOfIndex;
 
+    private TextView mAddproblemJlfzr;
+    private List<JlfzrBean> mJlfzrOptionBeans;
+    private LinearLayout mAddproblemJlfzrAll;
+    private OptionsPickerView mJlfzrOptionsPickerView;
+    private int mCurrentSelectedJlfzrOptionItemOfIndex;
+
     protected int setLayoutResID()
     {
         return R.layout.activity_addproblem;
@@ -60,7 +70,6 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
-        setTitleContent("添加问题");
         mPicturesSelector = PictureSelector.create(this);
         mAddproblemBtn = (Button)rootView.findViewById(R.id.addproblem_btn);
         mAddproblemEt = (EditText)rootView.findViewById(R.id.addproblem_et);
@@ -70,6 +79,8 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         mAddproblemFzrAll = (LinearLayout)rootView.findViewById(R.id.addproblem_fzr_all);
         mAddproblemSjlx = (TextView)rootView.findViewById(R.id.addproblem_sjlx);
         mAddproblemSjlxAll = (LinearLayout)rootView.findViewById(R.id.addproblem_sjlx_all);
+        mAddproblemJlfzr = (TextView)rootView.findViewById(R.id.addproblem_jlfzr);
+        mAddproblemJlfzrAll = (LinearLayout)rootView.findViewById(R.id.addproblem_jlfzr_all);
         /******************************************************************************************/
         List dataList = new ArrayList<String>();dataList.add("");
         mAddProblemAdapter =  new AddProblemAdapter(mActivity,dataList);
@@ -121,6 +132,27 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                 .setDividerColor(getResources().getColor(R.color.default_font_gray))
                 .setOutSideCancelable(true).isRestoreItem(false).isCenterLabel(false)
                 .setCyclic(false,false,false).setSelectOptions(0, 0, 0).build();
+        /******************************************************************************************/
+        mJlfzrOptionsPickerView = new OptionsPickerBuilder(this, new OnOptionsSelectListener()
+        {
+            public void onOptionsSelect(int options1Index, int options2Index, int options3Index, View view)
+            {
+                mCurrentSelectedJlfzrOptionItemOfIndex = options1Index;
+                mJlfzrOptionsPickerView.setSelectOptions(mCurrentSelectedJlfzrOptionItemOfIndex);
+                mAddproblemJlfzr.setText(mCurrentSelectedJlfzrOptionItemOfIndex > -1 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size() ? mJlfzrOptionBeans.get(mCurrentSelectedJlfzrOptionItemOfIndex).getPickerViewText().trim() : "");
+            }
+        }) .setTitleText("选择监理负责人").setLabels("","","").setTitleSize(33)
+                .setSubmitText("确定") .setCancelText("取消")
+                .setSubCalSize(28).setContentTextSize(18)
+                .setBgColor(getResources().getColor(R.color.white))
+                .setTitleColor(getResources().getColor(R.color.white))
+                .setSubmitColor(getResources().getColor(R.color.white))
+                .setCancelColor(getResources().getColor(R.color.white))
+                .setBackgroundId(getResources().getColor(R.color.white))
+                .setTitleBgColor(getResources().getColor(R.color.colorPrimary))
+                .setDividerColor(getResources().getColor(R.color.default_font_gray))
+                .setOutSideCancelable(true).isRestoreItem(false).isCenterLabel(false)
+                .setCyclic(false,false,false).setSelectOptions(0, 0, 0).build();
     }
 
     protected void initDatas()
@@ -128,6 +160,7 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         mAddProblemPresenter = new AddProblemPresenter();
         bindBaseMvpPresenter(mAddProblemPresenter);
         mUploadedFilesList = new ArrayList<>();
+        mJlfzrOptionBeans = new ArrayList<>();
         mSjlxOptionBeans = new ArrayList<>();
         mFzrOptionBeans = new ArrayList<>();
         mTotalUploadedFiles = 0;
@@ -135,11 +168,55 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
 
     protected void initLogic()
     {
+        mProcesstype = (null != getIntent() && null != getIntent().getStringExtra("processtype") ? getIntent().getStringExtra("processtype").trim() : "");
+        mDangerid = (null != getIntent() && null != getIntent().getStringExtra("dangerid") ? getIntent().getStringExtra("dangerid").trim() : "");
+        switch(mProcesstype)
+        {
+            case "sgcl":
+            {
+                mProcessTypeValue = 2;
+                setTitleContent("任务处理");
+                mAddproblemFzrAll.setVisibility(View.GONE);
+                mAddproblemSjlxAll.setVisibility(View.GONE);
+                mAddproblemJlfzrAll.setVisibility(View.VISIBLE);
+                break;
+            }
+            case "yscl":
+            {
+                mProcessTypeValue = 6;
+                setTitleContent("验收处理");
+                mAddproblemFzrAll.setVisibility(View.GONE);
+                mAddproblemSjlxAll.setVisibility(View.GONE);
+                mAddproblemJlfzrAll.setVisibility(View.GONE);
+                break;
+            }
+            case "jjcl":
+            {
+                mProcessTypeValue = 7;
+                setTitleContent("拒绝处理");
+                mAddproblemFzrAll.setVisibility(View.GONE);
+                mAddproblemSjlxAll.setVisibility(View.GONE);
+                mAddproblemJlfzrAll.setVisibility(View.GONE);
+                break;
+            }
+            default:
+            {
+                mProcessTypeValue = 1;
+                setTitleContent("添加问题");
+                mAddproblemFzrAll.setVisibility(View.VISIBLE);
+                mAddproblemSjlxAll.setVisibility(View.VISIBLE);
+                mAddproblemJlfzrAll.setVisibility(View.GONE);
+                break;
+            }
+        }
+        /******************************************************************************************/
         mAddProblemPresenter.getFzrDatas();
         mAddProblemPresenter.getSjlxDatas();
+        mAddProblemPresenter.getJlfzrDatas();
         mAddproblemBtn.setOnClickListener(this);
         mAddproblemFzrAll.setOnClickListener(this);
         mAddproblemSjlxAll.setOnClickListener(this);
+        mAddproblemJlfzrAll.setOnClickListener(this);
         mAddProblemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
@@ -231,7 +308,7 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         {
             case R.id.addproblem_fzr_all:
             {
-                if(null != mFzrOptionBeans && mFzrOptionBeans.size() > 0)
+                if(null != mFzrOptionBeans && mFzrOptionBeans.size() > 0 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size())
                 {
                     mFzrOptionsPickerView.setSelectOptions(mCurrentSelectedFzrOptionItemOfIndex);
                     mFzrOptionsPickerView.show();
@@ -243,7 +320,7 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
 
             case R.id.addproblem_sjlx_all:
             {
-                if(null != mSjlxOptionBeans && mSjlxOptionBeans.size() > 0)
+                if(null != mSjlxOptionBeans && mSjlxOptionBeans.size() > 0 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size())
                 {
                     mSjlxOptionsPickerView.setSelectOptions(mCurrentSelectedSjlxOptionItemOfIndex);
                     mSjlxOptionsPickerView.show();
@@ -252,7 +329,17 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                     showToast("没有可以选择的事件类型");
                 break;
             }
-
+            case R.id.addproblem_jlfzr_all:
+            {
+                if(null != mJlfzrOptionBeans && mJlfzrOptionBeans.size() > 0 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size())
+                {
+                    mJlfzrOptionsPickerView.setSelectOptions(mCurrentSelectedJlfzrOptionItemOfIndex);
+                    mJlfzrOptionsPickerView.show();
+                }
+                else
+                    showToast("没有可以选择的监理负责人");
+                break;
+            }
             case R.id.addproblem_btn:
             {
                 boolean isContainEmptyView = false;
@@ -267,14 +354,37 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                 {
                     mTotalUploadedFiles = 0;
                     mUploadedFilesList.clear();
-                    mAddProblemPresenter.uploadFile(mAddProblemAdapter.getData().get(mTotalUploadedFiles),"1");
+                    mAddProblemPresenter.uploadFile(mAddProblemAdapter.getData().get(mTotalUploadedFiles),String.valueOf(mProcessTypeValue));
                 }
                 else
                 {
-                    mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
-                              mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "", mAddproblemEt.getText().toString().trim(),
-                                                     mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
-                                                              mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
+                    switch(mProcesstype)
+                    {
+                        case "sgcl":
+                        {
+                            mAddProblemPresenter.processDanger(mCurrentSelectedJlfzrOptionItemOfIndex > -1 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size() ?
+                                  mJlfzrOptionBeans.get(mCurrentSelectedJlfzrOptionItemOfIndex).getId().trim() : "",mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                            break;
+                        }
+                        case "yscl":
+                        {
+                            mAddProblemPresenter.acceptDanger(mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                            break;
+                        }
+                        case "jjcl":
+                        {
+                            mAddProblemPresenter.refuseDanger(mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                            break;
+                        }
+                        default:
+                        {
+                            mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
+                                                mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "", mAddproblemEt.getText().toString().trim(),
+                                                mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
+                                                mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
+                            break;
+                        }
+                    }
                 }
                 break;
             }
@@ -287,6 +397,11 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
     }
 
     public void getFailOfSjlxDatas()
+    {
+
+    }
+
+    public void getFailOfJlfzrDatas()
     {
 
     }
@@ -308,6 +423,39 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
 
     }
 
+    public void getFailOfAcceptDanger()
+    {
+
+    }
+
+    public void getSuccessOfAcceptDanger()
+    {
+        finish();
+
+    }
+
+    public void getFailOfProcessDanger()
+    {
+
+    }
+
+    public void getSuccessOfProcessDanger()
+    {
+        finish();
+
+    }
+
+    public void getFailOfRefuseDanger()
+    {
+
+    }
+
+    public void getSuccessOfRefuseDanger()
+    {
+        finish();
+
+    }
+
     public void getSuccessOfUploadFile(String filePath)
     {
         mTotalUploadedFiles++;
@@ -322,14 +470,37 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         }
         if((isContainEmptyView && mTotalUploadedFiles <= mAddProblemAdapter.getData().size() - 2) || (!isContainEmptyView && mTotalUploadedFiles <= mAddProblemAdapter.getData().size() - 1))
         {
-            mAddProblemPresenter.uploadFile(mAddProblemAdapter.getData().get(mTotalUploadedFiles),"1");
+            mAddProblemPresenter.uploadFile(mAddProblemAdapter.getData().get(mTotalUploadedFiles),String.valueOf(mProcessTypeValue));
         }
         else
         {
-            mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
-                      mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "", mAddproblemEt.getText().toString().trim(),
-                                            mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
-                                                     mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
+            switch(mProcesstype)
+            {
+                case "sgcl":
+                {
+                    mAddProblemPresenter.processDanger(mCurrentSelectedJlfzrOptionItemOfIndex > -1 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size() ?
+                         mJlfzrOptionBeans.get(mCurrentSelectedJlfzrOptionItemOfIndex).getId().trim() : "",mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                    break;
+                }
+                case "yscl":
+                {
+                    mAddProblemPresenter.acceptDanger(mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                    break;
+                }
+                case "jjcl":
+                {
+                    mAddProblemPresenter.refuseDanger(mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                    break;
+                }
+                default:
+                {
+                    mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
+                                    mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "", mAddproblemEt.getText().toString().trim(),
+                                    mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
+                                    mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
+                    break;
+                }
+            }
         }
     }
 
@@ -349,6 +520,15 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         mSjlxOptionsPickerView.setNPicker(mSjlxOptionBeans,null,null);
         if(mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size())mSjlxOptionsPickerView.setSelectOptions(mCurrentSelectedSjlxOptionItemOfIndex);
         mAddproblemSjlx.setText(mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ? mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getPickerViewText().trim() : "");
+    }
+
+    public void getSuccessOfJlfzrDatas(List<JlfzrBean> jlfzrBeans)
+    {
+        mJlfzrOptionBeans = jlfzrBeans;
+        mCurrentSelectedJlfzrOptionItemOfIndex = mJlfzrOptionBeans.size() > 0 ? -1 : -1;
+        mJlfzrOptionsPickerView.setNPicker(mJlfzrOptionBeans,null,null);
+        if(mCurrentSelectedJlfzrOptionItemOfIndex > -1 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size())mJlfzrOptionsPickerView.setSelectOptions(mCurrentSelectedJlfzrOptionItemOfIndex);
+        mAddproblemJlfzr.setText(mCurrentSelectedJlfzrOptionItemOfIndex > -1 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size() ? mJlfzrOptionBeans.get(mCurrentSelectedJlfzrOptionItemOfIndex).getPickerViewText().trim() : "");
     }
 
     protected void setOnNewImgPathListener(LinkedList<String> bitmapPaths)

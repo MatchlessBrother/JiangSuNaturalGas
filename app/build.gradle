@@ -101,6 +101,7 @@ dependencies {
     implementation 'com.liulishuo.okdownload:okhttp:1.0.4'
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
     implementation 'com.github.HITGIF:TextFieldBoxes:1.4.4'
+    implementation 'com.github.Victory-Over:SuperWeb:v1.0.2'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.contrarywind:Android-PickerView:4.1.6'
     implementation 'com.liulishuo.okdownload:okdownload:1.0.4'
