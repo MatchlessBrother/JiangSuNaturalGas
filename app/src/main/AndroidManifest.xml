@@ -20,14 +20,15 @@
 
     <application
         android:name="company.naturalgas.client.base.BaseApp"
+        android:largeHeap="true"
         android:allowBackup="true"
         android:supportsRtl="true"
         android:label="${APP_NAME}"
+        android:theme="@style/AppTheme"
         android:resizeableActivity="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        tools:replace="android:allowBackup,icon,theme,label"
-        android:theme="@style/AppTheme">
+        tools:replace="android:allowBackup,icon,theme,label">
 
         <meta-data
             android:name="android.max_aspect"
