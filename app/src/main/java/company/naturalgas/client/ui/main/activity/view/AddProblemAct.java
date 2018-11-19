@@ -1,5 +1,6 @@
 package company.naturalgas.client.ui.main.activity.view;
 
+import java.io.File;
 import java.util.List;
 import android.view.View;
 import java.util.ArrayList;
@@ -10,11 +11,16 @@ import android.graphics.Color;
 import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.TextView;
+import io.reactivex.Observable;
 import android.widget.LinearLayout;
 import company.naturalgas.client.R;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import com.luck.picture.lib.PictureSelector;
 import android.support.v7.widget.RecyclerView;
 import android.graphics.drawable.ColorDrawable;
+import com.iceteck.silicompressorr.SiliCompressor;
 import company.naturalgas.client.bean.main.FzrBean;
 import company.naturalgas.client.base.BasePhotoAct;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,10 +29,13 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import android.support.v7.widget.LinearLayoutManager;
 import company.naturalgas.client.bean.main.JlfzrBean;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yuan.devlibrary._12_______Utils.MemoryUtils;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import company.naturalgas.client.adapter.main.AddProblemAdapter;
+import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 import company.naturalgas.client.ui.main.activity.view_v.AddProblemAct_V;
 import company.naturalgas.client.ui.main.activity.presenter.AddProblemPresenter;
 
@@ -39,9 +48,11 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
     private EditText mAddproblemEt;
     private int mTotalUploadedFiles;
     private List<String> mUploadedFilesList;
+    private String mPicturesCachePath = null;
     private PictureSelector mPicturesSelector;
     private AddProblemAdapter mAddProblemAdapter;
     private RecyclerView mAddproblemRecyclerview;
+    private BaseProgressDialog mBaseProgressDialog;
     private AddProblemPresenter mAddProblemPresenter;
 
     private TextView mAddproblemFzr;
@@ -157,12 +168,14 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
 
     protected void initDatas()
     {
+        mPicturesCachePath = MemoryUtils.getBestFilesPath(this) + File.separator + "pictures";
         mAddProblemPresenter = new AddProblemPresenter();
         bindBaseMvpPresenter(mAddProblemPresenter);
         mUploadedFilesList = new ArrayList<>();
         mJlfzrOptionBeans = new ArrayList<>();
         mSjlxOptionBeans = new ArrayList<>();
         mFzrOptionBeans = new ArrayList<>();
+        mBaseProgressDialog = null;
         mTotalUploadedFiles = 0;
     }
 
@@ -354,7 +367,39 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                 {
                     mTotalUploadedFiles = 0;
                     mUploadedFilesList.clear();
-                    mAddProblemPresenter.uploadFile(mAddProblemAdapter.getData().get(mTotalUploadedFiles),String.valueOf(mProcessTypeValue));
+                    String videoPath = mAddProblemAdapter.getData().get(mTotalUploadedFiles);
+                    String videoType = videoPath.substring(videoPath.lastIndexOf(".") + 1,videoPath.length()).toLowerCase().trim();
+                    if(videoType.contains("mp4") || videoType.contains("3gp") || videoType.contains("mkv") || videoType.contains("m4a") ||
+                            videoType.contains("aac") || videoType.contains("ts") || videoType.contains("flac") || videoType.contains("wav") || videoType.contains("ogg"))
+                    {
+                        if(videoPath.substring(videoPath.lastIndexOf("/") + 1,videoPath.length()).startsWith("VIDEO_"))
+                        {
+                            mAddProblemPresenter.uploadFile(videoPath,String.valueOf(mProcessTypeValue));
+                        }
+                        else
+                        {
+                            mBaseProgressDialog = showLoadingDialog();
+                            Observable.just(videoPath).map(new Function<String, String>()
+                            {
+                                public String apply(String videoPath) throws Exception
+                                {
+                                    return SiliCompressor.with(AddProblemAct.this).compressVideo(videoPath,mPicturesCachePath,0,0,1100000);
+                                }
+                            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>()
+                            {
+                                public void accept(String newVideoPath) throws Exception
+                                {
+                                    System.gc();
+                                    dismissLoadingDialog(mBaseProgressDialog);
+                                    mAddProblemPresenter.uploadFile(newVideoPath,String.valueOf(mProcessTypeValue));
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        mAddProblemPresenter.uploadFile(videoPath,String.valueOf(mProcessTypeValue));
+                    }
                 }
                 else
                 {
@@ -470,7 +515,41 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         }
         if((isContainEmptyView && mTotalUploadedFiles <= mAddProblemAdapter.getData().size() - 2) || (!isContainEmptyView && mTotalUploadedFiles <= mAddProblemAdapter.getData().size() - 1))
         {
-            mAddProblemPresenter.uploadFile(mAddProblemAdapter.getData().get(mTotalUploadedFiles),String.valueOf(mProcessTypeValue));
+            System.gc();
+            //mAddProblemPresenter.uploadFile(mAddProblemAdapter.getData().get(mTotalUploadedFiles),String.valueOf(mProcessTypeValue));
+            String videoPath = mAddProblemAdapter.getData().get(mTotalUploadedFiles);
+            String videoType = videoPath.substring(videoPath.lastIndexOf(".") + 1,videoPath.length()).toLowerCase().trim();
+            if(videoType.contains("mp4") || videoType.contains("3gp") || videoType.contains("mkv") || videoType.contains("m4a") ||
+                    videoType.contains("aac") || videoType.contains("ts") || videoType.contains("flac") || videoType.contains("wav") || videoType.contains("ogg"))
+            {
+                if(videoPath.substring(videoPath.lastIndexOf("/") + 1,videoPath.length()).startsWith("VIDEO_"))
+                {
+                    mAddProblemPresenter.uploadFile(videoPath,String.valueOf(mProcessTypeValue));
+                }
+                else
+                {
+                    mBaseProgressDialog = showLoadingDialog();
+                    Observable.just(videoPath).map(new Function<String, String>()
+                    {
+                        public String apply(String videoPath) throws Exception
+                        {
+                            return SiliCompressor.with(AddProblemAct.this).compressVideo(videoPath,mPicturesCachePath,0,0,1100000);
+                        }
+                    }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>()
+                    {
+                        public void accept(String newVideoPath) throws Exception
+                        {
+                            System.gc();
+                            dismissLoadingDialog(mBaseProgressDialog);
+                            mAddProblemPresenter.uploadFile(newVideoPath,String.valueOf(mProcessTypeValue));
+                        }
+                    });
+                }
+            }
+            else
+            {
+                mAddProblemPresenter.uploadFile(videoPath,String.valueOf(mProcessTypeValue));
+            }
         }
         else
         {

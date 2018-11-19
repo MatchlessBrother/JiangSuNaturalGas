@@ -184,7 +184,7 @@ public abstract class BasePhotoActivity extends BaseActivity
     {
         mPicturesSelector.openGallery(PictureMimeType.ofVideo()).theme(mPictureSelectorTheme).maxSelectNum(mChoosePicturesMaxSize)
                 .minSelectNum(mChoosePicturesMinSize).imageSpanCount(4).selectionMode(PictureConfig.MULTIPLE).isCamera(true).videoQuality(1)
-                .videoMinSecond(1).recordVideoSecond(Integer.MAX_VALUE).setOutputCameraPath(mPicturesCachePath).forResult(REQUEST_CODE_PICTURES_PATH);
+                .recordVideoSecond(60 * 60 * 24).setOutputCameraPath(mPicturesCachePath).forResult(REQUEST_CODE_PICTURES_PATH);
     }
 
     /***************************************准备启动图库获取图片***********************************/

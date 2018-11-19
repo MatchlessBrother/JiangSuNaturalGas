@@ -11,11 +11,13 @@ import com.tencent.smtt.sdk.TbsDownloader;
 import company.naturalgas.client.base.BaseAct;
 import com.fanneng.android.web.file.FileReaderView;
 import com.yuan.devlibrary._12_______Utils.NetUtils;
+import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 
 public class FileDisplayActivity extends BaseAct
 {
     private TbsListener mTbsListener;
     private FileReaderView mFileReaderView;
+    private BaseProgressDialog mBaseProgressDialog;
 
     protected int setLayoutResID()
     {
@@ -46,6 +48,7 @@ public class FileDisplayActivity extends BaseAct
 
             public void onInstallFinish(int i)
             {
+                dismissLoadingDialog(mBaseProgressDialog);
                 mFileReaderView.show(getIntent().getStringExtra("path"));
             }
 
@@ -58,16 +61,37 @@ public class FileDisplayActivity extends BaseAct
 
     protected void initDatas()
     {
-
+        mBaseProgressDialog = null;
     }
 
     protected void initLogic()
     {
+        QbSdk.preInit(this, new QbSdk.PreInitCallback()
+        {
+            public void onCoreInitFinished()
+            {
+
+            }
+
+            public void onViewInitFinished(boolean b)
+            {
+                dismissLoadingDialog(mBaseProgressDialog);
+                mFileReaderView.show(getIntent().getStringExtra("path"));
+            }
+        });
+        /******************************************************************************************/
         boolean needDownload = TbsDownloader.needDownload(this, TbsDownloader.DOWNLOAD_OVERSEA_TBS);
         if (needDownload && NetUtils.WhetherConnectNet(this))
+        {
+            QbSdk.setDownloadWithoutWifi(true);
             TbsDownloader.startDownload(this);
+            mBaseProgressDialog = showLoadingDialog();
+        }
         else
+        {
+            dismissLoadingDialog(mBaseProgressDialog);
             mFileReaderView.show(getIntent().getStringExtra("path"));
+        }
         QbSdk.setTbsListener(mTbsListener);
     }
 

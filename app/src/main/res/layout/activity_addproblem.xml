@@ -131,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical|left"
                     android:singleLine="true"
-                    android:text="负责人"
+                    android:text="施工负责人"
                     android:textColor="@color/default_font_gray"
                     android:textSize="30sp" />
 
