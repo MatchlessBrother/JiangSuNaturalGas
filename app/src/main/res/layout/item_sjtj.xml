@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12mm"
+    android:layout_marginTop="12mm"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="180mm"
+        android:layout_height="120mm"
+        android:background="#FFFF0000"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/item_sjtj_img"
+            android:layout_width="48mm"
+            android:layout_height="48mm"
+            android:src="@mipmap/search" />
+
+        <TextView
+            android:id="@+id/item_sjtj_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6mm"
+            android:gravity="center"
+            android:paddingLeft="6mm"
+            android:paddingRight="6mm"
+            android:singleLine="true"
+            android:text="已修改"
+            android:textColor="@color/white"
+            android:textSize="28sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_sjtj_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="54"
+        android:textColor="@color/default_font_black"
+        android:textSize="38sp" />
+</LinearLayout>

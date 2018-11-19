@@ -89,26 +89,38 @@ public class DangerDetailAct extends BaseAct implements DangerDetailAct_V, View.
     public void onClick(View view)
     {
         super.onClick(view);
-        Intent intent = new Intent(this,AddProblemAct.class);
         switch(view.getId())
         {
             case R.id.dangerdetail_btn_sgcl:
             {
-                intent.putExtra("processtype","sgcl");
+                if(mDangerdetailBtnSgcl.getText().toString().equals("关闭"))
+                    mDangerDetailPresenter.closeDanger(null != mDangerDetailBeans && null != mDangerDetailBeans.getSgms() ? mDangerDetailBeans.getSgms().getId() : "");
+                else
+                {
+                    Intent intent = new Intent(this,AddProblemAct.class);
+                    intent.putExtra("processtype","sgcl");
+                    intent.putExtra("dangerid",null != mDangerDetailBeans && null != mDangerDetailBeans.getSgms() ? mDangerDetailBeans.getSgms().getId() : "");
+                    startActivityForResult(intent,StartAddProblemAct);
+                }
                 break;
             }
             case R.id.dangerdetail_btn_true:
             {
+                Intent intent = new Intent(this,AddProblemAct.class);
                 intent.putExtra("processtype","yscl");
+                intent.putExtra("dangerid",null != mDangerDetailBeans && null != mDangerDetailBeans.getSgms() ? mDangerDetailBeans.getSgms().getId() : "");
+                startActivityForResult(intent,StartAddProblemAct);
                 break;
             }
             case R.id.dangerdetail_btn_false:
             {
+                Intent intent = new Intent(this,AddProblemAct.class);
                 intent.putExtra("processtype","jjcl");
+                intent.putExtra("dangerid",null != mDangerDetailBeans && null != mDangerDetailBeans.getSgms() ? mDangerDetailBeans.getSgms().getId() : "");
+                startActivityForResult(intent,StartAddProblemAct);
                 break;
             }
         }
-        startActivityForResult(intent,StartAddProblemAct);
     }
 
     public void getFailOfDangerDetailDatas()
@@ -192,6 +204,22 @@ public class DangerDetailAct extends BaseAct implements DangerDetailAct_V, View.
 
     }
 
+    public void closeFailOfDanger()
+    {
+
+    }
+
+    public void closeSuccessOfDanger()
+    {
+        setTitleMoreFont("");
+        showToast("关闭隐患成功");
+        setTitleMoreFontVisible(View.GONE);
+        mDangerdetailBtnSgcl.setVisibility(View.GONE);
+        mDangerdetailBtnTrue.setVisibility(View.GONE);
+        mDangerdetailBtnFalse.setVisibility(View.GONE);
+        mDangerDetailPresenter.getDetailDatas(getIntent().getStringExtra("id"));
+    }
+
     public void getSuccessOfSgjlrDatas(List<SgjlyBean> sgjlyBeans)
     {
         mSgaqyOrSgjlrOptionsPickerView = new OptionsPickerBuilder(this, new OnOptionsSelectListener()
@@ -257,19 +285,16 @@ public class DangerDetailAct extends BaseAct implements DangerDetailAct_V, View.
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if(null != data)
+        switch(requestCode)
         {
-            switch(requestCode)
+            case StartAddProblemAct:
             {
-                case StartAddProblemAct:
-                {
-                    setTitleMoreFont("");
-                    setTitleMoreFontVisible(View.GONE);
-                    mDangerdetailBtnSgcl.setVisibility(View.GONE);
-                    mDangerdetailBtnTrue.setVisibility(View.GONE);
-                    mDangerdetailBtnFalse.setVisibility(View.GONE);
-                    mDangerDetailPresenter.getDetailDatas(getIntent().getStringExtra("id"));
-                }
+                setTitleMoreFont("");
+                setTitleMoreFontVisible(View.GONE);
+                mDangerdetailBtnSgcl.setVisibility(View.GONE);
+                mDangerdetailBtnTrue.setVisibility(View.GONE);
+                mDangerdetailBtnFalse.setVisibility(View.GONE);
+                mDangerDetailPresenter.getDetailDatas(getIntent().getStringExtra("id"));
             }
         }
     }

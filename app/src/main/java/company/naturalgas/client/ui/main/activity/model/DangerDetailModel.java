@@ -17,6 +17,7 @@ public class DangerDetailModel extends BaseMvp_PVModel
     public static final int GetSgjlyDatas = 0x0003;
     public static final int ChooseSgaqy = 0x0004;
     public static final int ChooseSgjlr = 0x0005;
+    public static final int CloseDanger = 0X0006;
 
     public void executeOfNet(Context context, int netRequestCode, BaseMvp_LocalObjCallBack localCallBack)
     {
@@ -26,6 +27,7 @@ public class DangerDetailModel extends BaseMvp_PVModel
             case GetDetailDatas:NetClient.getInstance(context).getNetUrl().getDangerDetailDatas(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
             case ChooseSgaqy:NetClient.getInstance(context).getNetUrl().chooseSgaqy(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
             case ChooseSgjlr:NetClient.getInstance(context).getNetUrl().chooseSgjlr(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
+            case CloseDanger:NetClient.getInstance(context).getNetUrl().closeDanger(getMultipartForms()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseMvp_NetObjCallBack(context,localCallBack));break;
         }
     }
 

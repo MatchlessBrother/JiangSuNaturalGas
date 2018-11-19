@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import company.naturalgas.client.bean.main.DangerBean;
 import company.naturalgas.client.adapter.main.ListOfDangersAdapter;
-import company.naturalgas.client.bean.main.MainInfo;
 import company.naturalgas.client.ui.main.activity.view_v.ListOfDangersAct_V;
 import company.naturalgas.client.ui.main.activity.presenter.ListOfDangersPresenter;
 
@@ -21,6 +20,7 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
     private ListOfDangersAdapter mListOfDangersAdapter;
     private ListOfDangersPresenter mListOfDangersPresenter;
     private SwipeRefreshLayout mListOfDangersSwiperefreshlayout;
+    public static final int StartOtherActivity = 0x0001;
 
     protected int setLayoutResID()
     {
@@ -79,7 +79,7 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
                 Intent intent = new Intent(ListOfDangersAct.this,DangerDetailAct.class);
                 intent.putExtra("code",getBaseApp().getMainInfo().getRole().getCode());
                 intent.putExtra("id",mListOfDangersAdapter.getData().get(position).getId());
-                startActivity(intent);
+                startActivityForResult(intent,StartOtherActivity);
             }
         });
     }
@@ -108,10 +108,10 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
     protected void onTitleMoreFontClick()
     {
         super.onTitleMoreFontClick();
-        if(null != getIntent() && null != getIntent().getStringExtra("code") && "1".equals(getIntent().getStringExtra("code").trim()))
+        if(null != getIntent() && null != getIntent().getStringExtra("authurl") && "yhsb".equals(getIntent().getStringExtra("authurl").toLowerCase().trim()))
         {
             Intent intent = new Intent(this,AddProblemAct.class);
-            startActivity(intent);
+            startActivityForResult(intent,StartOtherActivity);
         }
     }
 
@@ -132,5 +132,18 @@ public class ListOfDangersAct extends BaseAct implements ListOfDangersAct_V
             mListOfDangersAdapter.setEnableLoadMore(false);
         else
             mListOfDangersAdapter.setEnableLoadMore(true);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode)
+        {
+            case StartOtherActivity:
+            {
+                mListOfDangersPresenter.refreshDatas();
+                break;
+            }
+        }
     }
 }

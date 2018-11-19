@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sjtj_swiperefreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadingEdgeLength="0mm"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadingEdgeLength="0mm"
+            android:overScrollMode="never"
+            android:requiresFadingEdge="vertical"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginTop="20mm"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/sjtj_kssj_all"
+                        android:layout_width="0mm"
+                        android:layout_height="66mm"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_rect_round_gray"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20mm"
+                        android:paddingRight="20mm">
+
+                        <TextView
+                            android:id="@+id/sjtj_kssj_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="开始日期"
+                            android:singleLine="true"
+                            android:textColor="@color/default_font_black"
+                            android:textSize="30sp" />
+
+                        <ImageView
+                            android:layout_width="30mm"
+                            android:layout_height="30mm"
+                            android:layout_marginLeft="6mm"
+                            android:contentDescription=""
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/icon_arrowbuttom_black" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sjtj_jssj_all"
+                        android:layout_width="0mm"
+                        android:layout_height="66mm"
+                        android:layout_marginLeft="12mm"
+                        android:layout_marginRight="12mm"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_rect_round_gray"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20mm"
+                        android:paddingRight="20mm">
+
+                        <TextView
+                            android:id="@+id/sjtj_jssj_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="结束日期"
+                            android:singleLine="true"
+                            android:textColor="@color/default_font_black"
+                            android:textSize="30sp" />
+
+                        <ImageView
+                            android:layout_width="30mm"
+                            android:layout_height="30mm"
+                            android:layout_marginLeft="6mm"
+                            android:contentDescription=""
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/icon_arrowbuttom_black" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sjtj_search_btn"
+                        android:layout_width="66mm"
+                        android:layout_height="66mm"
+                        android:background="@drawable/shape_rect_round_deepblue"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="40mm"
+                            android:layout_height="40mm"
+                            android:contentDescription=""
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/icon_search_white" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="12mm"
+                    android:background="@color/default_background_gray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginTop="30mm"
+                    android:gravity="center_vertical|left"
+                    android:singleLine="true"
+                    android:text="隐患排查"
+                    android:textColor="@color/default_font_gray"
+                    android:textSize="30sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/sjtj_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:fadingEdgeLength="0mm"
+                    android:overScrollMode="never"
+                    android:requiresFadingEdge="vertical"
+                    android:scrollbars="none"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/sjtj_yhpc_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginTop="40mm"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="180mm"
+                            android:layout_height="120mm"
+                            android:background="@drawable/shape_rect_round_yellow"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="48mm"
+                                android:layout_height="48mm"
+                                android:src="@mipmap/yh" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6mm"
+                                android:gravity="center"
+                                android:paddingLeft="6mm"
+                                android:paddingRight="6mm"
+                                android:singleLine="true"
+                                android:text="隐患"
+                                android:textColor="@color/white"
+                                android:textSize="28sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/sjtj_yhpc_yh_num"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8mm"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textColor="@color/default_font_black"
+                            android:textSize="38sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="180mm"
+                            android:layout_height="120mm"
+                            android:background="@drawable/shape_rect_round_lightblue"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="48mm"
+                                android:layout_height="48mm"
+                                android:src="@mipmap/yhzg" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6mm"
+                                android:gravity="center"
+                                android:paddingLeft="6mm"
+                                android:paddingRight="6mm"
+                                android:singleLine="true"
+                                android:text="已整改"
+                                android:textColor="@color/white"
+                                android:textSize="28sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/sjtj_yhpc_yhzg_num"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8mm"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textColor="@color/default_font_black"
+                            android:textSize="38sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="180mm"
+                            android:layout_height="120mm"
+                            android:background="@drawable/shape_rect_round_green"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="48mm"
+                                android:layout_height="48mm"
+                                android:src="@mipmap/zgys" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6mm"
+                                android:gravity="center"
+                                android:paddingLeft="6mm"
+                                android:paddingRight="6mm"
+                                android:singleLine="true"
+                                android:text="已验收"
+                                android:textColor="@color/white"
+                                android:textSize="28sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/sjtj_yhpc_yhys_num"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8mm"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textColor="@color/default_font_black"
+                            android:textSize="38sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="12mm"
+                    android:background="@color/default_background_gray" />
+
+                <TextView
+                    android:id="@+id/sjtj_echartview_ts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30mm"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginTop="30mm"
+                    android:gravity="center_vertical|left"
+                    android:singleLine="true"
+                    android:text="近6月隐患整改分析图"
+                    android:textColor="@color/default_font_gray"
+                    android:textSize="30sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20mm"
+                    android:layout_marginRight="20mm"
+                    android:layout_marginBottom="40mm"
+                    android:orientation="vertical">
+
+                    <company.naturalgas.client.widget.EchartView
+                        android:id="@+id/sjtj_echartview"
+                        android:layout_height="280dp"
+                        android:layout_width="match_parent"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

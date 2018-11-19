@@ -96,9 +96,9 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
             Collections.sort(getBaseApp().getMainInfo().getMenu().getQtyw());
             mMainYhpcAdapter.setNewData(getBaseApp().getMainInfo().getMenu().getYhpc());
             mMainQtywAdapter.setNewData(getBaseApp().getMainInfo().getMenu().getQtyw());
-            DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+            /*DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
             ProtectNotifycationService.sShouldStopService = false;
-            startService(new Intent(this,ProtectNotifycationService.class));
+            startService(new Intent(this,ProtectNotifycationService.class));*/
         }
 
         mBanner.setDelegate(new BGABanner.Delegate<ImageView, String>()
@@ -115,7 +115,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
             {
                 if(null != mMainYhpcAdapter.getData().get(position) && null != mMainYhpcAdapter.getData().get(position).getAuthUrl() && "yhtj".equals(mMainYhpcAdapter.getData().get(position).getAuthUrl().trim()))
                 {
-                    Intent intent = new Intent(MainAct.this,YhtjAct.class);
+                    Intent intent = new Intent(MainAct.this,SjtjActivity.class);
                     startActivity(intent);
                 }
                 else
@@ -133,7 +133,7 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
             {
                 if(null != mMainQtywAdapter.getData().get(position) && null != mMainQtywAdapter.getData().get(position).getAuthUrl() && "zlgl".equals(mMainQtywAdapter.getData().get(position).getAuthUrl().trim()))
                 {
-                    Intent intent = new Intent(MainAct.this,YhtjAct.class);
+                    Intent intent = new Intent(MainAct.this,ZlglAct.class);
                     startActivity(intent);
                 }
             }
@@ -146,9 +146,9 @@ public class MainAct extends BaseAct implements MainAct_V,SignInAct_V
         Collections.sort(getBaseApp().getMainInfo().getMenu().getQtyw());
         mMainYhpcAdapter.setNewData(getBaseApp().getMainInfo().getMenu().getYhpc());
         mMainQtywAdapter.setNewData(getBaseApp().getMainInfo().getMenu().getQtyw());
-        DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+        /*DaemonEnv.initialize(this, ProtectNotifycationService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         ProtectNotifycationService.sShouldStopService = false;
-        startService(new Intent(this,ProtectNotifycationService.class));
+        startService(new Intent(this,ProtectNotifycationService.class));*/
     }
 
     public void signInFailure()

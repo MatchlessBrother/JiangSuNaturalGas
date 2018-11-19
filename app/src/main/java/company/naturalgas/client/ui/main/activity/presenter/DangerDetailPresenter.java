@@ -194,4 +194,40 @@ public class DangerDetailPresenter extends BaseMvp_Presenter<DangerDetailAct_V>
             });
         }
     }
+
+    public void closeDanger(String dangerId)
+    {
+        if(isAttachContextAndViewLayer())
+        {
+            BaseMvp_EntranceOfModel.requestDatas(DangerDetailModel.class).putForm("dangerId",dangerId).convertForms().
+            executeOfNet(getContext(),DangerDetailModel.CloseDanger,new BaseMvp_LocalObjCallBack<BaseReturnData>(this)
+            {
+                public void onSuccess(BaseReturnData baseReturnData)
+                {
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().closeSuccessOfDanger();
+                    }
+                }
+
+                public void onFailure(String msg)
+                {
+                    super.onFailure(msg);
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().closeFailOfDanger();
+                    }
+                }
+
+                public void onError(String msg)
+                {
+                    super.onError(msg);
+                    if(isAttachContextAndViewLayer())
+                    {
+                        getViewLayer().closeFailOfDanger();
+                    }
+                }
+            });
+        }
+    }
 }

@@ -28,8 +28,9 @@ public class ListOfDangersAdapter extends BaseQuickAdapter<DangerBean.RecordsBea
     {
         switch(recordsBean.getCode())
         {
-            case "0": helper.setTextColor(R.id.itemdanger_status,mContext.getResources().getColor(R.color.default_font_gray));break;
-            default:break;
+            case "5000":
+            case "6000":helper.setTextColor(R.id.itemdanger_status,mContext.getResources().getColor(R.color.default_font_gray));break;
+            default:helper.setTextColor(R.id.itemdanger_status,mContext.getResources().getColor(R.color.red));break;
         }
         /**mDate.setTime(Long.valueOf(recordsBean.getCreateTime().trim()));
         helper.setText(R.id.itemdanger_time,"时间 : " + mSimpleDateFormat.format(mDate));*/

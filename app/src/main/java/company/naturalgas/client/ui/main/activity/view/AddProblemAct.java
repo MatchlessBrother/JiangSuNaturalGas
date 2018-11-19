@@ -1,5 +1,6 @@
 package company.naturalgas.client.ui.main.activity.view;
 
+import java.io.File;
 import java.util.List;
 import android.view.View;
 import java.util.ArrayList;
@@ -10,34 +11,48 @@ import android.graphics.Color;
 import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.TextView;
+import io.reactivex.Observable;
 import android.widget.LinearLayout;
 import company.naturalgas.client.R;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import com.luck.picture.lib.PictureSelector;
 import android.support.v7.widget.RecyclerView;
 import android.graphics.drawable.ColorDrawable;
+import com.iceteck.silicompressorr.SiliCompressor;
 import company.naturalgas.client.bean.main.FzrBean;
 import company.naturalgas.client.base.BasePhotoAct;
 import android.support.v7.widget.GridLayoutManager;
 import company.naturalgas.client.bean.main.SjlxBean;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import android.support.v7.widget.LinearLayoutManager;
+import company.naturalgas.client.bean.main.JlfzrBean;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yuan.devlibrary._12_______Utils.MemoryUtils;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import com.yuan.devlibrary._12_______Utils.PromptBoxUtils;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import company.naturalgas.client.adapter.main.AddProblemAdapter;
+import com.yuan.devlibrary._11___Widget.promptBox.BaseProgressDialog;
 import company.naturalgas.client.ui.main.activity.view_v.AddProblemAct_V;
 import company.naturalgas.client.ui.main.activity.presenter.AddProblemPresenter;
 
 public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View.OnClickListener
 {
+    private String mDangerid;
+    private String mProcesstype;
     private Button mAddproblemBtn;
+    private int mProcessTypeValue;
     private EditText mAddproblemEt;
     private int mTotalUploadedFiles;
     private List<String> mUploadedFilesList;
+    private String mPicturesCachePath = null;
     private PictureSelector mPicturesSelector;
     private AddProblemAdapter mAddProblemAdapter;
     private RecyclerView mAddproblemRecyclerview;
+    private BaseProgressDialog mBaseProgressDialog;
     private AddProblemPresenter mAddProblemPresenter;
 
     private TextView mAddproblemFzr;
@@ -52,6 +67,12 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
     private OptionsPickerView mSjlxOptionsPickerView;
     private int mCurrentSelectedSjlxOptionItemOfIndex;
 
+    private TextView mAddproblemJlfzr;
+    private List<JlfzrBean> mJlfzrOptionBeans;
+    private LinearLayout mAddproblemJlfzrAll;
+    private OptionsPickerView mJlfzrOptionsPickerView;
+    private int mCurrentSelectedJlfzrOptionItemOfIndex;
+
     protected int setLayoutResID()
     {
         return R.layout.activity_addproblem;
@@ -60,7 +81,6 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
     protected void initWidgets(View rootView)
     {
         super.initWidgets(rootView);
-        setTitleContent("添加问题");
         mPicturesSelector = PictureSelector.create(this);
         mAddproblemBtn = (Button)rootView.findViewById(R.id.addproblem_btn);
         mAddproblemEt = (EditText)rootView.findViewById(R.id.addproblem_et);
@@ -70,6 +90,8 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         mAddproblemFzrAll = (LinearLayout)rootView.findViewById(R.id.addproblem_fzr_all);
         mAddproblemSjlx = (TextView)rootView.findViewById(R.id.addproblem_sjlx);
         mAddproblemSjlxAll = (LinearLayout)rootView.findViewById(R.id.addproblem_sjlx_all);
+        mAddproblemJlfzr = (TextView)rootView.findViewById(R.id.addproblem_jlfzr);
+        mAddproblemJlfzrAll = (LinearLayout)rootView.findViewById(R.id.addproblem_jlfzr_all);
         /******************************************************************************************/
         List dataList = new ArrayList<String>();dataList.add("");
         mAddProblemAdapter =  new AddProblemAdapter(mActivity,dataList);
@@ -121,25 +143,93 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                 .setDividerColor(getResources().getColor(R.color.default_font_gray))
                 .setOutSideCancelable(true).isRestoreItem(false).isCenterLabel(false)
                 .setCyclic(false,false,false).setSelectOptions(0, 0, 0).build();
+        /******************************************************************************************/
+        mJlfzrOptionsPickerView = new OptionsPickerBuilder(this, new OnOptionsSelectListener()
+        {
+            public void onOptionsSelect(int options1Index, int options2Index, int options3Index, View view)
+            {
+                mCurrentSelectedJlfzrOptionItemOfIndex = options1Index;
+                mJlfzrOptionsPickerView.setSelectOptions(mCurrentSelectedJlfzrOptionItemOfIndex);
+                mAddproblemJlfzr.setText(mCurrentSelectedJlfzrOptionItemOfIndex > -1 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size() ? mJlfzrOptionBeans.get(mCurrentSelectedJlfzrOptionItemOfIndex).getPickerViewText().trim() : "");
+            }
+        }) .setTitleText("选择监理负责人").setLabels("","","").setTitleSize(33)
+                .setSubmitText("确定") .setCancelText("取消")
+                .setSubCalSize(28).setContentTextSize(18)
+                .setBgColor(getResources().getColor(R.color.white))
+                .setTitleColor(getResources().getColor(R.color.white))
+                .setSubmitColor(getResources().getColor(R.color.white))
+                .setCancelColor(getResources().getColor(R.color.white))
+                .setBackgroundId(getResources().getColor(R.color.white))
+                .setTitleBgColor(getResources().getColor(R.color.colorPrimary))
+                .setDividerColor(getResources().getColor(R.color.default_font_gray))
+                .setOutSideCancelable(true).isRestoreItem(false).isCenterLabel(false)
+                .setCyclic(false,false,false).setSelectOptions(0, 0, 0).build();
     }
 
     protected void initDatas()
     {
+        mPicturesCachePath = MemoryUtils.getBestFilesPath(this) + File.separator + "pictures";
         mAddProblemPresenter = new AddProblemPresenter();
         bindBaseMvpPresenter(mAddProblemPresenter);
         mUploadedFilesList = new ArrayList<>();
+        mJlfzrOptionBeans = new ArrayList<>();
         mSjlxOptionBeans = new ArrayList<>();
         mFzrOptionBeans = new ArrayList<>();
+        mBaseProgressDialog = null;
         mTotalUploadedFiles = 0;
     }
 
     protected void initLogic()
     {
+        mProcesstype = (null != getIntent() && null != getIntent().getStringExtra("processtype") ? getIntent().getStringExtra("processtype").trim() : "");
+        mDangerid = (null != getIntent() && null != getIntent().getStringExtra("dangerid") ? getIntent().getStringExtra("dangerid").trim() : "");
+        switch(mProcesstype)
+        {
+            case "sgcl":
+            {
+                mProcessTypeValue = 2;
+                setTitleContent("任务处理");
+                mAddproblemFzrAll.setVisibility(View.GONE);
+                mAddproblemSjlxAll.setVisibility(View.GONE);
+                mAddproblemJlfzrAll.setVisibility(View.VISIBLE);
+                break;
+            }
+            case "yscl":
+            {
+                mProcessTypeValue = 6;
+                setTitleContent("验收处理");
+                mAddproblemFzrAll.setVisibility(View.GONE);
+                mAddproblemSjlxAll.setVisibility(View.GONE);
+                mAddproblemJlfzrAll.setVisibility(View.GONE);
+                break;
+            }
+            case "jjcl":
+            {
+                mProcessTypeValue = 7;
+                setTitleContent("拒绝处理");
+                mAddproblemFzrAll.setVisibility(View.GONE);
+                mAddproblemSjlxAll.setVisibility(View.GONE);
+                mAddproblemJlfzrAll.setVisibility(View.GONE);
+                break;
+            }
+            default:
+            {
+                mProcessTypeValue = 1;
+                setTitleContent("添加问题");
+                mAddproblemFzrAll.setVisibility(View.VISIBLE);
+                mAddproblemSjlxAll.setVisibility(View.VISIBLE);
+                mAddproblemJlfzrAll.setVisibility(View.GONE);
+                break;
+            }
+        }
+        /******************************************************************************************/
         mAddProblemPresenter.getFzrDatas();
         mAddProblemPresenter.getSjlxDatas();
+        mAddProblemPresenter.getJlfzrDatas();
         mAddproblemBtn.setOnClickListener(this);
         mAddproblemFzrAll.setOnClickListener(this);
         mAddproblemSjlxAll.setOnClickListener(this);
+        mAddproblemJlfzrAll.setOnClickListener(this);
         mAddProblemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener()
         {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position)
@@ -231,7 +321,7 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         {
             case R.id.addproblem_fzr_all:
             {
-                if(null != mFzrOptionBeans && mFzrOptionBeans.size() > 0)
+                if(null != mFzrOptionBeans && mFzrOptionBeans.size() > 0 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size())
                 {
                     mFzrOptionsPickerView.setSelectOptions(mCurrentSelectedFzrOptionItemOfIndex);
                     mFzrOptionsPickerView.show();
@@ -243,7 +333,7 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
 
             case R.id.addproblem_sjlx_all:
             {
-                if(null != mSjlxOptionBeans && mSjlxOptionBeans.size() > 0)
+                if(null != mSjlxOptionBeans && mSjlxOptionBeans.size() > 0 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size())
                 {
                     mSjlxOptionsPickerView.setSelectOptions(mCurrentSelectedSjlxOptionItemOfIndex);
                     mSjlxOptionsPickerView.show();
@@ -252,7 +342,17 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                     showToast("没有可以选择的事件类型");
                 break;
             }
-
+            case R.id.addproblem_jlfzr_all:
+            {
+                if(null != mJlfzrOptionBeans && mJlfzrOptionBeans.size() > 0 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size())
+                {
+                    mJlfzrOptionsPickerView.setSelectOptions(mCurrentSelectedJlfzrOptionItemOfIndex);
+                    mJlfzrOptionsPickerView.show();
+                }
+                else
+                    showToast("没有可以选择的监理负责人");
+                break;
+            }
             case R.id.addproblem_btn:
             {
                 boolean isContainEmptyView = false;
@@ -267,14 +367,69 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
                 {
                     mTotalUploadedFiles = 0;
                     mUploadedFilesList.clear();
-                    mAddProblemPresenter.uploadFile(mAddProblemAdapter.getData().get(mTotalUploadedFiles),"1");
+                    String videoPath = mAddProblemAdapter.getData().get(mTotalUploadedFiles);
+                    String videoType = videoPath.substring(videoPath.lastIndexOf(".") + 1,videoPath.length()).toLowerCase().trim();
+                    if(videoType.contains("mp4") || videoType.contains("3gp") || videoType.contains("mkv") || videoType.contains("m4a") ||
+                            videoType.contains("aac") || videoType.contains("ts") || videoType.contains("flac") || videoType.contains("wav") || videoType.contains("ogg"))
+                    {
+                        if(videoPath.substring(videoPath.lastIndexOf("/") + 1,videoPath.length()).startsWith("VIDEO_"))
+                        {
+                            mAddProblemPresenter.uploadFile(videoPath,String.valueOf(mProcessTypeValue));
+                        }
+                        else
+                        {
+                            mBaseProgressDialog = showLoadingDialog();
+                            Observable.just(videoPath).map(new Function<String, String>()
+                            {
+                                public String apply(String videoPath) throws Exception
+                                {
+                                    return SiliCompressor.with(AddProblemAct.this).compressVideo(videoPath,mPicturesCachePath,0,0,1100000);
+                                }
+                            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>()
+                            {
+                                public void accept(String newVideoPath) throws Exception
+                                {
+                                    System.gc();
+                                    dismissLoadingDialog(mBaseProgressDialog);
+                                    mAddProblemPresenter.uploadFile(newVideoPath,String.valueOf(mProcessTypeValue));
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        mAddProblemPresenter.uploadFile(videoPath,String.valueOf(mProcessTypeValue));
+                    }
                 }
                 else
                 {
-                    mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
-                              mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "", mAddproblemEt.getText().toString().trim(),
-                                                     mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
-                                                              mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
+                    switch(mProcesstype)
+                    {
+                        case "sgcl":
+                        {
+                            mAddProblemPresenter.processDanger(mCurrentSelectedJlfzrOptionItemOfIndex > -1 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size() ?
+                                  mJlfzrOptionBeans.get(mCurrentSelectedJlfzrOptionItemOfIndex).getId().trim() : "",mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                            break;
+                        }
+                        case "yscl":
+                        {
+                            mAddProblemPresenter.acceptDanger(mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                            break;
+                        }
+                        case "jjcl":
+                        {
+                            mAddProblemPresenter.refuseDanger(mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                            break;
+                        }
+                        default:
+                        {
+                            mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
+                                                mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "", mAddproblemEt.getText().toString().trim(),
+                                                mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
+                                                mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
+                            break;
+                        }
+                    }
                 }
                 break;
             }
@@ -287,6 +442,11 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
     }
 
     public void getFailOfSjlxDatas()
+    {
+
+    }
+
+    public void getFailOfJlfzrDatas()
     {
 
     }
@@ -308,6 +468,39 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
 
     }
 
+    public void getFailOfAcceptDanger()
+    {
+
+    }
+
+    public void getSuccessOfAcceptDanger()
+    {
+        finish();
+
+    }
+
+    public void getFailOfProcessDanger()
+    {
+
+    }
+
+    public void getSuccessOfProcessDanger()
+    {
+        finish();
+
+    }
+
+    public void getFailOfRefuseDanger()
+    {
+
+    }
+
+    public void getSuccessOfRefuseDanger()
+    {
+        finish();
+
+    }
+
     public void getSuccessOfUploadFile(String filePath)
     {
         mTotalUploadedFiles++;
@@ -322,14 +515,71 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         }
         if((isContainEmptyView && mTotalUploadedFiles <= mAddProblemAdapter.getData().size() - 2) || (!isContainEmptyView && mTotalUploadedFiles <= mAddProblemAdapter.getData().size() - 1))
         {
-            mAddProblemPresenter.uploadFile(mAddProblemAdapter.getData().get(mTotalUploadedFiles),"1");
+            System.gc();
+            //mAddProblemPresenter.uploadFile(mAddProblemAdapter.getData().get(mTotalUploadedFiles),String.valueOf(mProcessTypeValue));
+            String videoPath = mAddProblemAdapter.getData().get(mTotalUploadedFiles);
+            String videoType = videoPath.substring(videoPath.lastIndexOf(".") + 1,videoPath.length()).toLowerCase().trim();
+            if(videoType.contains("mp4") || videoType.contains("3gp") || videoType.contains("mkv") || videoType.contains("m4a") ||
+                    videoType.contains("aac") || videoType.contains("ts") || videoType.contains("flac") || videoType.contains("wav") || videoType.contains("ogg"))
+            {
+                if(videoPath.substring(videoPath.lastIndexOf("/") + 1,videoPath.length()).startsWith("VIDEO_"))
+                {
+                    mAddProblemPresenter.uploadFile(videoPath,String.valueOf(mProcessTypeValue));
+                }
+                else
+                {
+                    mBaseProgressDialog = showLoadingDialog();
+                    Observable.just(videoPath).map(new Function<String, String>()
+                    {
+                        public String apply(String videoPath) throws Exception
+                        {
+                            return SiliCompressor.with(AddProblemAct.this).compressVideo(videoPath,mPicturesCachePath,0,0,1100000);
+                        }
+                    }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>()
+                    {
+                        public void accept(String newVideoPath) throws Exception
+                        {
+                            System.gc();
+                            dismissLoadingDialog(mBaseProgressDialog);
+                            mAddProblemPresenter.uploadFile(newVideoPath,String.valueOf(mProcessTypeValue));
+                        }
+                    });
+                }
+            }
+            else
+            {
+                mAddProblemPresenter.uploadFile(videoPath,String.valueOf(mProcessTypeValue));
+            }
         }
         else
         {
-            mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
-                      mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "", mAddproblemEt.getText().toString().trim(),
-                                            mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
-                                                     mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
+            switch(mProcesstype)
+            {
+                case "sgcl":
+                {
+                    mAddProblemPresenter.processDanger(mCurrentSelectedJlfzrOptionItemOfIndex > -1 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size() ?
+                         mJlfzrOptionBeans.get(mCurrentSelectedJlfzrOptionItemOfIndex).getId().trim() : "",mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                    break;
+                }
+                case "yscl":
+                {
+                    mAddProblemPresenter.acceptDanger(mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                    break;
+                }
+                case "jjcl":
+                {
+                    mAddProblemPresenter.refuseDanger(mAddproblemEt.getText().toString().trim(),mDangerid,mUploadedFilesList);
+                    break;
+                }
+                default:
+                {
+                    mAddProblemPresenter.uploadDanger(mCurrentSelectedFzrOptionItemOfIndex > -1 && mCurrentSelectedFzrOptionItemOfIndex < mFzrOptionBeans.size() ?
+                                    mFzrOptionBeans.get(mCurrentSelectedFzrOptionItemOfIndex).getId().trim() : "", mAddproblemEt.getText().toString().trim(),
+                                    mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ?
+                                    mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getCode().trim() : "",mUploadedFilesList);
+                    break;
+                }
+            }
         }
     }
 
@@ -349,6 +599,15 @@ public class AddProblemAct extends BasePhotoAct implements AddProblemAct_V, View
         mSjlxOptionsPickerView.setNPicker(mSjlxOptionBeans,null,null);
         if(mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size())mSjlxOptionsPickerView.setSelectOptions(mCurrentSelectedSjlxOptionItemOfIndex);
         mAddproblemSjlx.setText(mCurrentSelectedSjlxOptionItemOfIndex > -1 && mCurrentSelectedSjlxOptionItemOfIndex < mSjlxOptionBeans.size() ? mSjlxOptionBeans.get(mCurrentSelectedSjlxOptionItemOfIndex).getPickerViewText().trim() : "");
+    }
+
+    public void getSuccessOfJlfzrDatas(List<JlfzrBean> jlfzrBeans)
+    {
+        mJlfzrOptionBeans = jlfzrBeans;
+        mCurrentSelectedJlfzrOptionItemOfIndex = mJlfzrOptionBeans.size() > 0 ? -1 : -1;
+        mJlfzrOptionsPickerView.setNPicker(mJlfzrOptionBeans,null,null);
+        if(mCurrentSelectedJlfzrOptionItemOfIndex > -1 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size())mJlfzrOptionsPickerView.setSelectOptions(mCurrentSelectedJlfzrOptionItemOfIndex);
+        mAddproblemJlfzr.setText(mCurrentSelectedJlfzrOptionItemOfIndex > -1 && mCurrentSelectedJlfzrOptionItemOfIndex < mJlfzrOptionBeans.size() ? mJlfzrOptionBeans.get(mCurrentSelectedJlfzrOptionItemOfIndex).getPickerViewText().trim() : "");
     }
 
     protected void setOnNewImgPathListener(LinkedList<String> bitmapPaths)
