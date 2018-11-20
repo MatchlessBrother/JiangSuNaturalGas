@@ -26,15 +26,17 @@
            android:layout_width="400mm"
            android:layout_height="130mm"
            android:contentDescription=""
+           android:layout_marginTop="-60mm"
            android:background="@mipmap/icon_logo"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20mm"
+            android:layout_marginTop="30mm"
+            android:layout_marginBottom="8mm"
             android:gravity="center"
             android:singleLine="true"
-            android:text="中海油江苏滨海LNG"
+            android:text="江苏滨海LNG隐患系统"
             android:textColor="@color/default_font_gray"
             android:textSize="46sp" />
 
@@ -46,7 +48,8 @@
             android:singleLine="true"
             android:text="HSE智能安全管理平台"
             android:textColor="@color/default_font_gray"
-            android:textSize="46sp" />
+            android:textSize="46sp"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <LinearLayout
